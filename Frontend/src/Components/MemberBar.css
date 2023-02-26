@@ -1,0 +1,30 @@
+.memberbar_root{
+    padding: 1.5em 1em 0em 0em ;
+}
+
+.member_info{
+    background: #58718F;
+    padding: 0.5em;
+    border-radius: 5px;
+    height:clamp(40px, 45px, 45px);
+    margin-bottom: 1em !important; 
+    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.my_info{
+    background: #233853;
+    padding: 0.5em;
+    border-radius: 5px;
+    height:clamp(40px, 45px, 50px);
+    margin-bottom: 1em !important; 
+}
+
+.member_name{
+    width:clamp(50px, 150px, 160px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 0.8em;
+}

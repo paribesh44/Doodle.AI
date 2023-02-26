@@ -1,0 +1,104 @@
+.chatbar_root{
+    /* float: right; */
+    display: flex !important;    
+    flex-direction: column;
+    /* gap:10px !important; */
+    width: clamp( 40px, 230px, 230px);
+    /* outline: 1px solid red; */
+    padding: 1.5em 0em 0em 0em ;
+}
+
+.chat_color{
+    position: relative;
+    display: flex !important;    
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: #58718F;
+    height: clamp(100px, 595px, 600px);
+    border-radius: 5px;
+    padding: 0.7em;
+    /* outline: 1px solid red; */
+
+    /* gap: 50px; */
+
+}
+.check{
+    height: 100%;
+    /* outline:1px solid black; */
+    overflow-y: scroll;
+}
+::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 5px;
+    padding-left: 3px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  /* Handle */
+::-webkit-scrollbar-thumb {
+    background: #233853;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+ .my_eachmsg{
+    background: #8CCB92;
+    margin-bottom: 6px !important;
+    padding: 0.2em;
+    margin-right: 4px !IMPORTANT;
+    border-radius: 5px;
+    color: black;
+    /* outline: 1px solid red; */
+    /* white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip; */
+    word-wrap: break-word;
+    font-size: 0.9em;
+    
+ }
+.each_message{
+    background: #F9FBB2;
+    margin-bottom: 6px !important;
+    padding: 0.2em;
+    margin-right: 4px !IMPORTANT;
+    border-radius: 5px;
+    color: black;
+    /* outline: 1px solid red; */
+    /* white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip; */
+    word-wrap: break-word;
+    font-size: 0.9em;
+}
+
+
+.bottom_chat{
+    bottom: 0;
+    position: absolute;
+  
+    width: 100%; 
+}
+
+.chat_box{
+    margin-bottom: 0.6em;
+    margin-top: 0.6em;
+    word-wrap: break-word;
+    border-radius: 5px;
+    border: 1px solid white;
+    font-size: 0.9em;
+    padding: 0.5em;
+}
+
+.chat_box:focus{
+    outline: none;
+}
+
+.chat_box:focus::placeholder{
+    color: transparent;
+}

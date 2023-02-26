@@ -1,0 +1,116 @@
+.LandingContainer{
+    background-color: #58718F;
+    padding: 35px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    box-shadow: 6px 6px 16px -3px rgba(88,113,143,0.59);
+    -webkit-box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
+    -moz-box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
+}
+
+.createroombtn{
+    background: #233853;
+    margin: 10px 0px 10px 0px;
+    border: 2px solid #233853;
+    border-radius: 5px;
+    color:aliceblue;
+    min-width: 450px;
+    transition: transform linear 100ms;
+
+}
+
+.createroombtn:hover{
+    background: #58718F;
+    color:#233853;
+    transform: scale(1.05); 
+
+}
+
+.joinroombtn{
+    background: #A9823D;
+    margin: 10px 0px 0px 0px;
+    border: 2px solid #A9823D;
+    border-radius: 5px;
+    color:aliceblue;
+    min-width: 450px;
+    transition: transform linear 100ms;
+}
+
+.joinroombtn:hover{
+    background: #58718F;
+    color:#A9823D;
+    transform: scale(1.05); 
+
+}
+
+.input_field{
+    min-width: 430px;
+    padding: 0.8em;
+    border-radius: 5px;
+    background: #233853;
+    border: 1px solid #233853;
+    text-align: center;
+    font-size: 1em;
+    color: aliceblue;
+    box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
+    -webkit-box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
+    -moz-box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
+    margin-bottom: 15px;
+    transition: transform linear 100ms;
+    }
+
+.input_field::placeholder{
+    color: #F7FAFE;
+    display: flex;
+    width: 100%;
+    opacity: 60%;
+}
+
+.input_field:focus{
+outline: none;
+border: 1px solid #233853;
+}
+
+.input_field:focus::placeholder{
+    color: transparent;
+}
+
+.input_field:hover{
+    /* min-width: 435px;
+    min-height: 21px; */
+    transform: scale(1.05); 
+       box-shadow: 8px 9px 16px -3px rgba(35,56,83,0.59);
+    -webkit-box-shadow: 8px 9px 16px -3px rgba(35,56,83,0.59);
+    -moz-box-shadow: 8px 9px 16px -3px rgba(35,56,83,0.59);
+    
+}
+
+.image_shape{
+    width: 150px;
+    height:30px;  
+}
+
+.avatar_class{
+    /* background-size: contain; */
+    padding: 5px 20px 10px 20px;
+    
+}
+.css-1pqm26d-MuiAvatar-img{
+    object-fit: contain !important;
+
+}
+
+.avatar_title{
+    color: #233853;
+}
+
+.icon_button{
+   
+    cursor: pointer !important;
+    transition: transform linear 100ms;
+
+}
+
+.icon_button:hover{
+    transform: scale(1.5); 
+}

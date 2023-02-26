@@ -1,0 +1,8 @@
+.status_bar_main{
+    background:#233853;
+    padding: 0.8em;
+    border-radius: 5px;
+    margin-top: 25px;
+    width: 100%;
+    height:clamp(60px, 25px, 20px);
+}

@@ -1,0 +1,30 @@
+
+
+.joining_root{
+   
+    width: clamp(100px,1500px,1700px);
+}
+
+.joining_statusbar{
+    width: 100%;
+    /* border: 1px solid lime;     */
+}
+
+.main_area{
+    /* display: flex !important; */
+    /* gap:50px; */
+    width: 100%;
+    /* border: 1px solid lime; */
+}
+
+.kheni_draw{
+    width: 70%;
+}
+
+
+
+.inside_name{
+    color: aliceblue;
+    border: 1px limegreen;
+    font-size: 1.5em;
+}

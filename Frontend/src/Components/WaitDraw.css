@@ -1,0 +1,23 @@
+.waitdraw_root{
+    width: 100%;
+    padding: 1.5em 2em 0em 1.5em  ;
+}
+
+.waiting_draw{
+    width: 100%;
+    background: #AEB2B6;
+
+
+    height: clamp(100px, 550px, 600px);
+}
+
+.waiting_start{
+    background: #A9823D;
+    box-shadow: none;
+    transition: transform linear 100ms;
+
+   }
+
+.waiting_start{
+    /* transform: scale(1.5em); */
+}

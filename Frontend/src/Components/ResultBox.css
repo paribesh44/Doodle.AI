@@ -1,0 +1,54 @@
+.resultbox_root{
+    width: 100%;
+    padding: 1.5em 2em 0em 1.5em  ;
+}
+
+.resultbox_main{
+    width: 100%;
+    background: #AEB2B6;
+    height: clamp(100px, 550px, 600px);
+    padding-top: 5em;
+}
+
+
+.first_player{
+    align-items: center;
+    /* border: 1px solid lime; */
+    padding: 0em 1.4em;
+    color: black;
+    position: relative;
+}
+
+.ranking{
+    padding-top: 5px;
+}
+
+.ranked_name{
+    font-weight: 500;
+    font-size: 1.1em;
+}
+
+.ranked_points{
+    /* padding-top: 3px; */
+    font-size: 0.9em;
+}
+
+.each_bottom{
+    padding: 0em 1.3em ;
+}
+.bottom_rankers{
+    padding-top: 1em;
+    /* border: 1px solid lime; */
+    width: 100%;
+    color: black;
+}
+
+.ranking_bottom{
+    padding-top: 5px;
+    font-size: 0.85em;
+}
+
+.ranked_namebottom{
+    font-size: 1em;
+    font-weight: 500;
+}
