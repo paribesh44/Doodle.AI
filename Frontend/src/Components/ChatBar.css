@@ -17,7 +17,8 @@
     background: #58718F;
     height: clamp(100px, 595px, 600px);
     border-radius: 5px;
-    padding: 0.7em;
+    padding-left: 0.5em;
+    padding-right: 0.1em;
     /* outline: 1px solid red; */
 
     /* gap: 50px; */
@@ -31,7 +32,6 @@
 ::-webkit-scrollbar {
     width: 5px;
     border-radius: 5px;
-    padding-left: 3px;
   }
 
   ::-webkit-scrollbar-track {
@@ -92,7 +92,7 @@
     border-radius: 5px;
     border: 1px solid white;
     font-size: 0.9em;
-    padding: 0.5em;
+    padding: 0.5em 1.3em;
 }
 
 .chat_box:focus{

@@ -30,7 +30,7 @@ function ChatBar() {
                   <input
                     className="chat_box"
                     type="text"
-                    placeholder="  Enter your Guess Here"
+                    placeholder="   Enter your Guess Here   "
                   ></input>
                 </form>
               </Grid>
