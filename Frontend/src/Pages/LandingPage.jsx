@@ -32,8 +32,12 @@ function LandingPage() {
               justifyContent={"center"}
               alignItems="center"
             >
-              <Grid item>About Us</Grid>
-              <Grid item>How to play</Grid>
+              <Grid item className="bottomcenter_width">
+                <Grid container justifyContent="space-between">
+                  <Grid item>About Us</Grid>
+                  <Grid item>How to play</Grid>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

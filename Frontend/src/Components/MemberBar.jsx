@@ -13,7 +13,7 @@ function MemberBar() {
               <Grid container direction="row" alignItems={"center"}>
                 <Grid item>
                   <Avatar
-                    src={require(`./../assets/${val.image}.png`)}
+                    src={require(`./../assets/${val.image}.svg`)}
                     sx={{ width: 35, height: 35 }}
                   />
                 </Grid>

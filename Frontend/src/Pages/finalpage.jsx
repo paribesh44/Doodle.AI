@@ -13,16 +13,16 @@ function FinalPage() {
         container
         justifyContent="center"
         alignItems="center"
-        direction="row"
+        direction="column"
         class="finalpage_main"
       >
         <Grid item className="inside_name">
           Doodle.AI
         </Grid>
         <Grid item className="joining_statusbar">
-          <StatusBar />
+          <StatusBar message="Game Finished" />
         </Grid>
-        <Grid item>
+        <Grid item className="main_area">
           <Grid container direction="row">
             <Grid item>
               <MemberBar />

@@ -1,12 +1,11 @@
 import React from "react";
 import { Grid } from "@mui/material";
-import StatusBar from "../Components/StatusBar";
 import MemberBar from "../Components/MemberBar";
 import ChatBar from "../Components/ChatBar";
-import "./Joining.css";
 import WaitDraw from "../Components/WaitDraw";
+import GameBar from "../Components/GameBar";
 
-function Joining() {
+function GamePage() {
   return (
     <Grid item className="joining_root">
       <Grid
@@ -20,7 +19,7 @@ function Joining() {
           Doodle.AI
         </Grid>
         <Grid item className="joining_statusbar">
-          <StatusBar message="Waiting" />
+          <GameBar />
         </Grid>
         <Grid item className="main_area">
           <Grid container direction="row">
@@ -40,4 +39,4 @@ function Joining() {
   );
 }
 
-export default Joining;
+export default GamePage;

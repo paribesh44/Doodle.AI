@@ -1,0 +1,26 @@
+.game_bar_main{
+    background:#233853;
+    padding: 0.8em;
+    border-radius: 5px;
+    margin-top: 25px;
+    width: 100%;
+    height:clamp(60px, 25px, 20px);
+}
+
+.whose_turn{
+    /* outline: 1px solid lime; */
+    width:clamp(140px, 200px, 200px);
+    position: absolute;
+    
+    
+}
+
+.hints{
+    /* outline: 1px solid red;; */
+    font-size: 1.1em;
+    width: 100%;
+    /* display: flex;
+    justify-content: center;
+    align-items: center;  
+padding-left: 100px;*/
+}

@@ -64,7 +64,7 @@ function LandingPageContainer() {
           </Grid>
           <Grid item className="avatar_class">
             <Avatar
-              src={require(`./../assets/${avatarimg}.png`)}
+              src={require(`./../assets/${avatarimg}.svg`)}
               sx={{ width: 120, height: 120 }}
             />
           </Grid>
@@ -73,15 +73,15 @@ function LandingPageContainer() {
           </Grid>
         </Grid>
       </Grid>
-
-      <Grid item>
-        <CustomButton addStyles="createroombtn" name="Create a Room" />
-      </Grid>
-      <Link to="/Joining">
+      <Link to="/finalpage">
         <Grid item>
-          <CustomButton addStyles="joinroombtn" name="Join a Room" />
+          <CustomButton addStyles="createroombtn" name="Create a Room" />
         </Grid>
       </Link>
+
+      <Grid item>
+        <CustomButton addStyles="joinroombtn" name="Join a Room" />
+      </Grid>
     </Grid>
   );
 }

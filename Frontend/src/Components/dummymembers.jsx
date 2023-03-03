@@ -6,27 +6,27 @@ export const dummtmembers = [
   },
 
   {
-    image: "10",
+    image: "9",
     name: "Random Indian",
     status: false,
   },
   {
-    image: "10",
+    image: "9",
     name: "Random Indian",
     status: false,
   },
   {
-    image: "10",
+    image: "9",
     name: "Randasdasdom Indian",
     status: false,
   },
   {
-    image: "10",
+    image: "9",
     name: "Random Indian",
     status: false,
   },
   {
-    image: "10",
+    image: "9",
     name: "Random Indian",
     status: false,
   },

@@ -6,3 +6,13 @@
     width: 100%;
     height:clamp(60px, 25px, 20px);
 }
+
+.number_members{
+    position: absolute;
+}
+
+.status_message{
+    width: 100%;
+    /* outline: 1px solid red; */
+    padding-left: 3px;
+}

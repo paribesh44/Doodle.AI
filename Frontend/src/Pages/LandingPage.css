@@ -17,6 +17,7 @@
     padding: 0px 0px 80px;
     font-size: 1.2em;
 
+
 }
 
 .bottom_bar{
@@ -31,4 +32,9 @@
     background-color: #233853   ;
     padding: 0.5em;
     font-size: 1.1em;
+}
+
+.bottomcenter_width{
+    /* outline: 1px solid lime; */
+    width:clamp(200px, 520px, 600px)
 }

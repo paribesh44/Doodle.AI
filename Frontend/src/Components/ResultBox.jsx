@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, Grid } from "@mui/material";
 import "./WaitDraw.css";
 import CustomButton from "./CustomButton";
@@ -6,6 +6,11 @@ import "./ResultBox.css";
 import { dummyresults } from "./dummyresults";
 
 function ResultBox() {
+  const [firstperson, setfirstperson] = useState(1);
+  const [secondperson, setsecondperson] = useState(2);
+
+  const [thirdperson, setthirdperson] = useState(3);
+
   return (
     <Grid item className="resultbox_root">
       <Grid container direction="column">
@@ -25,7 +30,7 @@ function ResultBox() {
               >
                 <Grid item>
                   <Avatar
-                    src={require("./../assets/1.png")}
+                    src={require(`./../assets/${secondperson}.svg`)}
                     sx={{ width: 85, height: 85 }}
                   />
                 </Grid>
@@ -51,7 +56,7 @@ function ResultBox() {
               >
                 <Grid item>
                   <Avatar
-                    src={require("./../assets/1.png")}
+                    src={require(`./../assets/${firstperson}.svg`)}
                     sx={{ width: 85, height: 85 }}
                   />
                 </Grid>
@@ -76,7 +81,7 @@ function ResultBox() {
               >
                 <Grid item>
                   <Avatar
-                    src={require("./../assets/1.png")}
+                    src={require(`./../assets/${thirdperson}.svg`)}
                     sx={{ width: 85, height: 85 }}
                   />
                 </Grid>
@@ -111,7 +116,7 @@ function ResultBox() {
                     >
                       <Grid item>
                         <Avatar
-                          src={require("./../assets/1.png")}
+                          src={require(`./../assets/${val.avatar}.svg`)}
                           sx={{ width: 65, height: 65 }}
                         />
                       </Grid>
