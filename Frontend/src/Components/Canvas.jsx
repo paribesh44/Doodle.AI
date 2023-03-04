@@ -38,21 +38,34 @@
 // const canvasStyle = { border: "1px solid lime" };
 
 import React, { useEffect, useRef, useState } from "react";
-import { Grid } from "@mui/material";
+import { Avatar, Grid } from "@mui/material";
 import "./Canvas.css";
 
 function Canvas() {
+  const colors = [
+    { name: "red" },
+    { name: "blue" },
+    { name: "green" },
+    { name: "orange" },
+    { name: "pink" },
+    { name: "black" },
+    { name: "brown" },
+    { name: "purple" },
+  ];
+
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
   const [isDrawing, setisDrawing] = useState(false);
   const [pencolor, setpencolor] = useState("black");
   const [pensize, setpensize] = useState("3");
+  const [showpensize, setshowpensize] = useState(false);
+  const [changePencolor, setchangePencolor] = useState(false);
   const timeout = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     canvas.width = 1000;
-    canvas.height = 590;
+    canvas.height = 568;
     // canvas.style.width = "100%";
     // canvas.style.height = "600%";
     // canvas.width = canvas.offsetWidth;
@@ -98,43 +111,132 @@ function Canvas() {
   const settoDraw = () => {
     contextRef.current.globalCompositeOperation = "source-over";
     setpencolor("black");
-    setpensize("10");
+    setpensize("3");
+    setshowpensize(!showpensize);
+  };
+
+  const settoClear = () => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    context.fillStyle = "aliceblue";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    setshowpensize(false);
   };
   const settoErase = () => {
+    setshowpensize(false);
     // contextRef.current.globalCompositeOperation = "destination-out";
     setpencolor("aliceblue");
-    setpensize("30");
+    setpensize("20");
   };
   const settoColor = () => {
-    console.log("change color");
-    console.log(pencolor);
-    setpencolor("red");
-    console.log(pencolor);
+    setchangePencolor(!changePencolor);
   };
-  // const settoClear = () => {
-  //   contextRef.current.fillStyle = "white";
-  //   contextRef.current.clearRect(0, 0, canvasRef.width, canvasRef.height);
-  //   contextRef.current.fillRect(0, 0, canvasRef.width, canvasRef.height);
-  // };
+
+  const changePenStroke = (str) => () => {
+    console.log("size  clicked");
+    setpensize(str);
+  };
+
+  const chooseColor = (str) => () => {
+    console.log("color  clicked");
+    setpencolor(str);
+  };
+
   return (
     <Grid item className="canvas_root">
       <Grid container>
         <Grid item className="canvas_part">
-          <canvas
-            onMouseDown={startDrawing}
-            onMouseUp={finishDrawing}
-            onMouseMove={draw}
-            ref={canvasRef}
-            width={20}
-            height={585}
-          />
+          <Grid container direction="column">
+            <Grid item>
+              <canvas
+                onMouseDown={startDrawing}
+                onMouseUp={finishDrawing}
+                onMouseMove={draw}
+                ref={canvasRef}
+                width={20}
+                height={560}
+              />
+            </Grid>
+            {showpensize ? (
+              <Grid item className="show_pensize">
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Grid
+                    item
+                    className="each_penstroke"
+                    onClick={changePenStroke("3")}
+                  >
+                    one
+                  </Grid>
+                  <Grid
+                    item
+                    className="each_penstroke"
+                    onClick={changePenStroke("5")}
+                  >
+                    two
+                  </Grid>
+                  <Grid
+                    item
+                    className="each_penstroke"
+                    onClick={changePenStroke("10")}
+                  >
+                    three
+                  </Grid>
+                </Grid>
+              </Grid>
+            ) : null}
+            {changePencolor ? (
+              <Grid item className="change_color">
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  {colors.map((val, key) => {
+                    return (
+                      <Grid
+                        item
+                        key={key}
+                        className="eachcolorcircle"
+                        style={{ backgroundColor: val.name }}
+                        onClick={chooseColor(val.name)}
+                      ></Grid>
+                    );
+                  })}
+                </Grid>
+              </Grid>
+            ) : null}
+
+            <Grid item>
+              <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Grid item>
+                  <button onClick={settoDraw}>Draw</button>
+
+                  {/* <Avatar src={require(`./../assets/${draw}.jog`)} /> */}
+                </Grid>
+                <Grid item>
+                  <button onClick={settoErase}>Erase</button>
+                </Grid>
+                <Grid item>
+                  <button onClick={settoClear}>Clear</button>
+                </Grid>
+                <Grid item>
+                  <button onClick={settoColor}>Color</button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid item>
-        <button onClick={settoDraw}>Draw</button>
-        <button onClick={settoErase}>Erase</button>
-        {/* <button onClick={settoClear}>Clear</button> */}
-        <button onClick={settoColor}>Color</button>
       </Grid>
     </Grid>
   );

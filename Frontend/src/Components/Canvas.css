@@ -9,3 +9,27 @@
     /* outline: 5px solid rgb(43, 218, 69); */
     background-color: aliceblue;
 }
+
+.show_pensize{
+    /* outline: 1px solid blue; */
+    color: black;
+    /* position: absolute; */
+}
+
+.each_penstroke{
+    padding-right: 5px;
+}
+
+.change_color{
+    color: black;
+}
+
+.eachcolorcircle{
+    border-radius: 100px;
+    /* outline: 1px solid black; */
+    width: 20px;
+    height: 20px;
+    padding:10px ;
+    /* margin-right: 5px;
+    outline: 5px solid lime; */
+}
