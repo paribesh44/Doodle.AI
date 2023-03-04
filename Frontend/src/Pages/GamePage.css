@@ -1,11 +1,15 @@
-
+.canvas_main{    
+    width: 70%;
+    height: auto;
+    outline: 1px solid ;
+    /* background-color: aliceblue; */
+}
 
 .joining_root{   
     width: clamp(100px,1500px,1700px);
     height: 100vh;
     padding-top: 120px;
     background-color: #031428;
-
 }
 
 .joining_statusbar{
@@ -28,6 +32,6 @@
 
 .inside_name{
     color: aliceblue;
-    /* border: 1px limegreen; */
+    border: 1px limegreen;
     font-size: 1.5em;
 }

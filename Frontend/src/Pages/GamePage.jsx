@@ -4,6 +4,8 @@ import MemberBar from "../Components/MemberBar";
 import ChatBar from "../Components/ChatBar";
 import WaitDraw from "../Components/WaitDraw";
 import GameBar from "../Components/GameBar";
+import Canvas from "../Components/Canvas";
+import "./GamePage.css";
 
 function GamePage() {
   return (
@@ -26,8 +28,8 @@ function GamePage() {
             <Grid item>
               <MemberBar />
             </Grid>
-            <Grid item className="kheni_draw">
-              <WaitDraw />
+            <Grid item className="canvas_main">
+              <Canvas width={500} height={500} />
             </Grid>
             <Grid item>
               <ChatBar />

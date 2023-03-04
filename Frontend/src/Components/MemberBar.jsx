@@ -9,7 +9,11 @@ function MemberBar() {
       <Grid container direction="column">
         {dummtmembers.map((val, key) => {
           return (
-            <Grid item className={val.status ? "my_info" : "member_info"}>
+            <Grid
+              item
+              className={val.status ? "my_info" : "member_info"}
+              key={key}
+            >
               <Grid container direction="row" alignItems={"center"}>
                 <Grid item>
                   <Avatar

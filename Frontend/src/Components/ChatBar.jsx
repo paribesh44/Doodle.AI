@@ -19,6 +19,7 @@ function ChatBar() {
                 return (
                   <Grid
                     item
+                    key={key}
                     className={val.from == "Me" ? "my_eachmsg" : "each_message"}
                   >
                     {val.message}
