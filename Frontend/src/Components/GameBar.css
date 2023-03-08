@@ -21,17 +21,17 @@
     justify-content: center;
     align-items: center;  
 padding-left: 100px;*/
-outline: 1px solid limegreen;
+/* outline: 1px solid limegreen; */
 
 }
 .hint_section{
     
-    outline: 1px solid limegreen;
+    /* outline: 1px solid limegreen; */
 }
 
 .timer_section{
     position: absolute;
-    outline: 1px solid limegreen;
+    /* outline: 1px solid limegreen; */
     display: flex;
     align-items: center;
     justify-content: center;

@@ -168,9 +168,18 @@ function Canvas() {
                     style={{ cursor: Cursor }}
                   />
                 </Grid>
-                <Grid item>
+              </Grid>
+            </Grid>
+            <Grid item>
+              <Grid
+                container
+                direction="row  "
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Grid item className="show_pensize">
                   {showpensize ? (
-                    <Grid item className="show_pensize">
+                    <Grid item>
                       <Grid
                         container
                         direction="row"
@@ -202,58 +211,74 @@ function Canvas() {
                     </Grid>
                   ) : null}
                 </Grid>
-              </Grid>
-            </Grid>
+                <Grid item className="option_buttons">
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Grid
+                      item
+                      className="eachoption_button"
+                      onClick={settoDraw}
+                    >
+                      <BsFillPencilFill size={25} className="the_icon">
+                        {/* <button >Draw</button> */}
+                      </BsFillPencilFill>
 
-            {changePencolor ? (
-              <Grid item className="change_color">
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  {colors.map((val, key) => {
-                    return (
+                      {/* <Avatar src={require(`./../assets/${draw}.jog`)} /> */}
+                    </Grid>
+                    <Grid
+                      item
+                      className="eachoption_button"
+                      onClick={settoErase}
+                    >
+                      <BsEraserFill size={25} className="the_icon" />
+                      {/* <button>Erase</button> */}
+                    </Grid>
+                    <Grid
+                      item
+                      className="eachoption_button"
+                      onClick={settoClear}
+                    >
+                      <GiBroom size={28} className="the_icon" />
+                    </Grid>
+                    <Grid
+                      item
+                      className="eachoption_button"
+                      onClick={settoColor}
+                    >
+                      <CgColorPicker size={28} className="the_icon" />
+                      {/* <button>Color</button> */}
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  {changePencolor ? (
+                    <Grid item className="change_color">
                       <Grid
-                        item
-                        key={key}
-                        className="eachcolorcircle"
-                        style={{ backgroundColor: val.name }}
-                        onClick={chooseColor(val.name)}
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
                       >
-                        {/* <Grid item></Grid>{" "} */}
+                        {colors.map((val, key) => {
+                          return (
+                            <Grid
+                              item
+                              key={key}
+                              className="eachcolorcircle"
+                              style={{ backgroundColor: val.name }}
+                              onClick={chooseColor(val.name)}
+                            >
+                              {/* <Grid item></Grid>{" "} */}
+                            </Grid>
+                          );
+                        })}
                       </Grid>
-                    );
-                  })}
-                </Grid>
-              </Grid>
-            ) : null}
-
-            <Grid item className="option_buttons">
-              <Grid
-                container
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Grid item className="eachoption_button" onClick={settoDraw}>
-                  <BsFillPencilFill size={25} className="the_icon">
-                    {/* <button >Draw</button> */}
-                  </BsFillPencilFill>
-
-                  {/* <Avatar src={require(`./../assets/${draw}.jog`)} /> */}
-                </Grid>
-                <Grid item className="eachoption_button" onClick={settoErase}>
-                  <BsEraserFill size={25} className="the_icon" />
-                  {/* <button>Erase</button> */}
-                </Grid>
-                <Grid item className="eachoption_button" onClick={settoClear}>
-                  <GiBroom size={28} className="the_icon" />
-                </Grid>
-                <Grid item className="eachoption_button" onClick={settoColor}>
-                  <CgColorPicker size={28} className="the_icon" />
-                  {/* <button>Color</button> */}
+                    </Grid>
+                  ) : null}
                 </Grid>
               </Grid>
             </Grid>

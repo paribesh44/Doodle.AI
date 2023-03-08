@@ -20,7 +20,7 @@ function GamePage() {
       >
         <Link to="/Finalpage">
           <Grid item className="inside_name">
-            Doodle.AI
+            <img height={50} src={require("../assets/logo.png")} />
           </Grid>
         </Link>
 

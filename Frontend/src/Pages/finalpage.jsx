@@ -16,8 +16,8 @@ function FinalPage() {
         direction="column"
         class="finalpage_main"
       >
-        <Grid item className="inside_name">
-          Doodle.AI
+        <Grid item className="icon_length">
+          <img height={50} src={require("../assets/logo.png")} />
         </Grid>
         <Grid item className="joining_statusbar">
           <StatusBar message="Game Finished" />

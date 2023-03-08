@@ -17,7 +17,7 @@ function Joining() {
         className="joining_main"
       >
         <Grid item className="inside_name">
-          Doodle.AI
+          <img height={50} src={require("../assets/logo.png")} />
         </Grid>
         <Grid item className="joining_statusbar">
           <StatusBar message="Waiting" />

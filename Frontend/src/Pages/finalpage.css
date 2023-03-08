@@ -2,6 +2,13 @@
 .finalpage_root
 {width: clamp(100px,1500px,1700px);
     height: 100vh;
-    padding-top: 120px;
+    padding-top: 80px;
 }
 
+.icon_length{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+}

@@ -16,7 +16,7 @@ function LandingPage() {
           alignItems="center"
         >
           <Grid item className="app_name">
-            Doodle.AI
+            <img height={50} src={require("../assets/logo.png")} />
           </Grid>
           <Grid item className="app_desc">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

@@ -11,13 +11,16 @@
 }
 
 .show_pensize{
-    outline: 1px solid blue;
+    /* outline: 1px solid blue; */
     color: black;    
-    height: 40px;
+    /* height: 40px; */
     display: flex;
     align-items: center;
     justify-content: center;
-    position:absolute;
+outline: 1px solid lime;
+/* position: absolute; */
+
+
 }
 
 .each_penstroke{
@@ -29,8 +32,13 @@
 
 .change_color{
     color: black;
-
-outline: 1px solid lime;}
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* height: 30px; */
+outline: 1px solid lime;
+}
 
 .eachcolorcircle{
     border-radius: 50%;
@@ -43,8 +51,9 @@ outline: 1px solid lime;}
 
 .option_buttons{
     /* outline: 1px solid lime; */
-    width: 100%;
+    /* width: 100%; */
     background-color: aliceblue;
+    
 }
 
 .eachoption_button{
