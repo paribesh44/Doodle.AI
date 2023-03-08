@@ -39,6 +39,11 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Avatar, Grid } from "@mui/material";
+import { BsFillPencilFill } from "react-icons/bs";
+import { BsEraserFill } from "react-icons/bs";
+import { GiBroom } from "react-icons/gi";
+import { CgColorPicker } from "react-icons/cg";
+
 import "./Canvas.css";
 
 function Canvas() {
@@ -61,10 +66,11 @@ function Canvas() {
   const [showpensize, setshowpensize] = useState(false);
   const [changePencolor, setchangePencolor] = useState(false);
   const timeout = useRef(null);
+  const [Cursor, setCursor] = useState("default");
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas.width = 1000;
+    canvas.width = 940;
     canvas.height = 568;
     // canvas.style.width = "100%";
     // canvas.style.height = "600%";
@@ -112,6 +118,7 @@ function Canvas() {
     contextRef.current.globalCompositeOperation = "source-over";
     setpencolor("black");
     setpensize("3");
+    // setCursor("crosshair");
     setshowpensize(!showpensize);
   };
 
@@ -119,10 +126,11 @@ function Canvas() {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.fillStyle = "aliceblue";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillRect(0, 0, canvas.width * 0.9335, canvas.height);
     setshowpensize(false);
   };
   const settoErase = () => {
+    setCursor("grabbing");
     setshowpensize(false);
     // contextRef.current.globalCompositeOperation = "destination-out";
     setpencolor("aliceblue");
@@ -148,47 +156,55 @@ function Canvas() {
         <Grid item className="canvas_part">
           <Grid container direction="column">
             <Grid item>
-              <canvas
-                onMouseDown={startDrawing}
-                onMouseUp={finishDrawing}
-                onMouseMove={draw}
-                ref={canvasRef}
-                width={20}
-                height={560}
-              />
-            </Grid>
-            {showpensize ? (
-              <Grid item className="show_pensize">
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <Grid
-                    item
-                    className="each_penstroke"
-                    onClick={changePenStroke("3")}
-                  >
-                    one
-                  </Grid>
-                  <Grid
-                    item
-                    className="each_penstroke"
-                    onClick={changePenStroke("5")}
-                  >
-                    two
-                  </Grid>
-                  <Grid
-                    item
-                    className="each_penstroke"
-                    onClick={changePenStroke("10")}
-                  >
-                    three
-                  </Grid>
+              <Grid container direction={"column"}>
+                <Grid item>
+                  <canvas
+                    onMouseDown={startDrawing}
+                    onMouseUp={finishDrawing}
+                    onMouseMove={draw}
+                    ref={canvasRef}
+                    width={20}
+                    height={560}
+                    style={{ cursor: Cursor }}
+                  />
+                </Grid>
+                <Grid item>
+                  {showpensize ? (
+                    <Grid item className="show_pensize">
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Grid
+                          item
+                          className="each_penstroke"
+                          onClick={changePenStroke("3")}
+                        >
+                          <Grid item className="small_dot"></Grid>
+                        </Grid>
+                        <Grid
+                          item
+                          className="each_penstroke"
+                          onClick={changePenStroke("5")}
+                        >
+                          <Grid item className="medium_dot"></Grid>
+                        </Grid>
+                        <Grid
+                          item
+                          className="each_penstroke"
+                          onClick={changePenStroke("10")}
+                        >
+                          <Grid item className="large_dot"></Grid>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  ) : null}
                 </Grid>
               </Grid>
-            ) : null}
+            </Grid>
+
             {changePencolor ? (
               <Grid item className="change_color">
                 <Grid
@@ -205,33 +221,39 @@ function Canvas() {
                         className="eachcolorcircle"
                         style={{ backgroundColor: val.name }}
                         onClick={chooseColor(val.name)}
-                      ></Grid>
+                      >
+                        {/* <Grid item></Grid>{" "} */}
+                      </Grid>
                     );
                   })}
                 </Grid>
               </Grid>
             ) : null}
 
-            <Grid item>
+            <Grid item className="option_buttons">
               <Grid
                 container
                 direction="row"
                 justifyContent="center"
                 alignItems="center"
               >
-                <Grid item>
-                  <button onClick={settoDraw}>Draw</button>
+                <Grid item className="eachoption_button" onClick={settoDraw}>
+                  <BsFillPencilFill size={25} className="the_icon">
+                    {/* <button >Draw</button> */}
+                  </BsFillPencilFill>
 
                   {/* <Avatar src={require(`./../assets/${draw}.jog`)} /> */}
                 </Grid>
-                <Grid item>
-                  <button onClick={settoErase}>Erase</button>
+                <Grid item className="eachoption_button" onClick={settoErase}>
+                  <BsEraserFill size={25} className="the_icon" />
+                  {/* <button>Erase</button> */}
                 </Grid>
-                <Grid item>
-                  <button onClick={settoClear}>Clear</button>
+                <Grid item className="eachoption_button" onClick={settoClear}>
+                  <GiBroom size={28} className="the_icon" />
                 </Grid>
-                <Grid item>
-                  <button onClick={settoColor}>Color</button>
+                <Grid item className="eachoption_button" onClick={settoColor}>
+                  <CgColorPicker size={28} className="the_icon" />
+                  {/* <button>Color</button> */}
                 </Grid>
               </Grid>
             </Grid>

@@ -7,27 +7,27 @@ export const dummtmembers = [
 
   {
     image: "9",
-    name: "Random Indian",
+    name: "Iron Man",
     status: false,
   },
   {
     image: "9",
-    name: "Random Indian",
+    name: "Rajesh Hamal",
     status: false,
   },
   {
     image: "9",
-    name: "Randasdasdom Indian",
+    name: "Captain AMerica",
     status: false,
   },
   {
     image: "9",
-    name: "Random Indian",
+    name: "Helo HEllo",
     status: false,
   },
   {
     image: "9",
-    name: "Random Indian",
+    name: "mr. Nepal",
     status: false,
   },
 ];

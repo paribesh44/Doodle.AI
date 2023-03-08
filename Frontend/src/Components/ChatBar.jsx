@@ -22,7 +22,12 @@ function ChatBar() {
                     key={key}
                     className={val.from == "Me" ? "my_eachmsg" : "each_message"}
                   >
-                    {val.message}
+                    <Grid container direction="row">
+                      <Grid item className="sender_name">
+                        {val.sender == "none" ? "" : `${val.sender}: `}
+                      </Grid>
+                      <Grid item>{val.message}</Grid>
+                    </Grid>
                   </Grid>
                 );
               })}

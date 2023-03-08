@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import "./GameBar.css";
+import { CiTimer } from "react-icons/ci";
 
 function GameBar() {
   return (
@@ -15,10 +16,18 @@ function GameBar() {
       </Grid>
       <Grid item className="hints">
         <Grid container justifyContent={"center"} alignItems="center">
-          <Grid item>_ _ t _ _</Grid>
+          <Grid item className="hint_section">
+            _ _ t _ _
+          </Grid>
         </Grid>
       </Grid>
-      <Grid item></Grid>
+
+      <Grid container direction="row">
+        <Grid item className="timer_section">
+          <CiTimer size={25} />
+        </Grid>
+        {/* <Grid item> 3s</Grid> */}
+      </Grid>
     </Grid>
   );
 }

@@ -6,6 +6,7 @@ import WaitDraw from "../Components/WaitDraw";
 import GameBar from "../Components/GameBar";
 import Canvas from "../Components/Canvas";
 import "./GamePage.css";
+import { Link } from "react-router-dom";
 
 function GamePage() {
   return (
@@ -17,9 +18,12 @@ function GamePage() {
         direction={"column"}
         className="joining_main"
       >
-        <Grid item className="inside_name">
-          Doodle.AI
-        </Grid>
+        <Link to="/Finalpage">
+          <Grid item className="inside_name">
+            Doodle.AI
+          </Grid>
+        </Link>
+
         <Grid item className="joining_statusbar">
           <GameBar />
         </Grid>
@@ -31,7 +35,7 @@ function GamePage() {
             <Grid item className="canvas_main">
               <Canvas width={500} height={500} />
             </Grid>
-            <Grid item>
+            <Grid item className="chat_chat">
               <ChatBar />
             </Grid>
           </Grid>

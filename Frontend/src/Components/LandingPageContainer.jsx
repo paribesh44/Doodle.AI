@@ -73,7 +73,7 @@ function LandingPageContainer() {
           </Grid>
         </Grid>
       </Grid>
-      <Link to="/GamePage">
+      <Link to="/Joining">
         <Grid item>
           <CustomButton addStyles="createroombtn" name="Create a Room" />
         </Grid>
