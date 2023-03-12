@@ -126,7 +126,7 @@ function Canvas() {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.fillStyle = "aliceblue";
-    context.fillRect(0, 0, canvas.width * 0.9335, canvas.height);
+    context.fillRect(0, 0, canvas.width * 0.98, canvas.height);
     setshowpensize(false);
   };
   const settoErase = () => {
