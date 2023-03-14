@@ -1,6 +1,8 @@
-from typing import Union
+from typing import Union, Optional
 
 from fastapi import FastAPI, Path
+
+from pydantic import BaseModel
 
 app = FastAPI()
 # instance of FASTAPI object
@@ -11,6 +13,17 @@ items = {
         "price": 400
     }
 }
+
+
+class Blog (BaseModel):
+    title: str
+    body: str
+    puglished_at: Optional[bool]
+
+
+@app.post('/blog')
+def create_blog(request: Blog):
+    return {'data': f"blog is created with {request.title }"}
 
 
 @app.get("/")
