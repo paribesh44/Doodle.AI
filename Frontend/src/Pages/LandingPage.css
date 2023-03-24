@@ -38,4 +38,23 @@
 .bottomcenter_width{
     /* outline: 1px solid lime; */
     width:clamp(200px, 520px, 600px)
+    /* width: 100%; */
+}
+
+.bottomcenter_width2{
+    outline: 1px solid lime;
+    width:clamp(400px, 1100px, 1300px)
+    /* width: 100%; */
+}
+/* .Landing_root{
+    outline: 1px solid lime;
+} */
+
+.about_us{
+    outline: 1px solid red;
+    width:clamp(200px, 520px, 600px);
+    padding: 1em;
+    text-align: justify;
+
+
 }
