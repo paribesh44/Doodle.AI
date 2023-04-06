@@ -55,7 +55,6 @@ function Canvas() {
     { name: "pink" },
     { name: "black" },
     { name: "brown" },
-    { name: "purple" },
   ];
 
   const canvasRef = useRef(null);
@@ -129,6 +128,7 @@ function Canvas() {
     context.fillStyle = "aliceblue";
     context.fillRect(0, 0, canvas.width * 0.98, canvas.height);
     setshowpensize(false);
+    setchangePencolor(false);
   };
   const settoErase = () => {
     setCursor("grabbing");
@@ -184,7 +184,7 @@ function Canvas() {
                       <Grid
                         container
                         direction="row"
-                        justifyContent="center"
+                        justifyContent="end"
                         alignItems="center"
                       >
                         <Grid
@@ -255,9 +255,9 @@ function Canvas() {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item>
+                <Grid item className="change_color">
                   {changePencolor ? (
-                    <Grid item className="change_color">
+                    <Grid item>
                       <Grid
                         container
                         direction="row"
@@ -272,9 +272,7 @@ function Canvas() {
                               className="eachcolorcircle"
                               style={{ backgroundColor: val.name }}
                               onClick={chooseColor(val.name)}
-                            >
-                              {/* <Grid item></Grid>{" "} */}
-                            </Grid>
+                            ></Grid>
                           );
                         })}
                       </Grid>

@@ -15,7 +15,7 @@ function GameBar() {
       alignItems="center"
     >
       <Grid item className="whose_turn">
-        Mr. Potato is drawing...{" "}
+        Mr. Potato is drawing...
       </Grid>
       <Grid item className="hints">
         <Grid container justifyContent={"center"} alignItems="center">

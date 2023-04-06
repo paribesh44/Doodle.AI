@@ -17,8 +17,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-outline: 1px solid lime;
-/* position: absolute; */
+/* outline: 1px solid lime;  */
+    width: 175px;
+
 
 
 }
@@ -32,20 +33,22 @@ outline: 1px solid lime;
 
 .change_color{
     color: black;
-    position: absolute;
+    /* position: absolute; */
+    width: 175px;
     display: flex;
     align-items: center;
     justify-content: center;
     /* height: 30px; */
-outline: 1px solid lime;
 }
 
 .eachcolorcircle{
     border-radius: 50%;
-    outline: 1px solid black;
+    /* outline: 1px solid lime; */
     width: 20px;
     height: 20px;
-    margin-right:10px ;
+    /* padding: 20px; */
+    margin-right:5px !important;
+    margin-bottom: 2px !important;
     
 }
 
