@@ -14,15 +14,30 @@ function MemberBar() {
               className={val.status ? "my_info" : "member_info"}
               key={key}
             >
-              <Grid container direction="row" alignItems={"center"}>
+              <Grid
+                container
+                direction="row"
+                // alignItems={"center"}
+                justifyContent="center"
+              >
+                <Grid item className="rank_number">
+                  #1
+                </Grid>
                 <Grid item>
                   <Avatar
                     src={require(`./../assets/${val.image}.svg`)}
                     sx={{ width: 35, height: 35 }}
                   />
                 </Grid>
-                <Grid item className="member_name">
-                  {val.name}
+                <Grid item>
+                  <Grid container direction="column" justifyContent={"center"}>
+                    <Grid item className="member_name">
+                      {val.name}
+                    </Grid>
+                    <Grid item className="member_pts">
+                      Pts. 1200
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>

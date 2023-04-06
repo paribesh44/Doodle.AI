@@ -3,6 +3,9 @@ import { Grid } from "@mui/material";
 import "./GameBar.css";
 import { CiTimer } from "react-icons/ci";
 
+const word = "SPARKLING";
+const output = word.split("").join(" ");
+
 function GameBar() {
   return (
     <Grid
@@ -17,7 +20,9 @@ function GameBar() {
       <Grid item className="hints">
         <Grid container justifyContent={"center"} alignItems="center">
           <Grid item className="hint_section">
-            _ _ t _ _
+            {word.split("").map((val, key) => {
+              return "__ ";
+            })}
           </Grid>
         </Grid>
       </Grid>

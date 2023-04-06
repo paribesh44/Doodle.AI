@@ -38,7 +38,7 @@
 // const canvasStyle = { border: "1px solid lime" };
 
 import React, { useEffect, useRef, useState } from "react";
-import { Avatar, Grid } from "@mui/material";
+import { Avatar, Grid, nativeSelectClasses } from "@mui/material";
 import { BsFillPencilFill } from "react-icons/bs";
 import { BsEraserFill } from "react-icons/bs";
 import { GiBroom } from "react-icons/gi";
@@ -87,6 +87,7 @@ function Canvas() {
     // const { offsetX, offsetY } = nativeEvent;
     // contextRef.current.beginPath();
     // contextRef.current.moveTo(offsetX, offsetY);
+    console.log(nativeEvent);
     setisDrawing(true);
     draw(nativeEvent);
   };
