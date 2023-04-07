@@ -35,7 +35,7 @@ function MemberBar() {
                       {val.name}
                     </Grid>
                     <Grid item className="member_pts">
-                      Pts. 1200
+                      Points:1200
                     </Grid>
                   </Grid>
                 </Grid>
