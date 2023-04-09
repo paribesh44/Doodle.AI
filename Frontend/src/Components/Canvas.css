@@ -17,7 +17,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-/* outline: 1px solid lime;  */
+/* outline: 1px solid lime; canvas */
     width: 175px;
 
 
@@ -48,22 +48,19 @@
     height: 20px;
     /* padding: 20px; */
     margin-right:5px !important;
-    margin-bottom: 2px !important;
-    
+    margin-bottom: 2px !important;    
 }
 
 .option_buttons{
     /* outline: 1px solid lime; */
     /* width: 100%; */
-    background-color: aliceblue;
-    
+    background-color: aliceblue;    
 }
 
 .eachoption_button{
     padding-right: 15px;
     /* height: 40px; */
-    color: #233853  ;
-   
+    color: #233853  ;   
 }
 
 .the_icon{
