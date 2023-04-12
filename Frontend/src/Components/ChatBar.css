@@ -22,10 +22,9 @@
     padding-right: 0.1em;
     padding-bottom: 0.8em;
     /* outline: 1px solid red; */
-
     /* gap: 50px; */
-
 }
+
 .check{
     height: 100%;
     /* outline:1px solid black; */
@@ -34,22 +33,23 @@
 ::-webkit-scrollbar {
     width: 5px;
     border-radius: 5px;
-  }
+}
 
-  ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background: #f1f1f1;
-  }
+}
+
   /* Handle */
 ::-webkit-scrollbar-thumb {
     background: #233853;
-  }
+}
   
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
     background: #555;
-  }
+}
 
- .my_eachmsg{
+.my_eachmsg{
     /* background: #8CCB92; */
     margin-bottom: 6px !important;
     padding: 0.2em;
@@ -62,18 +62,16 @@
     text-overflow: clip; */
     word-wrap: break-word;
     font-size: 0.9em;
-    /* opacity: 50%; */
-
-    
+    /* opacity: 50%; */    
  }
+
 .each_message{
     /* background: #F9FBB2; */
     margin-bottom: 6px !important;
     padding: 0.2em;
     margin-right: 4px !IMPORTANT;
     border-radius: 5px;
-    color: white;
-   
+    color: white;   
     /* outline: 1px solid red; */
     /* white-space: nowrap;
     overflow: hidden;

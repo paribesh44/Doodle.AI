@@ -15,6 +15,10 @@ function LandingPageContainer() {
     console.log(e.target.value);
   }
 
+  async function handleRoomChange(e) {
+    console.log(e.target.value);
+  }
+
   const handlePrevious = () => {
     if (avatarimg == 1) {
       setavatarimg(10);
@@ -80,8 +84,21 @@ function LandingPageContainer() {
       </Link>
 
       <Grid item>
-        <CustomButton addStyles="joinroombtn" name="Join a Room" />
+        <form>
+          <input
+            className="joinroombtn"
+            style={{ color: "aliceblue" }}
+            type="text"
+            // value={this.state.value}
+            placeholder="Join a Room"
+            onChange={handleRoomChange}
+          />
+        </form>
       </Grid>
+      {/* 
+      <Grid item>
+        <CustomButton addStyles="joinroombtn" name="Join a Room" />
+      </Grid> */}
     </Grid>
   );
 }

@@ -20,12 +20,11 @@
     /* display: flex;
     justify-content: center;
     align-items: center;  
-padding-left: 100px;*/
-/* outline: 1px solid limegreen; */
+    padding-left: 100px;*/
+    /* outline: 1px solid limegreen; */
 
 }
-.hint_section{
-    
+.hint_section{    
     /* outline: 1px solid limegreen; */
 }
 
@@ -34,9 +33,7 @@ padding-left: 100px;*/
     /* outline: 1px solid limegreen; */
     display: flex;
     align-items: center;
-    justify-content: center;
-
-    
+    justify-content: center;    
 }
 
 .inital_two{

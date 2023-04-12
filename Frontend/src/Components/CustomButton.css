@@ -10,8 +10,8 @@
     text-decoration: none;
     font-size: 1.1em;
     box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
--webkit-box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
--moz-box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
+    -webkit-box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
+    -moz-box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
   }
   
   .main_button > svg {

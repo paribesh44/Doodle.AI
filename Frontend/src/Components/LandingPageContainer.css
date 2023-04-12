@@ -31,16 +31,41 @@
     margin: 10px 0px 0px 0px;
     border: 2px solid #A9823D;
     border-radius: 5px;
-    color:aliceblue;
-    min-width: 450px;
+    /* min-width: 450px; */
+    transition: transform linear 100ms;
+    min-width: 430px;
+    padding: 0.8em;
+    border-radius: 5px;
+    color: aliceblue;
+    /* background: #233853; */
+    /* border: 1px solid #233853; */
+    text-align: center;
+    font-size: 1em;    
+    box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
+    -webkit-box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
+    -moz-box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
+    margin-bottom: 15px;
     transition: transform linear 100ms;
 }
 
-.joinroombtn:hover{
-    background: #58718F;
-    color:#A9823D;
-    transform: scale(1.05); 
+.joinroombtn::placeholder{
+    color: aliceblue;
+}
 
+.joinroombtn:focus{
+    outline: none;
+    /* border: 1px solid #233853; */
+    /* color: red; */
+}
+    
+.joinroombtn:focus::placeholder{
+        color: transparent;
+}
+
+.joinroombtn:hover{
+    background: #A9823D;
+    color:#58718F;
+    transform: scale(1.05); 
 }
 
 .input_field{

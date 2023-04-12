@@ -19,9 +19,6 @@
     justify-content: center;
 /* outline: 1px solid lime; canvas */
     width: 175px;
-
-
-
 }
 
 .each_penstroke{
@@ -67,10 +64,10 @@
     border-radius: 50%;
     /* border: 2px solid red; */
     padding: 5px;
-  font-size: 40px;
-  box-shadow: -3px 6px 17px -3px rgba(136,140,156,0.95);
--webkit-box-shadow: -3px 6px 17px -3px rgba(136,140,156,0.95);
--moz-box-shadow: -3px 6px 17px -3px rgba(136,140,156,0.95);
+    font-size: 40px;
+    box-shadow: -3px 6px 17px -3px rgba(136,140,156,0.95);
+    -webkit-box-shadow: -3px 6px 17px -3px rgba(136,140,156,0.95);
+    -moz-box-shadow: -3px 6px 17px -3px rgba(136,140,156,0.95);
 }
 
 .the_icon:hover{
