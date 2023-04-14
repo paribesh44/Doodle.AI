@@ -4,6 +4,7 @@ import FinalPage from "./Pages/finalpage";
 import GamePage from "./Pages/GamePage";
 import Joining from "./Pages/Joining";
 import LandingPage from "./Pages/LandingPage";
+import WaitArea from "./Components/WaitArea";
 
 const Routedpath = () => {
   const routes = useRoutes([
@@ -11,6 +12,7 @@ const Routedpath = () => {
     { path: "/Joining", element: <Joining /> },
     { path: "/GamePage", element: <GamePage /> },
     { path: "/FinalPage", element: <FinalPage /> },
+    { path: "/WaitArea", element: <WaitArea /> },
   ]);
   return routes;
 };

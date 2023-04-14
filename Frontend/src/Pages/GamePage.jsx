@@ -7,6 +7,7 @@ import GameBar from "../Components/GameBar";
 import Canvas from "../Components/Canvas";
 import "./GamePage.css";
 import { Link } from "react-router-dom";
+import DrawingTurn from "../Components/DrawingTurn";
 
 function GamePage() {
   return (
@@ -33,7 +34,8 @@ function GamePage() {
               <MemberBar />
             </Grid>
             <Grid item className="canvas_main">
-              <Canvas width={500} height={500} />
+              <DrawingTurn />
+              {/* <Canvas width={500} height={500} /> */}
             </Grid>
             <Grid item className="chat_chat">
               <ChatBar />

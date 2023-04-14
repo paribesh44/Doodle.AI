@@ -29,9 +29,9 @@ function GameBar() {
 
       <Grid container direction="row">
         <Grid item className="timer_section">
-          {/* <CiTimer size={25} /> */}
+          <CiTimer size={25} />
         </Grid>
-        {/* <Grid item> 3s</Grid> */}
+        <Grid item>3s</Grid>
       </Grid>
     </Grid>
   );

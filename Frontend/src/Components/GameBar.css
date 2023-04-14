@@ -29,7 +29,7 @@
 }
 
 .timer_section{
-    position: absolute;
+    /* position: absolute; */
     /* outline: 1px solid limegreen; */
     display: flex;
     align-items: center;

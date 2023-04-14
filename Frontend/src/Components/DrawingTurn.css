@@ -1,0 +1,12 @@
+.drawingturn_main{
+    padding: 1.5em 2em 0em 1.5em;
+    /* border: 1px solid red; */
+    height: 599px;
+
+}
+
+.drawingturncolor{
+    height: 591px;
+    background-color: aliceblue;
+    color: black;
+}

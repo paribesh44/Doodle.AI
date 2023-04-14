@@ -1,16 +1,23 @@
 .App {
   text-align: center;
+  /* overscroll-behavior: none */
+
 
 }
 
 .app_color{
     background-color: #031428;
     color: aliceblue;
-    height: 100vh;
+    height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;  
+    /* overflow: auto; */
+    overscroll-behavior: none;
+
+
+
 }
 
 
