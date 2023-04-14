@@ -7,6 +7,8 @@ import ChatBar from "../Components/ChatBar";
 import ResultBox from "../Components/ResultBox";
 
 function FinalPage() {
+  console.log("thi si final page");
+
   return (
     <Grid item className="finalpage_root">
       <Grid

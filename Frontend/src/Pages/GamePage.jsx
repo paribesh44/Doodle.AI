@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid } from "@mui/material";
 import MemberBar from "../Components/MemberBar";
 import ChatBar from "../Components/ChatBar";
@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import DrawingTurn from "../Components/DrawingTurn";
 
 function GamePage() {
+  const isDrawing = useState(true);
   return (
     <Grid item className="joining_root">
       <Grid

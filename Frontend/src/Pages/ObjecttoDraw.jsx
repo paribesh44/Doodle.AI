@@ -7,6 +7,7 @@ import DrawingTurn from "../Components/DrawingTurn";
 import ChatBar from "../Components/ChatBar";
 
 function ObjecttoDraw() {
+  console.log("thi si obj page");
   return (
     <Grid item className="joining_root">
       <Grid
