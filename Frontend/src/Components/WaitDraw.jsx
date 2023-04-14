@@ -11,7 +11,7 @@ function WaitDraw() {
       <Grid container direction="column">
         <Grid item className="waiting_draw"></Grid>
         <Grid item className="waiting_start">
-          <Link to="/GamePage">
+          <Link to="/ObjecttoDraw">
             <CustomButton name="Start" addStyles={"waiting_start"} />
           </Link>
         </Grid>

@@ -1,15 +1,12 @@
-import React from "react";
 import { Grid } from "@mui/material";
-import MemberBar from "../Components/MemberBar";
-import ChatBar from "../Components/ChatBar";
-import WaitDraw from "../Components/WaitDraw";
-import GameBar from "../Components/GameBar";
-import Canvas from "../Components/Canvas";
-import "./GamePage.css";
+import React from "react";
 import { Link } from "react-router-dom";
+import GameBar from "../Components/GameBar";
+import MemberBar from "../Components/MemberBar";
 import DrawingTurn from "../Components/DrawingTurn";
+import ChatBar from "../Components/ChatBar";
 
-function GamePage() {
+function ObjecttoDraw() {
   return (
     <Grid item className="joining_root">
       <Grid
@@ -34,8 +31,8 @@ function GamePage() {
               <MemberBar />
             </Grid>
             <Grid item className="canvas_main">
-              {/* <DrawingTurn /> */}
-              <Canvas width={500} height={500} />
+              <DrawingTurn />
+              {/* <Canvas width={500} height={500} /> */}
             </Grid>
             <Grid item className="chat_chat">
               <ChatBar />
@@ -47,4 +44,4 @@ function GamePage() {
   );
 }
 
-export default GamePage;
+export default ObjecttoDraw;

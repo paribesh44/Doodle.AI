@@ -1,8 +1,6 @@
 .App {
   text-align: center;
   /* overscroll-behavior: none */
-
-
 }
 
 .app_color{
@@ -15,9 +13,6 @@
     align-items: center;  
     /* overflow: auto; */
     overscroll-behavior: none;
-
-
-
 }
 
 

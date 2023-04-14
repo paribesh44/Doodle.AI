@@ -5,6 +5,7 @@ import GamePage from "./Pages/GamePage";
 import Joining from "./Pages/Joining";
 import LandingPage from "./Pages/LandingPage";
 import WaitArea from "./Components/WaitArea";
+import ObjecttoDraw from "./Pages/ObjecttoDraw";
 
 const Routedpath = () => {
   const routes = useRoutes([
@@ -13,6 +14,7 @@ const Routedpath = () => {
     { path: "/GamePage", element: <GamePage /> },
     { path: "/FinalPage", element: <FinalPage /> },
     { path: "/WaitArea", element: <WaitArea /> },
+    { path: "/ObjecttoDraw", element: <ObjecttoDraw /> },
   ]);
   return routes;
 };

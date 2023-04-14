@@ -1,12 +1,28 @@
 .drawingturn_main{
     padding: 1.5em 2em 0em 1.5em;
-    /* border: 1px solid red; */
     height: 599px;
-
 }
 
 .drawingturncolor{
     height: 591px;
-    background-color: aliceblue;
+    background-color: #AEB2B6;
     color: black;
+    border: 1px solid red;
+    display: flex;
+}
+
+.drawing_topic{
+    font-size: 1.1em;
+}
+
+.drawing_item{
+    font-size: 1.2em;
+    padding-top: 60px;
+    font-weight: 500;
+    padding-bottom: 60px;
+}
+
+.drawing_button{
+    background-color: #233853;
+    color: aliceblue;
 }
