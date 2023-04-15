@@ -11,7 +11,7 @@ function GameLandingPage() {
     <Grid>
       {/* {/* {isGuessing && <FinalPage />} */}
       {isDrawing && <ObjecttoDraw />}
-      {/* {isDrawing ? <FinalPage /> : <ObjecttoDraw />} */}
+      {isDrawing ? <FinalPage /> : <ObjecttoDraw />}
     </Grid>
   );
 }
