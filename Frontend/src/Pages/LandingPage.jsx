@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./LandingPage.css";
 import { Grid } from "@mui/material";
 import LandingPageContainer from "../Components/LandingPageContainer";
+import callAPI from "../utils/callAPI";
 
 function LandingPage() {
-  console.log("landingpage");
+  // const [test, setTest] = useState(false);
+
+  // const message = async () => {
+  //   let response_obj = await callAPI({
+  //     endpoint: "/create_room/url",
+  //   });
+  //   setTest(response_obj.data);
+  // };
+
+  // useEffect(() => {
+  //   message();
+  // }, []);
+
+  // console.log("landingpage");
+  // if (test) {
+  //   console.log(test)
+  // }
   return (
     <Grid container className="landingmain ">
       <Grid item>

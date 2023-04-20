@@ -19,6 +19,17 @@
 
 }
 
+.submitMessage {
+    background: #cfdce2;
+    margin: 0px 0px 0px 0px;
+    border: 2px solid #233853;
+    border-radius: 5px;
+    color: black;
+    min-width: 70px;
+    transition: transform linear 100ms;
+
+}
+
 .createroombtn:hover{
     background: #58718F;
     color:#233853;

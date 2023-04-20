@@ -12,6 +12,7 @@ const Routedpath = () => {
   const routes = useRoutes([
     { path: "/", element: <LandingPage /> },
     { path: "/Joining", element: <Joining /> },
+    {path: "/Joining/:roomID?", element: <Joining />},
     { path: "/GamePage", element: <GamePage /> },
     { path: "/FinalPage", element: <FinalPage /> },
     { path: "/WaitArea", element: <WaitArea /> },

@@ -1,36 +1,34 @@
-from typing import Union, Optional
-
 from fastapi import FastAPI, Path
+from starlette.middleware.sessions import SessionMiddleware
+from starlette.middleware.cors import CORSMiddleware
 
-from pydantic import BaseModel
+from routers import (room_url, user, room, room_websocket, game)
 
 app = FastAPI()
-# instance of FASTAPI object
 
-items = {
-    1: {
-        "name": "shampoo",
-        "price": 400
-    }
-}
+SECRET_KEY = "KWn54X_xI9xAOc1c6AWDAwD-JMURBTjhYBkdIJaH"
 
+origins = [
+    "http://localhost:3000"
+]
+# SessionMiddleware, secret_key=SECRET_KEY
 
-class Blog (BaseModel):
-    title: str
-    body: str
-    puglished_at: Optional[bool]
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=SECRET_KEY
+)
 
+# middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
-@app.post('/blog')
-def create_blog(request: Blog):
-    return {'data': f"blog is created with {request.title }"}
-
-
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int = Path(None, description="Put id"), q: Union[str, None] = None):
-    return items[item_id]
+app.include_router(user.router)
+app.include_router(room.router)
+app.include_router(room_websocket.router)
+app.include_router(game.router)
+app.include_router(room_url.router)

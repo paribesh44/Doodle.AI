@@ -5,14 +5,24 @@ import CustomButton from "./CustomButton";
 import Image from "./Image.jsx";
 import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import callAPI from "../utils/callAPI";
 
 function LandingPageContainer() {
-  const [username, setusername] = useState(null);
+  const [username, setusername] = useState("");
   const [avatarimg, setavatarimg] = useState(1);
+  const [joinRoom, setJoinRoom] = useState(false);
+  const [joinRoomID, setJoinRoomID] = useState("");
+  const [validRoomID, setValidRoomID] = useState(true);
+  const [userID, setUserID] = useState("");
 
   async function handleChange(e) {
-    console.log(e.target.value);
+    // console.log(e.target.value);
+    setusername(e.target.value)
+  }
+
+  async function handleJoinRoom(e) {
+    setJoinRoomID(e.target.value)
   }
 
   async function handleRoomChange(e) {
@@ -34,6 +44,101 @@ function LandingPageContainer() {
       setavatarimg(avatarimg + 1);
     }
   };
+
+  let navigate = useNavigate();
+
+  async function createRoom() {
+    // create url for the room
+    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    let room_id = '';
+    let url;
+    const charactersLength = characters.length;
+    for ( let i = 0; i < 10; i++ ) {
+        room_id += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    url = "Joining/" + room_id
+
+    // User creation
+    if (username != "") {
+      let userDataForm = new FormData();
+      userDataForm.append("username", username);
+      userDataForm.append("avatar", avatarimg);
+
+      let response_obj = await callAPI({
+        endpoint: "/user/create",
+        method: "POST",
+        data: userDataForm,
+      });
+
+      if (response_obj.data.msg == "success") {
+        // console.log("success");
+
+        // console.log(response_obj.data)
+
+        // console.log(response_obj.data.user_info.id)
+
+        // setUserID(response_obj.data.user_info.id);
+
+        // Room creation
+        let roomDataForm = new FormData();
+        roomDataForm.append("room_id", room_id);
+        roomDataForm.append("creator", username);
+        roomDataForm.append("state", "new");
+
+        let response_obj2 = await callAPI({
+          endpoint: "/room/create",
+          method: "POST",
+          data: roomDataForm,
+        });
+
+        if (response_obj2.data.msg == "success") {
+          navigate(url, {state: response_obj.data.user_info.id})
+        }
+      }
+    } else {
+      console.log("Enter username...")
+    }
+  }
+
+  async function joinRoomFun() {
+    if (username != "") {
+      let userDataForm = new FormData();
+      userDataForm.append("username", username);
+      userDataForm.append("avatar", avatarimg);
+
+      let response_obj4 = await callAPI({
+        endpoint: "/user/create",
+        method: "POST",
+        data: userDataForm,
+      });
+
+      if (response_obj4.data.msg == "success") {
+        setUserID(response_obj4.data.user_info.id)
+        setJoinRoom(true)
+      }
+    }
+  }
+
+  async function onJoinRoom() {
+    let url;
+    url = "Joining/" + joinRoomID
+
+    
+    let response_obj3 = await callAPI({
+          endpoint: `/room/check_room_id/${joinRoomID}`,
+        });
+    
+    if (response_obj3.data == true) {
+      console.log(joinRoomID)
+      setValidRoomID(true)
+      navigate(url, {state: userID})
+    } else {
+      setValidRoomID(false)
+    }
+  }
+
   return (
     <Grid
       container
@@ -77,13 +182,13 @@ function LandingPageContainer() {
           </Grid>
         </Grid>
       </Grid>
-      <Link to="/Joining">
+      {/* <Link to="/Joining"> */}
         <Grid item>
-          <CustomButton addStyles="createroombtn" name="Create a Room" />
+          <CustomButton addStyles="createroombtn" name="Create a Room" onClicked={createRoom}/>
         </Grid>
-      </Link>
+      {/* </Link> */}
 
-      <Grid item>
+      {/* <Grid item>
         <form>
           <input
             className="joinroombtn"
@@ -94,11 +199,36 @@ function LandingPageContainer() {
             onChange={handleRoomChange}
           />
         </form>
-      </Grid>
+      </Grid> */}
       {/* 
       <Grid item>
         <CustomButton addStyles="joinroombtn" name="Join a Room" />
       </Grid> */}
+        {/* <CustomButton addStyles="joinroombtn" name="Join a Room" onClicked={joinRoomFun}/>
+      </Grid> */}
+
+      {joinRoom ? 
+        <Grid item>
+          <form>
+            <input
+              className="input_field"
+              type="text"
+              // value={this.state.value}
+              placeholder="Enter room code"
+              onChange={handleJoinRoom}
+            />
+          </form>
+          <button onClick={onJoinRoom}>Join</button>
+        </Grid>
+        : null }
+
+        {validRoomID ? 
+          null
+        : <Grid item>
+            Invalid Room ID
+          </Grid> }
+
+      
     </Grid>
   );
 }

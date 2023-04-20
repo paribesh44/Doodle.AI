@@ -49,8 +49,8 @@
     background: #555;
 }
 
-.my_eachmsg{
-    /* background: #8CCB92; */
+ .my_eachmsg{
+    background: #142336;
     margin-bottom: 6px !important;
     padding: 0.2em;
     margin-right: 4px !IMPORTANT;
@@ -108,4 +108,14 @@
 
 .sender_name{
     font-weight: 500;
+}
+
+.joined_message{
+    font-weight: 500;
+    color: rgb(15, 217, 15);
+}
+
+.left_message {
+    font-weight: 500;
+    color: red;
 }

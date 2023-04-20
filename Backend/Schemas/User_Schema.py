@@ -1,6 +1,6 @@
 from pydantic import BaseModel
+from typing import List
 
-
-class User (BaseModel):
-    user_name: str
-    user_id: int
+class User(BaseModel):
+    username: str
+    avatar: str
