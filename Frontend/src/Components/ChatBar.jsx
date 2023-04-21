@@ -11,12 +11,9 @@ function ChatBar(props) {
 
   var ws = props.ws
 
-  console.log(props.messages)
-
   async function submit() {
     // console.log(ws)
     if(guess != "") {
-      console.log(guess)
       props.sendMessage(ws, {msg_type:3, data:guess, user_id:props.user_id})
       setGuess("")
     }

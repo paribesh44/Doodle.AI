@@ -84,10 +84,10 @@ function MemberBar(props) {
                 <Grid item>
                   <Grid container direction="column" justifyContent={"center"}>
                     <Grid item className="member_name">
-                      {val.name}
+                      {val}
                     </Grid>
                     <Grid item className="member_pts">
-                      Points:{props.userSelfMessage.data.score[key]}
+                      Score:{props.userSelfMessage.data.score[key]}
                     </Grid>
                   </Grid>
                 </Grid>
