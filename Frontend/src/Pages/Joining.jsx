@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import {useParams, useLocation} from "react-router-dom";
 import callAPI from "../utils/callAPI";
 import useSocket from "../utils/useSocket";
+import CustomButton from "../Components/CustomButton";
 
 function Joining() {
   const [showDraw, setshowDraw] = useState(true);
@@ -94,7 +95,17 @@ function Joining() {
             </Grid>
             <Grid item className="kheni_draw">
               {/* {showDraw && <WaitArea />} */}
-              <WaitDraw />
+              {/* <WaitDraw /> */}
+              <Grid item className="waitdraw_root">
+                <Grid container direction="column">
+                  <Grid item className="waiting_draw"></Grid>
+                  <Grid item className="waiting_start">
+                    <Link to="/GameLandingPage">
+                      <CustomButton name="Start" addStyles={"waiting_start"} />
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item>
               <ChatBar messages={messages} user_id={user_id} sendMessage={sendMessage} ws={ws}/>

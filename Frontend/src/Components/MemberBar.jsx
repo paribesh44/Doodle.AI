@@ -66,9 +66,12 @@ function MemberBar(props) {
                       Points:200
                     </Grid>
                   </Grid> */}
-              <Grid container direction="row" alignItems={"center"}>
+              <Grid container direction="row" justifyContent="center">
                 {/* {membersInfo.map((val2, key) => {
                   return val2.username===val ? */}
+                  <Grid item className="rank_number">
+                    #1
+                  </Grid>
                   <Grid item>
                     <Avatar
                       src={require(`./../assets/${props.userSelfMessage.data.avatars[key]}.svg`)}
@@ -77,12 +80,22 @@ function MemberBar(props) {
                   </Grid>
                   {/* : null
                 })} */}
-                
-                <Grid item className="member_name">
-                  {val}
-                </Grid>
 
+                <Grid item>
+                  <Grid container direction="column" justifyContent={"center"}>
+                    <Grid item className="member_name">
+                      {val.name}
+                    </Grid>
+                    <Grid item className="member_pts">
+                      Points:{props.userSelfMessage.data.score[key]}
+                    </Grid>
+                  </Grid>
+                </Grid>
+                
                 {/* <Grid item className="member_name">
+                  {val}
+                </Grid> 
+                <Grid item className="member_name">
                   Score: {props.userSelfMessage.data.score[key]}
               </Grid> */}
               </Grid>

@@ -9,7 +9,6 @@ function GameLandingPage() {
 
   return (
     <Grid>
-      {/* {/* {isGuessing && <FinalPage />} */}
       {isDrawing && <ObjecttoDraw />}
       {isDrawing ? <FinalPage /> : <ObjecttoDraw />}
     </Grid>
