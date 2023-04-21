@@ -7,7 +7,7 @@
     height: 591px;
     background-color: #AEB2B6;
     color: black;
-    border: 1px solid red;
+    /* border: 1px solid red; */
     display: flex;
 }
 
@@ -16,13 +16,26 @@
 }
 
 .drawing_item{
-    font-size: 1.2em;
+    font-size: 1.4em;
     padding-top: 60px;
-    font-weight: 500;
+    font-weight: 600;
+    padding-bottom: 60px;
+}
+
+.is_drawing_item {
+    font-size: 2em;
+    padding-top: 60px;
+    font-weight: 600;
     padding-bottom: 60px;
 }
 
 .drawing_button{
+    /* background-color: #233853; */
+    background-color: #AEB2B6;
+    color: black;
+    border: 3px solid #233853;
+}
+.drawing_button:hover {
     background-color: #233853;
-    color: aliceblue;
+    color: white;
 }

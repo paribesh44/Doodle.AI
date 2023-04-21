@@ -182,30 +182,12 @@ function LandingPageContainer() {
           </Grid>
         </Grid>
       </Grid>
-      {/* <Link to="/Joining"> */}
         <Grid item>
           <CustomButton addStyles="createroombtn" name="Create a Room" onClicked={createRoom}/>
         </Grid>
-      {/* </Link> */}
-
-      {/* <Grid item>
-        <form>
-          <input
-            className="joinroombtn"
-            style={{ color: "aliceblue" }}
-            type="text"
-            // value={this.state.value}
-            placeholder="Join a Room"
-            onChange={handleRoomChange}
-          />
-        </form>
-      </Grid> */}
-      {/* 
       <Grid item>
-        <CustomButton addStyles="joinroombtn" name="Join a Room" />
-      </Grid> */}
-        {/* <CustomButton addStyles="joinroombtn" name="Join a Room" onClicked={joinRoomFun}/>
-      </Grid> */}
+        <CustomButton addStyles="joinroombtn" name="Join a Room" onClicked={joinRoomFun}/>
+      </Grid>
 
       {joinRoom ? 
         <Grid item>

@@ -63,11 +63,12 @@ from sqlalchemy import and_, or_
 # print(room_connections)
 
 class ChatMessageTypes(enum.Enum):
-        USER_JOINED: int = 1
-        USER_LEFT: int = 2
-        GUESS_MESSAGE: int = 3
-        CANVAS_DRAWING: int = 4
-        USER_SELF_MESSAGE: int = 5
+    USER_JOINED: int = 1
+    USER_LEFT: int = 2
+    GUESS_MESSAGE: int = 3
+    CANVAS_DRAWING: int = 4
+    USER_SELF_MESSAGE: int = 5
+    START_DRAWING_MESSAGE: int = 6
     
 class Message(BaseModel):
     msg_type: int
@@ -174,6 +175,16 @@ class WebSocketManager:
                 user=user_id,
                 username=user_info.username,
                 time = datetime.utcnow()
+            )
+
+            await self.broadcast(
+                msg_instance.dict(exclude_none=True), room_id
+            )
+
+        elif msg_type == ChatMessageTypes.START_DRAWING_MESSAGE.value:
+            msg_instance = Message(
+                msg_type = msg_type,
+                data = data
             )
 
             await self.broadcast(
