@@ -37,12 +37,13 @@
 
 // const canvasStyle = { border: "1px solid lime" };
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { Avatar, Grid, nativeSelectClasses } from "@mui/material";
 import { BsFillPencilFill } from "react-icons/bs";
 import { BsEraserFill } from "react-icons/bs";
 import { GiBroom } from "react-icons/gi";
 import { CgColorPicker } from "react-icons/cg";
+import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 
 import "./Canvas.css";
 
@@ -66,6 +67,8 @@ function Canvas() {
   const [changePencolor, setchangePencolor] = useState(false);
   const timeout = useRef(null);
   const [Cursor, setCursor] = useState("default");
+
+  const {sendMessage, userId, drawing} = useContext(WebSocketContext);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -98,6 +101,7 @@ function Canvas() {
 
   const draw = ({ nativeEvent }) => {
     if (isDrawing) {
+      sendMessage({msg_type:4, data:{"offsetX":nativeEvent.offsetX, "offsetY":nativeEvent.offsetY}, user_id:userId})
       const canvas = canvasRef.current;
       contextRef.current = canvas.getContext("2d");
       contextRef.current.lineWidth = pensize;

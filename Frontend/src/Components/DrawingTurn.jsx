@@ -1,40 +1,43 @@
 import { Grid } from "@mui/material";
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import "./DrawingTurn.css";
 import CustomButton from "./CustomButton";
 import { Link } from "react-router-dom";
 import callAPI from "../utils/callAPI";
 import Canvas from "../Components/Canvas";
+import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 
-function DrawingTurn(props) {
+function DrawingTurn() {
   const [words, setWords] = useState([]);
-  const [openCanvas, setOpenCanvas] = useState(false);
-  const [allUserTurnFinished, setAllUserTurnFinished] = useState("");
+  // const [allUserTurnFinished, setAllUserTurnFinished] = useState("");
+
+  const {sendMessage, userId, roomId, openCanvas, activateCanvas, turn, test} = useContext(WebSocketContext);
 
 
   const message = async () => {
+    // if(roomId) {
       let response_obj = await callAPI({
           endpoint: `/game/give_words`,
       });
       setWords(response_obj.data);
-      let response_obj2 = await callAPI({
-        endpoint: `/check-turn-finished/${props.roomID}`
-      });
-      setAllUserTurnFinished(response_obj2.data)
+
+      // let response_obj2 = await callAPI({
+      //   endpoint: `/check-turn-finished/${roomId}`
+      // });
+      // setAllUserTurnFinished(response_obj2.data)
+    // }
     };
 
   useEffect(() => {
-      message();
+    message();
   }, []);
-  
-  function activateCanvas() {
-    setOpenCanvas(true)
-  }
 
   return (
     <Grid item className="canvas_main">
+      {console.log("Test ", test)}
+      {console.log("OPen canvas ", openCanvas)}
       { openCanvas ? 
-        <Canvas width={500} height={500} />
+        <Canvas width={500} height={500}/>
         :
         <Grid item className="drawingturn_main">
           <Grid container direction="column">
@@ -45,7 +48,7 @@ function DrawingTurn(props) {
                 justifyContent="center"
                 alignItems="center"
               > 
-              { props.turn.user_id == props.user_id && props.turn.turn == true ?
+              { turn.data.turn_user_id == userId && turn.data.turn == true ?
                 <Grid>
                   <Grid item className="drawing_item">
                   Choose a word
@@ -66,7 +69,7 @@ function DrawingTurn(props) {
                 </Grid>
                 :
                 <Grid item className="is_drawing_item">
-                  {props.turn.turn_username} is choosing word!
+                  {turn.data.username} is choosing word!
                 </Grid>
                 }
                   

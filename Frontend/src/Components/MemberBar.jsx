@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Avatar, Grid } from "@mui/material";
 import "./MemberBar.css";
 import dummymembers, { dummtmembers } from "./dummymembers.jsx";
 import callAPI from "../utils/callAPI";
+import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 
-function MemberBar(props) {
-  // console.log("bdhjasbjdha", props.roomID)
+function MemberBar() {
+  // console.log("bdhjasbjdha", roomID)
 
-  // console.log("userSelfMessage ", props.userSelfMessage)
+  // console.log("userSelfMessage ", userSelfMessage)
 
   // const [members, setMembers] = useState(null);
   // const [membersInfo, setMembersInfo] = useState(null);
 
     // const message = async () => {
     //   let response_obj = await callAPI({
-    //       endpoint: `/room/memberInfo/${props.roomID}`,
+    //       endpoint: `/room/memberInfo/${roomID}`,
     //   });
 
     //   if (response_obj.data.msg == "success") {
@@ -29,12 +30,15 @@ function MemberBar(props) {
     //     message();
     // }, []);
 
-  if (props.userSelfMessage != "") {
+  const {userSelfMessage} = useContext(WebSocketContext);
+
+  // if (userSelfMessage.length != 0) {
 
   return (
     <Grid item className="memberbar_root">
+      { userSelfMessage.length != 0 ?
       <Grid container direction="column">
-          {props.userSelfMessage.data.players.map((val, key) => {
+          {userSelfMessage.data.players.map((val, key) => {
 
           return (
             <Grid
@@ -74,7 +78,7 @@ function MemberBar(props) {
                   </Grid>
                   <Grid item>
                     <Avatar
-                      src={require(`./../assets/${props.userSelfMessage.data.avatars[key]}.svg`)}
+                      src={require(`./../assets/${userSelfMessage.data.avatars[key]}.svg`)}
                       sx={{ width: 35, height: 35 }}
                     />
                   </Grid>
@@ -87,7 +91,7 @@ function MemberBar(props) {
                       {val}
                     </Grid>
                     <Grid item className="member_pts">
-                      Score:{props.userSelfMessage.data.score[key]}
+                      Score:{userSelfMessage.data.score[key]}
                     </Grid>
                   </Grid>
                 </Grid>
@@ -96,16 +100,17 @@ function MemberBar(props) {
                   {val}
                 </Grid> 
                 <Grid item className="member_name">
-                  Score: {props.userSelfMessage.data.score[key]}
+                  Score: {userSelfMessage.data.score[key]}
               </Grid> */}
               </Grid>
             </Grid>
           );
         })}
       </Grid>
+      : <></>}
     </Grid>
   );
-}
+// }
 }
 
 export default MemberBar;

@@ -1,8 +1,7 @@
 import enum
 import json
-from typing import Dict, List
+from typing import Dict, List, Optional, Union
 from core import database
-from typing import Optional
 from datetime import datetime
 
 from models import user, room
@@ -12,6 +11,7 @@ from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
+import time
 
 # dictinary = {
 #     "abc": [{user_id: 2, socket: "socket2"}]
@@ -69,10 +69,13 @@ class ChatMessageTypes(enum.Enum):
     CANVAS_DRAWING: int = 4
     USER_SELF_MESSAGE: int = 5
     START_DRAWING_MESSAGE: int = 6
+    ACTIVATE_CANVAS_OF_ALL: int = 7
+    CHECK_TURN: int = 8
+    FINISH_DRAWING_TURN: int = 9
     
 class Message(BaseModel):
     msg_type: int
-    data: Optional[str]
+    data: Optional[Union[str, Dict]]
     user: Optional[int]
     username: Optional[str]
     time: Optional[datetime]
@@ -152,6 +155,40 @@ class WebSocketManager:
 
         await self.broadcast(data={"msg_type":5, "data":room_info_dict, "user_id": user_id, "username": user_info.username}, room_id=room_id)
     
+
+        # get whose turn is it to draw.
+        room_info = db.query(room.Room).filter(room.Room.room_id==room_id).first()
+
+        user_info = db.query(user.User).filter(user.User.id==user_id).first()
+
+        players = room_info.players
+
+        index = 2465
+
+        for idx in range(len(players)):
+            if players[idx] == user_info.username:
+                index = idx
+                break
+
+        turn = room_info.turn[index]
+
+        # get the username of the player whose turn is to draw.
+        drawing_turns = room_info.turn
+        ind = 15456
+        for idx in range(len(drawing_turns)):
+            if drawing_turns[idx] == True:
+                ind = idx
+                break
+        turn_username = room_info.players[ind]
+
+        user_turn = db.query(user.User).filter(user.User.username==turn_username).first()
+
+        turn_dict_dict = {"turn_user_id": user_turn.id, "turn": turn, "turn_username": turn_username}
+
+        await self.broadcast(data={"msg_type":8, "data":turn_dict_dict, "user_id": user_id, "username": user_info.username}, room_id=room_id)
+    
+
+
     async def broadcast(self, data: any, room_id: str):
         encoded_data = jsonable_encoder(data)
 
@@ -190,6 +227,15 @@ class WebSocketManager:
             await self.broadcast(
                 msg_instance.dict(exclude_none=True), room_id
             )
+        elif msg_type == ChatMessageTypes.ACTIVATE_CANVAS_OF_ALL.value:
+            msg_instance = Message(
+                msg_type = msg_type,
+                data = data
+            )
+
+            await self.broadcast(
+                msg_instance.dict(exclude_none=True), room_id
+            )
         
         # if the msg_type is canvas_drawing then send the data to everyone expect the own.
         elif msg_type == ChatMessageTypes.CANVAS_DRAWING.value:
@@ -212,6 +258,56 @@ class WebSocketManager:
                     await connection.send_json(encoded_data)
                 except Exception as e:
                     pass
+        
+        elif msg_type == ChatMessageTypes.FINISH_DRAWING_TURN.value:
+            msg_instance = Message(
+                msg_type=msg_type,
+                data=data,
+                user=user_id,
+                username=user_info.username,
+                time = datetime.utcnow()
+            )
+
+            # frontend: {"last_turn_userId", "userId"}
+
+            room_info = db.query(room.Room).filter(room.Room.room_id == room_id)
+            user_info = db.query(user.User).filter(user.User.id == data.last_turn_userId).first()
+
+            index = 54654
+
+            turn = room_info.first().turn
+
+            player = room_info.first().players
+
+            for idx in range(len(turn)):
+                if turn[idx] == True and player[idx] == user_info.username:
+                    index = idx
+                    turn[idx] = False
+                    break
+            
+            if index+1 < len(turn):
+                index += 1
+                turn[index] = True
+
+            room_info.update({"turn": turn})
+            db.commit()
+
+
+            turn = room_info.first().turn
+
+            user_turn = db.query(user.User).filter(user.User.username==player[index]).first()
+
+            print("turn update")
+            print(user_turn.id)
+            print(index)
+            print(turn[index])
+            print(player[index])
+
+
+            turn_dict_dict = {"turn_user_id": user_turn.id, "turn": turn[index], "turn_username": player[index]}
+
+            await self.broadcast(data={"msg_type":8, "data":turn_dict_dict, "user_id": user_id, "username": user_info.username}, room_id=room_id)
+
 
 
     async def disconnect(self, websocket: WebSocket, user_id: int, room_id: str, db: any):

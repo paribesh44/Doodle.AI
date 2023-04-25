@@ -35,20 +35,25 @@ def gameTurn(room_id:str, user_id:int, db: Session = Depends(database.get_db)):
             break
     turn_username = room_info.players[ind]
 
-    return {"user_id": user_info.id, "turn": turn, "turn_username": turn_username}
+    user_turn = db.query(user.User).filter(user.User.username==turn_username).first()
+
+
+    return {"turn_user_id": user_turn.id, "turn": turn, "turn_username": turn_username}
 
 # This function will make previously True turn to False and the next turn to True.
 # This function is called after each player's turn has finised.
-@router.get("/updateTurn/{room_id}")
-def updateTurn(room_id:str, db:Session=Depends(database.get_db)):
+@router.get("/updateTurn/{room_id}/{username}")
+def updateTurn(room_id:str, username:str, db:Session=Depends(database.get_db)):
     room_info = db.query(room.Room).filter(room.Room.room_id == room_id)
 
     index = 54654
 
     turn = room_info.first().turn
 
+    player = room_info.first().players
+
     for idx in range(len(turn)):
-        if turn[idx] == True:
+        if turn[idx] == True and player[idx] == username:
             index = idx
             turn[idx] = False
             break

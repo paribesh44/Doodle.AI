@@ -22,5 +22,5 @@ async def websocket_endpoint(user_id: int, room_id: str, websocket: WebSocket, d
         print("websocket disconnected")
         await ws.disconnect(websocket=websocket, user_id=user_id, room_id=room_id, db=db)
     
-    except Exception:
-        pass
+    except Exception as e:
+        print(e)
