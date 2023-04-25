@@ -2,10 +2,8 @@
     /* float: right; */
     display: flex !important;    
     flex-direction: column;
-    /* gap:10px !important; */
     width: clamp( 140px, 288px, 380px);
     height: 100%;
-    /* outline: 1px solid red; */
     padding: 1.5em 0em 0em 0em ;
 }
 
