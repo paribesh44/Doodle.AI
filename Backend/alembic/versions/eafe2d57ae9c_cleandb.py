@@ -1,8 +1,8 @@
 """cleandb
 
-Revision ID: ec5fc7655bf4
+Revision ID: eafe2d57ae9c
 Revises: 
-Create Date: 2023-04-19 07:53:08.919487
+Create Date: 2023-04-25 19:34:18.217372
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ec5fc7655bf4'
+revision = 'eafe2d57ae9c'
 down_revision = None
 branch_labels = None
 depends_on = None

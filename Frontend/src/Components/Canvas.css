@@ -1,10 +1,12 @@
 .canvas_root{
     padding: 1.5em 2em 0em 1.5em;
+    /* outline: 5px solid rgb(43, 218, 69); */
+
     /* height: 100%; */
 }
 
 .canvas_part{
-    width: 100%;   
+    width: 924px;   
     height: 100%;
     /* outline: 5px solid rgb(43, 218, 69); */
     background-color: aliceblue;

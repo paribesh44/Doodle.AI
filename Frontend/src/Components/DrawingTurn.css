@@ -1,10 +1,12 @@
 .drawingturn_main{
     padding: 1.5em 2em 0em 1.5em;
     height: 599px;
+    /* outline: 1px solid lime; */
 }
 
 .drawingturncolor{
     height: 591px;
+    width: 930px;
     background-color: #AEB2B6;
     color: black;
     /* border: 1px solid red; */

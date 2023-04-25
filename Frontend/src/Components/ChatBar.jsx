@@ -5,23 +5,21 @@ import { dummymessages } from "./dummymessages.jsx";
 import CustomButton from "./CustomButton";
 import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 
-
 function ChatBar() {
-
   const [guess, setGuess] = useState("");
 
-  const {history, sendMessage, userId} = useContext(WebSocketContext);
+  const { history, sendMessage, userId } = useContext(WebSocketContext);
 
   async function submit() {
     // console.log(ws)
-    if(guess !== "") {
-      sendMessage({msg_type:3, data:guess, user_id:userId})
-      setGuess("")
+    if (guess !== "") {
+      sendMessage({ msg_type: 3, data: guess, user_id: userId });
+      setGuess("");
     }
   }
 
   // console.log("Message: ", messages)
-  
+
   return (
     <Grid item className="chatbar_root">
       <Grid container direction="row" alignItems="center">
@@ -54,21 +52,31 @@ function ChatBar() {
                   <Grid
                     item
                     key={key}
-                    className={val.user == userId ? "my_eachmsg" : "each_message"}
+                    className={
+                      val.user == userId ? "my_eachmsg" : "each_message"
+                    }
                   >
                     <Grid container direction="row">
                       <Grid item className="sender_name">
-                        {val.data == "connected" || val.data == "disconnected" 
-                        ? null
-                        : val.user == userId ? 
-                          `You: ` : `${val.username}: `}
+                        {val.data == "connected" || val.data == "disconnected"
+                          ? null
+                          : val.user == userId
+                          ? `You: `
+                          : `${val.username}: `}
                       </Grid>
-                      {val.data == "connected" ? 
-                        <Grid item className="joined_message">{val.user == userId ? "You" : val.username} joined the room!</Grid>
-                        : val.data == "disconnected" ?
-                          <Grid item className="left_message">{val.user == userId ? "You" : val.username} left the room!</Grid>
-                          : <Grid item>&nbsp;{val.data}</Grid>
-                      }
+                      {val.data == "connected" ? (
+                        <Grid item className="joined_message">
+                          {val.user == userId ? "You" : val.username} joined the
+                          room!
+                        </Grid>
+                      ) : val.data == "disconnected" ? (
+                        <Grid item className="left_message">
+                          {val.user == userId ? "You" : val.username} left the
+                          room!
+                        </Grid>
+                      ) : (
+                        <Grid item>&nbsp;{val.data}</Grid>
+                      )}
                     </Grid>
                   </Grid>
                 );
@@ -80,11 +88,16 @@ function ChatBar() {
                     type="text"
                     placeholder="   Enter your Guess Here   "
                     onChange={(e) => setGuess(e.target.value)}
-
                   ></input>
                   {/* <input type="submit" onSubmit={submit}/> */}
                 </form>
-                <CustomButton addStyles="submitMessage" name="Submit" onClicked={submit}/>
+                <Grid item className="submittheMessage">
+                  <CustomButton
+                    addStyles="thesubbmit"
+                    name="Submit"
+                    onClicked={submit}
+                  />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
