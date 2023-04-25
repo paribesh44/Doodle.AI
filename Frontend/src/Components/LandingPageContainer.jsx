@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useContext } from "react";
 import { Avatar, Grid } from "@mui/material";
 import "./LandingPageContainer.css";
 import CustomButton from "./CustomButton";
@@ -7,6 +7,7 @@ import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
 import { Link, useNavigate } from "react-router-dom";
 import callAPI from "../utils/callAPI";
+import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 
 function LandingPageContainer() {
   const [username, setusername] = useState("");
@@ -14,7 +15,9 @@ function LandingPageContainer() {
   const [joinRoom, setJoinRoom] = useState(false);
   const [joinRoomID, setJoinRoomID] = useState("");
   const [validRoomID, setValidRoomID] = useState(true);
-  const [userID, setUserID] = useState("");
+  // const [userID, setUserID] = useState("");
+  const {setUserId} = useContext(WebSocketContext);
+
 
   async function handleChange(e) {
     // console.log(e.target.value);
@@ -93,8 +96,9 @@ function LandingPageContainer() {
           data: roomDataForm,
         });
 
-        if (response_obj2.data.msg == "success") {
-          navigate(url, {state: response_obj.data.user_info.id})
+        if (response_obj2.data.msg === "success") {
+          setUserId(response_obj.data.user_info.id)
+          navigate(url)
         }
       }
     } else {
@@ -115,7 +119,7 @@ function LandingPageContainer() {
       });
 
       if (response_obj4.data.msg == "success") {
-        setUserID(response_obj4.data.user_info.id)
+        setUserId(response_obj4.data.user_info.id)
         setJoinRoom(true)
       }
     }
@@ -131,9 +135,8 @@ function LandingPageContainer() {
         });
     
     if (response_obj3.data == true) {
-      console.log(joinRoomID)
       setValidRoomID(true)
-      navigate(url, {state: userID})
+      navigate(url)
     } else {
       setValidRoomID(false)
     }

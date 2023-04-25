@@ -19,6 +19,7 @@ const useSocket = ({
       ws.current = new WebSocket(
         `${endpointState || endpoint}`
       );
+      // ws.current.onmessage = onMessage
       if (!onConnect) {
         ws.current.onopen = () => {
           setIsReady(true);
@@ -26,6 +27,7 @@ const useSocket = ({
       } else {
         ws.current.onopen = (data) => {
           setIsReady(true);
+
           onConnect(data);
         };
       }
@@ -33,8 +35,13 @@ const useSocket = ({
   }, [endpointState, endpoint, fire]);
 
   useEffect(() => {
-    if (fire && isReady) {
-      ws.current.onmessage = onMessage
+    if (ws.current != null) {
+      ws.current.onmessage = (data) => {
+        let ret = onMessage(data);
+        if (ret) {
+          setHistory([...history, ret]);
+        }
+      };
     }
   }, [fire, endpointState, onMessage, onConnect, isReady]);
 
@@ -43,6 +50,6 @@ const useSocket = ({
       ws.current.close();
     }
   }, [closeState, setCloseState]);
-  return [ws.current, setEndpointState, isReady, setCloseState];
+  return [ws.current, history, setEndpointState, isReady, setCloseState];
 };
 export default useSocket;
