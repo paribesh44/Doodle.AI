@@ -68,7 +68,7 @@ function Canvas() {
   const timeout = useRef(null);
   const [Cursor, setCursor] = useState("default");
 
-  const {sendMessage, userId, drawing} = useContext(WebSocketContext);
+  const {sendMessage, userId, drawingHistory, turn, hostDrawing} = useContext(WebSocketContext);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -85,6 +85,43 @@ function Canvas() {
     contextRef.current = context;
   }, [contextRef]);
 
+  useEffect(() => {
+    if (turn.data.turn_user_id !== userId && turn.data.turn !== true) {
+      console.log("yaha vitra pugo ki pugena")
+      if(hostDrawing) {
+        console.log("yaha vitra nee")
+        console.log("Drawing history ", drawingHistory)
+        // drawingHistory.map((e) => {
+        //   const canvas = canvasRef.current;
+        //   contextRef.current = canvas.getContext("2d");
+        //   contextRef.current.lineWidth = pensize;
+        //   contextRef.current.lineCap = "round";
+        //   contextRef.current.strokeStyle = pencolor;
+
+        //   contextRef.current.lineTo(e.data.offsetX, e.data.offsetY);
+        //   contextRef.current.stroke();
+        //   contextRef.current.beginPath();
+        //   contextRef.current.moveTo(e.data.offsetX, e.data.offsetY);
+        // })
+
+        if (drawingHistory != null) {
+          const canvas = canvasRef.current;
+          contextRef.current = canvas.getContext("2d");
+          contextRef.current.lineWidth = pensize;
+          contextRef.current.lineCap = "round";
+          contextRef.current.strokeStyle = pencolor;
+
+          contextRef.current.lineTo(drawingHistory.data.offsetX, drawingHistory.data.offsetY);
+          contextRef.current.stroke();
+          contextRef.current.beginPath();
+          contextRef.current.moveTo(drawingHistory.data.offsetX, drawingHistory.data.offsetY);
+        }
+          
+      }
+    }
+    
+  }, [hostDrawing, drawingHistory])
+
   const startDrawing = ({ nativeEvent }) => {
     // const { offsetX, offsetY } = nativeEvent;
     // contextRef.current.beginPath();
@@ -100,21 +137,26 @@ function Canvas() {
   };
 
   const draw = ({ nativeEvent }) => {
-    if (isDrawing) {
-      sendMessage({msg_type:4, data:{"offsetX":nativeEvent.offsetX, "offsetY":nativeEvent.offsetY}, user_id:userId})
-      const canvas = canvasRef.current;
-      contextRef.current = canvas.getContext("2d");
-      contextRef.current.lineWidth = pensize;
-      contextRef.current.lineCap = "round";
-      contextRef.current.strokeStyle = pencolor;
+    if (turn.data.turn_user_id === userId && turn.data.turn === true) {
+      if (isDrawing) {
+        sendMessage({msg_type:10, data:true});
+        sendMessage({msg_type:4, data:{"offsetX":nativeEvent.offsetX, "offsetY":nativeEvent.offsetY}, user_id:userId})
+        const canvas = canvasRef.current;
+        contextRef.current = canvas.getContext("2d");
+        contextRef.current.lineWidth = pensize;
+        contextRef.current.lineCap = "round";
+        contextRef.current.strokeStyle = pencolor;
 
-      const { offsetX, offsetY } = nativeEvent;
-      contextRef.current.lineTo(offsetX, offsetY);
-      contextRef.current.stroke();
-      contextRef.current.beginPath();
-      contextRef.current.moveTo(offsetX, offsetY);
+        const { offsetX, offsetY } = nativeEvent;
+        contextRef.current.lineTo(offsetX, offsetY);
+        contextRef.current.stroke();
+        contextRef.current.beginPath();
+        contextRef.current.moveTo(offsetX, offsetY);
+      } else {
+        return;
+      }
     } else {
-      return;
+      console.log("drawinng: ", drawingHistory)
     }
   };
 
@@ -175,6 +217,7 @@ function Canvas() {
                 </Grid>
               </Grid>
             </Grid>
+            {turn.data.turn_user_id == userId && turn.data.turn == true ?
             <Grid item>
               <Grid
                 container
@@ -284,7 +327,7 @@ function Canvas() {
                   ) : null}
                 </Grid>
               </Grid>
-            </Grid>
+            </Grid> : <></>}
           </Grid>
         </Grid>
       </Grid>

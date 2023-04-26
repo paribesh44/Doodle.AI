@@ -84,7 +84,14 @@ function ChatBar() {
                   ></input>
                   {/* <input type="submit" onSubmit={submit}/> */}
                 </form>
-                <CustomButton addStyles="submitMessage" name="Submit" onClicked={submit}/>
+                {/* <CustomButton addStyles="submitMessage" name="Submit" onClicked={submit}/> */}
+                <Grid item className="submittheMessage">
+                  <CustomButton
+                    addStyles="thesubbmit"
+                    name="Submit"
+                    onClicked={submit}
+                  />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>

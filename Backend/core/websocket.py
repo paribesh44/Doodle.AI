@@ -72,6 +72,7 @@ class ChatMessageTypes(enum.Enum):
     ACTIVATE_CANVAS_OF_ALL: int = 7
     CHECK_TURN: int = 8
     FINISH_DRAWING_TURN: int = 9
+    SEND_DRAWING_TO_OTHER_USERS: int = 10
     
 class Message(BaseModel):
     msg_type: int
@@ -88,6 +89,9 @@ class WebSocketManager:
     # this function adds information of user's id and websocket in its equivalent "room_id" key. 
     async def add_info_to_room_connections_dict(self, websocket: WebSocket, user_id: int, room_id: str):
         # check whether the "room_id" already exists or not.
+        print("Room Id: ", room_id)
+        print("room_connections: ", self.room_connections)
+        print("Room exit or not: ", room_id in self.room_connections)
         if room_id in self.room_connections:
             print("exist")
             self.room_connections[room_id].append({"user_id": user_id, "websocket": websocket})
@@ -185,8 +189,9 @@ class WebSocketManager:
 
         turn_dict_dict = {"turn_user_id": user_turn.id, "turn": turn, "turn_username": turn_username}
 
-        await self.broadcast(data={"msg_type":8, "data":turn_dict_dict, "user_id": user_id, "username": user_info.username}, room_id=room_id)
-    
+        data={"msg_type":8, "data":turn_dict_dict, "user_id": user_id, "username": user_info.username}
+        encoded_data = jsonable_encoder(data)
+        await websocket.send_json(encoded_data)
 
 
     async def broadcast(self, data: any, room_id: str):
@@ -194,6 +199,8 @@ class WebSocketManager:
 
         # get all the "websocket" of a certain room "room_id"
         connections = [i["websocket"] for i in self.room_connections[room_id]]
+
+        print("connections: ", connections)
 
         for connection in connections:
             try:
@@ -219,6 +226,7 @@ class WebSocketManager:
             )
 
         elif msg_type == ChatMessageTypes.START_DRAWING_MESSAGE.value:
+            print("yaha pugo ki xina ta")
             msg_instance = Message(
                 msg_type = msg_type,
                 data = data
@@ -227,7 +235,27 @@ class WebSocketManager:
             await self.broadcast(
                 msg_instance.dict(exclude_none=True), room_id
             )
+
+        elif msg_type == ChatMessageTypes.SEND_DRAWING_TO_OTHER_USERS.value:
+            msg_instance = Message(
+                msg_type = msg_type,
+                data = data
+            )
+
+            # get all the "websocket" of a room "room_id" expect the own's websocket
+            connections = [i["websocket"] for i in self.room_connections[room_id] if i != websocket]
+
+            encoded_data = jsonable_encoder(msg_instance)
+
+            for connection in connections:
+                print("websocket ", connection)
+                try:
+                    await connection.send_json(encoded_data)
+                except Exception as e:
+                    pass
+
         elif msg_type == ChatMessageTypes.ACTIVATE_CANVAS_OF_ALL.value:
+            print("nbhfdjkasdf ashdjkashd")
             msg_instance = Message(
                 msg_type = msg_type,
                 data = data
@@ -305,8 +333,11 @@ class WebSocketManager:
 
 
             turn_dict_dict = {"turn_user_id": user_turn.id, "turn": turn[index], "turn_username": player[index]}
+            data={"msg_type":8, "data":turn_dict_dict, "user_id": user_id, "username": user_info.username}
 
-            await self.broadcast(data={"msg_type":8, "data":turn_dict_dict, "user_id": user_id, "username": user_info.username}, room_id=room_id)
+            encoded_data = jsonable_encoder(data)
+            await websocket.send_json(encoded_data)
+
 
 
 
