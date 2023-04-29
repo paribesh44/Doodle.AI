@@ -36,8 +36,6 @@ function Joining() {
   // useEffect(() => {
   //     message();
   // }, []);
-
-  console.log("start ", start)
   
 
   return (
