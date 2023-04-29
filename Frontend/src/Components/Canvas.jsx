@@ -68,7 +68,7 @@ function Canvas() {
   const timeout = useRef(null);
   const [Cursor, setCursor] = useState("default");
 
-  const {sendMessage, userId, drawingHistory, turn, hostDrawing} = useContext(WebSocketContext);
+  const {sendMessage, userId, drawingHistory,setdrawingHistory, turn, hostDrawing} = useContext(WebSocketContext);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -87,10 +87,7 @@ function Canvas() {
 
   useEffect(() => {
     if (turn.data.turn_user_id !== userId && turn.data.turn !== true) {
-      console.log("yaha vitra pugo ki pugena")
-      if(hostDrawing) {
-        console.log("yaha vitra nee")
-        console.log("Drawing history ", drawingHistory)
+      if(hostDrawing === "True") {
         // drawingHistory.map((e) => {
         //   const canvas = canvasRef.current;
         //   contextRef.current = canvas.getContext("2d");
@@ -116,11 +113,13 @@ function Canvas() {
           contextRef.current.beginPath();
           contextRef.current.moveTo(drawingHistory.data.offsetX, drawingHistory.data.offsetY);
         }
-          
+      } else if (hostDrawing === "False") {
+        setdrawingHistory(null)
+        console.log(drawingHistory)
       }
     }
     
-  }, [hostDrawing, drawingHistory])
+  }, [drawingHistory, hostDrawing])
 
   const startDrawing = ({ nativeEvent }) => {
     // const { offsetX, offsetY } = nativeEvent;
@@ -133,6 +132,7 @@ function Canvas() {
 
   const finishDrawing = () => {
     setisDrawing(false);
+    sendMessage({msg_type:10, data:false});
     contextRef.current.beginPath();
   };
 
@@ -156,7 +156,7 @@ function Canvas() {
         return;
       }
     } else {
-      console.log("drawinng: ", drawingHistory)
+      // console.log("drawinng: ", drawingHistory)
     }
   };
 

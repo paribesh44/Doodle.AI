@@ -34,8 +34,6 @@ function DrawingTurn() {
 
   return (
     <Grid item className="canvas_main">
-      {console.log("turn username ", turn.data.username)}
-      {console.log("OPen canvas ", openCanvas)}
       { openCanvas ? 
         <Canvas width={500} height={500}/>
         :

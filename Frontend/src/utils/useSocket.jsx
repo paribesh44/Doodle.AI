@@ -67,6 +67,6 @@ const useSocket = ({
       ws.current.close();
     }
   }, [closeState, setCloseState]);
-  return [ws.current, history, drawingHistory, setEndpointState, isReady, setCloseState];
+  return [ws.current, history, drawingHistory, setdrawingHistory, setEndpointState, isReady, setCloseState];
 };
 export default useSocket;

@@ -42,13 +42,12 @@ const useGame = () => {
       } else if(data.msg_type == ChatMessageTypes.START_DRAWING_MESSAGE) {
         setStart(true);
       } else if(data.msg_type == ChatMessageTypes.ACTIVATE_CANVAS_OF_ALL) {
-        console.log("yaha ta pakkai pani xaina")
         setOpenCanvas(true);
       } else if(data.msg_type == ChatMessageTypes.CHECK_TURN) {
-        console.log("Turn ", data)
         setTurn(data);
       } else if (data.msg_type == ChatMessageTypes.SEND_DRAWING_TO_OTHER_USERS) {
-        setHostDrawing(true)
+        console.log("Data data k aayo ta", data.data)
+        setHostDrawing(data.data)
       }
     };
 
@@ -56,7 +55,7 @@ const useGame = () => {
     // event.currentTarget.send(JSON.stringify({ msg_type: 1 }));
   };
 
-  const [websocket, history, drawingHistory, setEndpointState] = useSocket({
+  const [websocket, history, drawingHistory, setdrawingHistory, setEndpointState] = useSocket({
     onMessage: onMessage,
     onConnect: onConnect,
     fire: (userId != null && roomId != null),
@@ -89,6 +88,7 @@ const useGame = () => {
     startFun,
     history,
     drawingHistory,
+    setdrawingHistory,
     hostDrawing,
     drawing,
     setDrawing,
