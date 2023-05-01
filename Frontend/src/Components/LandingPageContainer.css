@@ -150,3 +150,24 @@ border: 1px solid #233853;
 .icon_button:hover{
     transform: scale(1.5); 
 }
+
+.input_field2{
+    min-width: 330px;
+    padding: 0.8em;
+    border-radius: 5px;
+    background: #233853;
+    border: 1px solid #233853;
+    text-align: center;
+    font-size: 1em;
+    color: aliceblue;
+    box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
+    -webkit-box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
+    -moz-box-shadow: 6px 6px 16px -3px rgba(35,56,83,0.7);
+    margin-bottom: 15px;
+    transition: transform linear 100ms;
+}
+
+.entercodecss{
+    min-width: 100px;
+    color: red;
+}

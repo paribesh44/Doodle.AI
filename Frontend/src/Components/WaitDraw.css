@@ -6,8 +6,6 @@
 .waiting_draw {
     width: 930px;
     background: #AEB2B6;
-
-
     height: clamp(100px, 550px, 600px);
 }
 
@@ -15,7 +13,6 @@
     background: #A9823D;
     box-shadow: none;
     transition: transform linear 100ms;
-
    }
 
 .waiting_start_dont_join{

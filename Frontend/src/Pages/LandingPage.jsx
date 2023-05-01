@@ -5,6 +5,26 @@ import LandingPageContainer from "../Components/LandingPageContainer";
 import callAPI from "../utils/callAPI";
 
 function LandingPage() {
+  let [timerClock, setTimerClock] = useState(5);
+  const [timesup, settimesup] = useState(false);
+  useEffect(() => {
+    // console.log("render");
+
+    const timer = setInterval(function () {
+      // console.log("minus: ", timerClock);
+      if (timerClock <= 0) {
+        setTimerClock(0);
+        settimesup(true);
+      } else {
+        setTimerClock(timerClock - 1);
+      }
+    }, 1000);
+
+    return () => {
+      // this runs as the clean up function for the useEffect
+      clearInterval(timer);
+    };
+  }, [timerClock]);
   // const [test, setTest] = useState(false);
 
   // const message = async () => {
@@ -35,10 +55,16 @@ function LandingPage() {
           <Grid item className="app_name">
             <img height={50} src={require("../assets/logo.png")} />
           </Grid>
-          <Grid item className="app_desc">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </Grid>
+          {timesup ? (
+            <Grid>Time is up</Grid>
+          ) : (
+            <Grid item className="app_desc">
+              {timerClock}
+            </Grid>
+          )}
+
+          {/* {if timerClock== 0 {}} */}
+          <Grid item></Grid>
           <Grid item className="Landing_root">
             <LandingPageContainer />
           </Grid>
