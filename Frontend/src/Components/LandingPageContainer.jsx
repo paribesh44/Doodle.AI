@@ -8,6 +8,8 @@ import { GrPrevious } from "react-icons/gr";
 import { Link, useNavigate } from "react-router-dom";
 import callAPI from "../utils/callAPI";
 import { WebSocketContext } from "../utils/contexts/WebSocketContext";
+import sound from "./../assets/sounds/change_sound.mp3";
+import start_sound from "./../assets/sounds/game-start.mp3";
 
 function LandingPageContainer() {
   const [username, setusername] = useState("");
@@ -17,6 +19,8 @@ function LandingPageContainer() {
   const [validRoomID, setValidRoomID] = useState(true);
   // const [userID, setUserID] = useState("");
   const { setUserId } = useContext(WebSocketContext);
+
+  function play_sound() {}
 
   async function handleChange(e) {
     // console.log(e.target.value);
@@ -32,6 +36,8 @@ function LandingPageContainer() {
   }
 
   const handlePrevious = () => {
+    new Audio(sound).play();
+
     if (avatarimg == 1) {
       setavatarimg(10);
     } else {
@@ -40,6 +46,8 @@ function LandingPageContainer() {
   };
 
   const handleNext = () => {
+    new Audio(sound).play();
+
     if (avatarimg == 10) {
       setavatarimg(1);
     } else {
@@ -50,6 +58,7 @@ function LandingPageContainer() {
   let navigate = useNavigate();
 
   async function createRoom() {
+    new Audio(start_sound).play();
     // create url for the room
     const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -202,17 +211,24 @@ function LandingPageContainer() {
       </Grid>
 
       {joinRoom ? (
-        <Grid item>
-          <form>
-            <input
-              className="input_field"
-              type="text"
-              // value={this.state.value}
-              placeholder="Enter room code"
-              onChange={handleJoinRoom}
-            />
-          </form>
-          <button onClick={onJoinRoom}>Join</button>
+        <Grid container direction="row">
+          {" "}
+          <Grid item>
+            <form>
+              <input
+                className="input_field2"
+                type="text"
+                // value={this.state.value}
+                placeholder="Enter room code"
+                onChange={handleJoinRoom}
+              />
+            </form>
+          </Grid>
+          <Grid item>
+            <CustomButton addStyles={"entercodecss"} onClick={onJoinRoom}>
+              Join
+            </CustomButton>
+          </Grid>
         </Grid>
       ) : null}
 
