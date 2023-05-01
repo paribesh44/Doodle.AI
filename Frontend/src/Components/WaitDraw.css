@@ -3,7 +3,7 @@
     padding: 1.5em 2em 0em 1.5em  ;
 }
 
-.waiting_draw{
+.waiting_draw {
     width: 930px;
     background: #AEB2B6;
     height: clamp(100px, 550px, 600px);

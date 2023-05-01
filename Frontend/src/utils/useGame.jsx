@@ -10,7 +10,8 @@ const ChatMessageTypes = {
     START_DRAWING_MESSAGE: 6,
     ACTIVATE_CANVAS_OF_ALL: 7,
     CHECK_TURN: 8,
-    FINISH_DRAWING_TURN: 9
+    FINISH_DRAWING_TURN: 9,
+    SEND_DRAWING_TO_OTHER_USERS: 10
   };
 
 const useGame = () => {
@@ -23,6 +24,7 @@ const useGame = () => {
     const [openCanvas, setOpenCanvas] = useState(false);
     const [test, setTest] = useState(false);
     const [turn, setTurn] = useState(null);
+    const [hostDrawing, setHostDrawing] = useState(false);
 
   const onMessage = (e) => {
       const data = JSON.parse(e.data);
@@ -32,18 +34,20 @@ const useGame = () => {
         // setMessages([...messages, data]);
         return data
       } else if (data.msg_type == ChatMessageTypes.CANVAS_DRAWING) {
-        console.log("Canvas drawing: ", data)
-        setDrawing([...drawing, data]);
+        // console.log("Canvas drawing: ", data)
+        // setDrawing([...drawing, data]);
+        return data
       } else if (data.msg_type == ChatMessageTypes.USER_SELF_MESSAGE) {
         setUserSelfMessage(data)
       } else if(data.msg_type == ChatMessageTypes.START_DRAWING_MESSAGE) {
         setStart(true);
       } else if(data.msg_type == ChatMessageTypes.ACTIVATE_CANVAS_OF_ALL) {
-        console.log("yaha ta pakkai pani xaina")
         setOpenCanvas(true);
       } else if(data.msg_type == ChatMessageTypes.CHECK_TURN) {
-        console.log("Turn ", data)
         setTurn(data);
+      } else if (data.msg_type == ChatMessageTypes.SEND_DRAWING_TO_OTHER_USERS) {
+        console.log("Data data k aayo ta", data.data)
+        setHostDrawing(data.data)
       }
     };
 
@@ -51,7 +55,7 @@ const useGame = () => {
     // event.currentTarget.send(JSON.stringify({ msg_type: 1 }));
   };
 
-  const [websocket, history, setEndpointState] = useSocket({
+  const [websocket, history, drawingHistory, setdrawingHistory, setEndpointState] = useSocket({
     onMessage: onMessage,
     onConnect: onConnect,
     fire: (userId != null && roomId != null),
@@ -83,6 +87,9 @@ const useGame = () => {
     sendMessage,
     startFun,
     history,
+    drawingHistory,
+    setdrawingHistory,
+    hostDrawing,
     drawing,
     setDrawing,
     userSelfMessage,

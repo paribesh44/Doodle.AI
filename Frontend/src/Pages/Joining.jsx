@@ -36,8 +36,6 @@ function Joining() {
   // useEffect(() => {
   //     message();
   // }, []);
-
-  console.log("start ", start)
   
 
   return (
@@ -70,7 +68,6 @@ function Joining() {
             {turn==null ?
               <></>
             : <Grid>
-              {console.log("Turn deka ta ", turn)}
             { start ? 
               // <DrawingTurn user_id={user_id} turn={turn} roomID={params.roomID} sendMessage={sendMessage}/>
               <DrawingTurn/>

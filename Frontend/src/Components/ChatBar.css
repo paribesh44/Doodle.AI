@@ -1,15 +1,23 @@
-.chatbar_root{
+.chatbar_root {
     /* float: right; */
-    display: flex !important;    
+    display: flex !important;
     flex-direction: column;
+<<<<<<< HEAD
     width: clamp( 140px, 288px, 380px);
     height: 100%;
     padding: 1.5em 0em 0em 0em ;
+=======
+    /* gap:10px !important; */
+    width: clamp(140px, 288px, 380px);
+    height: 100%;
+    /* outline: 1px solid red; */
+    padding: 1.5em 0em 0em 0em;
+>>>>>>> main
 }
 
-.chat_color{
+.chat_color {
     position: relative;
-    display: flex !important;    
+    display: flex !important;
     flex-direction: column;
     width: 100%;
     height: 100%;
@@ -118,6 +126,7 @@
     font-weight: 500;
     color: red;
 }
+<<<<<<< HEAD
 
 .submittheMessage{
     /* outline: 1px solid red; */
@@ -126,3 +135,13 @@
 
 .thesubbmit{
     background-color: #7bd77e;}
+=======
+.submittheMessage {
+    /* outline: 1px solid red; */
+    width: 270px;
+    /* background-color: red;     */
+}
+.thesubbmit {
+    background-color: #7bd77e;
+}
+>>>>>>> main
