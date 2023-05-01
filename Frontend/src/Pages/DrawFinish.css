@@ -1,0 +1,50 @@
+.draw_finishmain{
+    width: 100%;
+    padding: 1.5em 2em 0em 1.5em  ;
+}
+
+
+.drawfinish_color {
+    width: 930px;
+    background: #35394a;
+    height: clamp(100px, 590px, 600px);
+    /* color: black; */
+    /* outline: 1px solid red; */
+    padding: 4em;
+}
+
+.timesup{
+    /* outline: 1px solid red; */
+    font-size: 1em;
+
+}
+.wordwas_cont{
+    padding-top: 1.5em;
+}
+.wordwas{
+    font-size: 1.2em;
+}
+
+.actual_word{
+    font-size: 1.3em;
+    padding-left: 1em;
+    color: #f4d195;
+}
+.name_pts_pts{
+    width: 220px;
+    /* outline: 1px solid lime; */
+
+    padding-top: 2em;
+    font-size: 1.1em;
+
+}
+.name_ptscont{
+    padding-top: 10px;
+    
+    /* outline: 1px solid red; */
+}
+
+.pts_score{
+    color: green;
+    /* padding-left: 1em; */
+}

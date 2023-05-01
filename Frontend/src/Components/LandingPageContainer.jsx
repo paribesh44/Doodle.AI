@@ -16,16 +16,15 @@ function LandingPageContainer() {
   const [joinRoomID, setJoinRoomID] = useState("");
   const [validRoomID, setValidRoomID] = useState(true);
   // const [userID, setUserID] = useState("");
-  const {setUserId} = useContext(WebSocketContext);
-
+  const { setUserId } = useContext(WebSocketContext);
 
   async function handleChange(e) {
     // console.log(e.target.value);
-    setusername(e.target.value)
+    setusername(e.target.value);
   }
 
   async function handleJoinRoom(e) {
-    setJoinRoomID(e.target.value)
+    setJoinRoomID(e.target.value);
   }
 
   async function handleRoomChange(e) {
@@ -52,16 +51,19 @@ function LandingPageContainer() {
 
   async function createRoom() {
     // create url for the room
-    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    let room_id = '';
+    let room_id = "";
     let url;
     const charactersLength = characters.length;
-    for ( let i = 0; i < 10; i++ ) {
-        room_id += characters.charAt(Math.floor(Math.random() * charactersLength));
+    for (let i = 0; i < 10; i++) {
+      room_id += characters.charAt(
+        Math.floor(Math.random() * charactersLength)
+      );
     }
 
-    url = "Joining/" + room_id
+    url = "Joining/" + room_id;
 
     // User creation
     if (username != "") {
@@ -97,12 +99,12 @@ function LandingPageContainer() {
         });
 
         if (response_obj2.data.msg === "success") {
-          setUserId(response_obj.data.user_info.id)
-          navigate(url)
+          setUserId(response_obj.data.user_info.id);
+          navigate(url);
         }
       }
     } else {
-      console.log("Enter username...")
+      console.log("Enter username...");
     }
   }
 
@@ -119,26 +121,25 @@ function LandingPageContainer() {
       });
 
       if (response_obj4.data.msg == "success") {
-        setUserId(response_obj4.data.user_info.id)
-        setJoinRoom(true)
+        setUserId(response_obj4.data.user_info.id);
+        setJoinRoom(true);
       }
     }
   }
 
   async function onJoinRoom() {
     let url;
-    url = "Joining/" + joinRoomID
+    url = "Joining/" + joinRoomID;
 
-    
     let response_obj3 = await callAPI({
-          endpoint: `/room/check_room_id/${joinRoomID}`,
-        });
-    
+      endpoint: `/room/check_room_id/${joinRoomID}`,
+    });
+
     if (response_obj3.data == true) {
-      setValidRoomID(true)
-      navigate(url)
+      setValidRoomID(true);
+      navigate(url);
     } else {
-      setValidRoomID(false)
+      setValidRoomID(false);
     }
   }
 
@@ -185,14 +186,22 @@ function LandingPageContainer() {
           </Grid>
         </Grid>
       </Grid>
-        <Grid item>
-          <CustomButton addStyles="createroombtn" name="Create a Room" onClicked={createRoom}/>
-        </Grid>
       <Grid item>
-        <CustomButton addStyles="joinroombtn" name="Join a Room" onClicked={joinRoomFun}/>
+        <CustomButton
+          addStyles="createroombtn"
+          name="Create a Room"
+          onClicked={createRoom}
+        />
+      </Grid>
+      <Grid item>
+        <CustomButton
+          addStyles="joinroombtn"
+          name="Join a Room"
+          onClicked={joinRoomFun}
+        />
       </Grid>
 
-      {joinRoom ? 
+      {joinRoom ? (
         <Grid item>
           <form>
             <input
@@ -205,15 +214,9 @@ function LandingPageContainer() {
           </form>
           <button onClick={onJoinRoom}>Join</button>
         </Grid>
-        : null }
+      ) : null}
 
-        {validRoomID ? 
-          null
-        : <Grid item>
-            Invalid Room ID
-          </Grid> }
-
-      
+      {validRoomID ? null : <Grid item>Invalid Room ID</Grid>}
     </Grid>
   );
 }

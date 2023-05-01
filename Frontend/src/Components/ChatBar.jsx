@@ -84,8 +84,11 @@ function ChatBar() {
               <Grid item className="bottom_chat" xs={1}>
                 <form>
                   <input
+                    // id="guess"
+                    // name="guess"
                     className="chat_box"
                     type="text"
+                    value={guess}
                     placeholder="   Enter your Guess Here   "
                     onChange={(e) => setGuess(e.target.value)}
                   ></input>

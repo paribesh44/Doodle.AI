@@ -18,10 +18,10 @@
 }
 
 .drawing_item{
-    font-size: 1.4em;
-    padding-top: 60px;
+    font-size: 1.5em;
+    /* padding-top: 60px; */
     font-weight: 600;
-    padding-bottom: 60px;
+    padding-bottom: 40px;
 }
 
 .is_drawing_item {
@@ -35,9 +35,16 @@
     /* background-color: #233853; */
     background-color: #AEB2B6;
     color: black;
-    border: 3px solid #233853;
+    border: 2px solid #233853;
+    padding: 0.6em 0.7em;
+    border-radius: 3px;
+    transition: transform linear 100ms;
+
+
 }
 .drawing_button:hover {
     background-color: #233853;
     color: white;
+    transform: scale(1.05); 
+
 }

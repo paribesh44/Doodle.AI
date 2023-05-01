@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import callAPI from "../utils/callAPI";
 import Canvas from "../Components/Canvas";
 import { WebSocketContext } from "../utils/contexts/WebSocketContext";
+import StatusBar from "./StatusBar";
 
 function DrawingTurn() {
   const [words, setWords] = useState([]);
@@ -19,6 +20,7 @@ function DrawingTurn() {
     activateCanvas,
     turn,
     test,
+    start,
   } = useContext(WebSocketContext);
 
   const message = async () => {
@@ -54,7 +56,7 @@ function DrawingTurn() {
                 alignItems="center"
               >
                 {turn.data.turn_user_id == userId && turn.data.turn == true ? (
-                  <Grid>
+                  <Grid container justifyContent={"center"}>
                     <Grid item className="drawing_item">
                       Choose a word
                     </Grid>
