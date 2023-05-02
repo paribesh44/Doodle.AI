@@ -9,9 +9,9 @@
     height:clamp(45px, 50px, 50px);
     margin-bottom: 1em !important; 
     white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  /* outline: 1px solid lime; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* outline: 1px solid lime; */
 }
 
 .my_info{
@@ -29,15 +29,13 @@
     text-overflow: ellipsis;
     padding-left: 0.8em;
   /* outline: 1px solid lime; */
-  padding-top:0em;
-  font: 0.9em;
-
+    padding-top:0em;
+    font: 0.9em;
 }
 
 .member_pts{
     font-size: 0.8em;
     padding-left: 1em;
-
 }
 
 

@@ -8,6 +8,8 @@ import { GrPrevious } from "react-icons/gr";
 import { Link, useNavigate } from "react-router-dom";
 import callAPI from "../utils/callAPI";
 import { WebSocketContext } from "../utils/contexts/WebSocketContext";
+import sound from "./../assets/sounds/change_sound.mp3";
+import start_sound from "./../assets/sounds/game-start.mp3";
 
 function LandingPageContainer() {
   const [username, setusername] = useState("");
@@ -16,16 +18,17 @@ function LandingPageContainer() {
   const [joinRoomID, setJoinRoomID] = useState("");
   const [validRoomID, setValidRoomID] = useState(true);
   // const [userID, setUserID] = useState("");
-  const {setUserId} = useContext(WebSocketContext);
+  const { setUserId } = useContext(WebSocketContext);
 
+  function play_sound() {}
 
   async function handleChange(e) {
     // console.log(e.target.value);
-    setusername(e.target.value)
+    setusername(e.target.value);
   }
 
   async function handleJoinRoom(e) {
-    setJoinRoomID(e.target.value)
+    setJoinRoomID(e.target.value);
   }
 
   async function handleRoomChange(e) {
@@ -33,6 +36,8 @@ function LandingPageContainer() {
   }
 
   const handlePrevious = () => {
+    new Audio(sound).play();
+
     if (avatarimg == 1) {
       setavatarimg(10);
     } else {
@@ -41,6 +46,8 @@ function LandingPageContainer() {
   };
 
   const handleNext = () => {
+    new Audio(sound).play();
+
     if (avatarimg == 10) {
       setavatarimg(1);
     } else {
@@ -51,17 +58,21 @@ function LandingPageContainer() {
   let navigate = useNavigate();
 
   async function createRoom() {
+    new Audio(start_sound).play();
     // create url for the room
-    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    let room_id = '';
+    let room_id = "";
     let url;
     const charactersLength = characters.length;
-    for ( let i = 0; i < 10; i++ ) {
-        room_id += characters.charAt(Math.floor(Math.random() * charactersLength));
+    for (let i = 0; i < 10; i++) {
+      room_id += characters.charAt(
+        Math.floor(Math.random() * charactersLength)
+      );
     }
 
-    url = "Joining/" + room_id
+    url = "Joining/" + room_id;
 
     // User creation
     if (username != "") {
@@ -97,12 +108,12 @@ function LandingPageContainer() {
         });
 
         if (response_obj2.data.msg === "success") {
-          setUserId(response_obj.data.user_info.id)
-          navigate(url)
+          setUserId(response_obj.data.user_info.id);
+          navigate(url);
         }
       }
     } else {
-      console.log("Enter username...")
+      console.log("Enter username...");
     }
   }
 
@@ -119,26 +130,25 @@ function LandingPageContainer() {
       });
 
       if (response_obj4.data.msg == "success") {
-        setUserId(response_obj4.data.user_info.id)
-        setJoinRoom(true)
+        setUserId(response_obj4.data.user_info.id);
+        setJoinRoom(true);
       }
     }
   }
 
   async function onJoinRoom() {
     let url;
-    url = "Joining/" + joinRoomID
+    url = "Joining/" + joinRoomID;
 
-    
     let response_obj3 = await callAPI({
-          endpoint: `/room/check_room_id/${joinRoomID}`,
-        });
-    
+      endpoint: `/room/check_room_id/${joinRoomID}`,
+    });
+
     if (response_obj3.data == true) {
-      setValidRoomID(true)
-      navigate(url)
+      setValidRoomID(true);
+      navigate(url);
     } else {
-      setValidRoomID(false)
+      setValidRoomID(false);
     }
   }
 
@@ -185,35 +195,44 @@ function LandingPageContainer() {
           </Grid>
         </Grid>
       </Grid>
-        <Grid item>
-          <CustomButton addStyles="createroombtn" name="Create a Room" onClicked={createRoom}/>
-        </Grid>
       <Grid item>
-        <CustomButton addStyles="joinroombtn" name="Join a Room" onClicked={joinRoomFun}/>
+        <CustomButton
+          addStyles="createroombtn"
+          name="Create a Room"
+          onClicked={createRoom}
+        />
+      </Grid>
+      <Grid item>
+        <CustomButton
+          addStyles="joinroombtn"
+          name="Join a Room"
+          onClicked={joinRoomFun}
+        />
       </Grid>
 
-      {joinRoom ? 
-        <Grid item>
-          <form>
-            <input
-              className="input_field"
-              type="text"
-              // value={this.state.value}
-              placeholder="Enter room code"
-              onChange={handleJoinRoom}
-            />
-          </form>
-          <button onClick={onJoinRoom}>Join</button>
+      {joinRoom ? (
+        <Grid container direction="row">
+          {" "}
+          <Grid item>
+            <form>
+              <input
+                className="input_field2"
+                type="text"
+                // value={this.state.value}
+                placeholder="Enter room code"
+                onChange={handleJoinRoom}
+              />
+            </form>
+          </Grid>
+          <Grid item>
+            <CustomButton addStyles={"entercodecss"} onClick={onJoinRoom}>
+              Join
+            </CustomButton>
+          </Grid>
         </Grid>
-        : null }
+      ) : null}
 
-        {validRoomID ? 
-          null
-        : <Grid item>
-            Invalid Room ID
-          </Grid> }
-
-      
+      {validRoomID ? null : <Grid item>Invalid Room ID</Grid>}
     </Grid>
   );
 }
