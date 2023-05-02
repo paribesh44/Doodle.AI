@@ -37,7 +37,7 @@
 
 // const canvasStyle = { border: "1px solid lime" };
 
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState, useContext, useSyncExternalStore } from "react";
 import { Avatar, Grid, nativeSelectClasses } from "@mui/material";
 import { BsFillPencilFill } from "react-icons/bs";
 import { BsEraserFill } from "react-icons/bs";
@@ -67,6 +67,10 @@ function Canvas() {
   const [changePencolor, setchangePencolor] = useState(false);
   const timeout = useRef(null);
   const [Cursor, setCursor] = useState("default");
+
+  const [strokeX, setStrokeX] = useState([]);
+  const [strokeY, setStrokeY] = useState([]);
+  const [strokeT, setStrokeT] = useState([]);
 
   const {sendMessage, userId, drawingHistory,setdrawingHistory, turn, hostDrawing} = useContext(WebSocketContext);
 
@@ -131,16 +135,34 @@ function Canvas() {
   };
 
   const finishDrawing = () => {
+    // send drawing to AI
+    console.log("stroke x: ", strokeX)
+    console.log("stroke y: ", strokeY)
+    console.log("stroke t: ", strokeT)
+    sendMessage({msg_type:11, data:{"strokeX":strokeX, "strokeY":strokeY, "strokeT":strokeT}, user_id:userId})
+    // setStrokeXYT([])
+    setStrokeX([])
+    setStrokeY([])
+    setStrokeT([])
+    
     setisDrawing(false);
     sendMessage({msg_type:10, data:false});
     contextRef.current.beginPath();
   };
 
   const draw = ({ nativeEvent }) => {
+    // for drawing in the canvas
     if (turn.data.turn_user_id === userId && turn.data.turn === true) {
       if (isDrawing) {
+        setStrokeX([...strokeX, nativeEvent.offsetX]);
+        setStrokeY([...strokeY, nativeEvent.offsetY]);
+        const date = new Date(nativeEvent.timeStamp)
+        setStrokeT([...strokeT, date.getMilliseconds()]);
+
+        console.log(nativeEvent.timeStamp)
         sendMessage({msg_type:10, data:true});
         sendMessage({msg_type:4, data:{"offsetX":nativeEvent.offsetX, "offsetY":nativeEvent.offsetY}, user_id:userId})
+
         const canvas = canvasRef.current;
         contextRef.current = canvas.getContext("2d");
         contextRef.current.lineWidth = pensize;
@@ -153,7 +175,7 @@ function Canvas() {
         contextRef.current.beginPath();
         contextRef.current.moveTo(offsetX, offsetY);
       } else {
-        return;
+        // return;
       }
     } else {
       // console.log("drawinng: ", drawingHistory)

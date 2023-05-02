@@ -11,7 +11,9 @@ const ChatMessageTypes = {
     ACTIVATE_CANVAS_OF_ALL: 7,
     CHECK_TURN: 8,
     FINISH_DRAWING_TURN: 9,
-    SEND_DRAWING_TO_OTHER_USERS: 10
+    SEND_DRAWING_TO_OTHER_USERS: 10,
+    DRAWING_TO_AI: 11,
+    AI_GUESS: 12
   };
 
 const useGame = () => {
@@ -48,6 +50,8 @@ const useGame = () => {
       } else if (data.msg_type == ChatMessageTypes.SEND_DRAWING_TO_OTHER_USERS) {
         console.log("Data data k aayo ta", data.data)
         setHostDrawing(data.data)
+      } else if (data.msg_type == ChatMessageTypes.AI_GUESS) {
+        return data
       }
     };
 

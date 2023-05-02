@@ -32,7 +32,7 @@ function ChatBar() {
             alignItems="start"
             justifyContent="space-evenly"
           >
-            {console.log("Mesages ", history)}
+            {/* {console.log("Mesages ", history)} */}
             <Grid item xs={11} className="check">
               {/* { userJoinedMessage != "" ? 
                 <Grid container direction="row">
@@ -58,16 +58,21 @@ function ChatBar() {
                   >
                     <Grid container direction="row">
                       <Grid item className="sender_name">
-                        {val.data == "connected" || val.data == "disconnected" 
-                        ? null
-                        : val.user == userId ? 
-                          `You: ` : `${val.username}: `}
+                        {val.msg_type===12 ?
+                        <Grid item className="ai_message">AI:</Grid>
+                        : val.data === "connected" || val.data === "disconnected" 
+                          ? null
+                          : val.user === userId 
+                            ? `You: ` 
+                            : `${val.username}: `}
                       </Grid>
-                      {val.data == "connected" ? 
-                        <Grid item className="joined_message">{val.user == userId ? "You" : val.username} joined the room!</Grid>
-                        : val.data == "disconnected" ?
-                          <Grid item className="left_message">{val.user == userId ? "You" : val.username} left the room!</Grid>
-                          : <Grid item>&nbsp;{val.data}</Grid>
+                      {val.msg_type===12 
+                        ? <Grid item className="ai_message">&nbsp;{val.data}</Grid>
+                        : val.data == "connected" 
+                          ? <Grid item className="joined_message">{val.user == userId ? "You" : val.username} joined the room!</Grid>
+                          : val.data == "disconnected" 
+                            ? <Grid item className="left_message">{val.user == userId ? "You" : val.username} left the room!</Grid>
+                            : <Grid item>&nbsp;{val.data}</Grid>
                       }
                     </Grid>
                   </Grid>

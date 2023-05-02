@@ -14,7 +14,7 @@ async def websocket_endpoint(user_id: int, room_id: str, websocket: WebSocket, d
     try:
         while True:
             data = await websocket.receive_json()
-            print("data: ", data)
+            # print("data: ", data)
             # await ws.broadcast(data, room_id=room_id)
             await ws.message(data=data.get("data"), websocket=websocket, user_id=user_id, room_id=room_id, msg_type=data.get("msg_type"), db=db)
     

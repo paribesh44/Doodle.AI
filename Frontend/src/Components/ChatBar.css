@@ -115,6 +115,12 @@
     color: rgb(15, 217, 15);
 }
 
+.ai_message {
+    background: #15202d;
+    font-weight: 500;
+    color: yellow;
+}
+
 .left_message {
     font-weight: 500;
     color: red;

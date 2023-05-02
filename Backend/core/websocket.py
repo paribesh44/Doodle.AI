@@ -12,6 +12,16 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
 import time
+import numpy as np
+import math
+from simplification.cutil import simplify_coords
+import tensorflow as tf
+import matplotlib.pyplot as plt
+from tensorflow.keras.utils import pad_sequences
+from keras.metrics import top_k_categorical_accuracy
+def top_3_accuracy(x,y): return top_k_categorical_accuracy(x,y, 3)
+from sklearn.preprocessing import LabelEncoder
+# from keras.preprocessing.sequence import pad_sequences
 
 # dictinary = {
 #     "abc": [{user_id: 2, socket: "socket2"}]
@@ -62,6 +72,9 @@ import time
 
 # print(room_connections)
 
+model = tf.keras.models.load_model("model/lstm_90_acc.h5", compile=False)
+model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['categorical_accuracy', top_3_accuracy])
+
 class ChatMessageTypes(enum.Enum):
     USER_JOINED: int = 1
     USER_LEFT: int = 2
@@ -73,6 +86,8 @@ class ChatMessageTypes(enum.Enum):
     CHECK_TURN: int = 8
     FINISH_DRAWING_TURN: int = 9
     SEND_DRAWING_TO_OTHER_USERS: int = 10
+    DRAWING_TO_AI: int = 11
+    AI_GUESS: int = 12
     
 class Message(BaseModel):
     msg_type: int
@@ -85,6 +100,181 @@ class Message(BaseModel):
 class WebSocketManager:
     def __init__(self):
         self.room_connections: Dict = {}
+        # NOTE NOTE NOTE NOTE once the drawing turn is finished we need to re-initilize this array to [].
+        self.mainStroke = []
+        self.words_test = ["sun", "laptop", "axe", "bridge", "arm", "sock"]
+        self.words = ["sun", "laptop", "ladder", "eyeglasses", "grapes", "book", "dumbbell", "wristwatch", "shovel", "bread", "table", "tennis racquet",
+         "cloud", "chair", "headphones", "eye", "airplane", "snake", "lollipop", "pants", "mushroom", "star", "sword", "clock", "hot dog",
+         "stop sign", "mountain", "apple", "bed", "broom", "flower", "spider", "cell phone", "car", "camera", "tree", "moon", "radio", "hat", "pizza",
+         "axe", "door", "tent", "umbrella", "line", "cup", "triangle", "basketball", "banana", "calculator", "television", "toothbrush", "pillow",
+         "scissors", "t-shirt", "tooth", "alarm clock", "paper clip", "spoon", "microphone", "candle", "pencil", "frying pan", "screwdriver", "helmet",
+         "bridge", "light bulb", "ceiling fan", "key", "donut", "bird", "circle", "beard", "butterfly", "cat", "sock", "ice cream", "moustache",
+         "suitcase", "hammer", "rainbow", "cookie", "lightning", "bicycle", "ant", "arm", "bee", "birthday cake", "bowtie", "bucket", "cactus",
+         "church", "crown", "cruise ship", "dolphin", "drums", "envelope", "fire hydrant", "fireplace", "firetruck", "fish", "flashlight",
+         "guitar", "leaf", "octopus", "sea turtle", "windmill"]
+
+    def resample(self, x, y, spacing=1.0):
+        output = []
+        n = len(x)
+        px = x[0]
+        py = y[0]
+        cumlen = 0
+        pcumlen = 0
+        offset = 0
+        for i in range(1, n):
+            cx = x[i]
+            cy = y[i]
+            dx = cx - px
+            dy = cy - py
+            curlen = math.sqrt(dx*dx + dy*dy)
+            cumlen += curlen
+            while offset < cumlen:
+                t = (offset - pcumlen) / curlen
+                invt = 1 - t
+                tx = px * invt + cx * t
+                ty = py * invt + cy * t
+                output.append((tx, ty))
+                offset += spacing
+            pcumlen = cumlen
+            px = cx
+            py = cy
+        output.append((x[-1], y[-1]))
+        return output
+    
+    def normalize_resample_simplify(self, strokes, epsilon=1.0, resample_spacing=1.0):
+        if len(strokes) == 0:
+            raise ValueError('empty image')
+
+        # find min and max
+        amin = None
+        amax = None
+        for x, y, _ in strokes:
+            cur_min = [np.min(x), np.min(y)]
+            cur_max = [np.max(x), np.max(y)]
+            amin = cur_min if amin is None else np.min([amin, cur_min], axis=0)
+            amax = cur_max if amax is None else np.max([amax, cur_max], axis=0)
+
+        # drop any drawings that are linear along one axis
+        arange = np.array(amax) - np.array(amin)
+        if np.min(arange) == 0:
+            raise ValueError('bad range of values')
+
+        arange = np.max(arange)
+        output = []
+        for x, y, _ in strokes:
+            xy = np.array([x, y], dtype=float).T
+            xy -= amin
+            xy *= 255.
+            xy /= arange
+            resampled = self.resample(xy[:, 0], xy[:, 1], resample_spacing)
+            simplified = simplify_coords(resampled, epsilon)
+            xy = np.around(simplified).astype(np.uint8)
+            # output.append(xy.T.tolist())
+            output.append(xy.T.tolist())
+
+        return output
+    
+    def padStroke(self, stroke: any):
+        # unwrap the list
+        # 'xi'->x-coordinate , 'yi'->the y-coordinate, and 'i'->the stroke index.
+        in_strokes = [(xi,yi,i)  
+        for i,(x,y) in enumerate(stroke)
+        for xi,yi in zip(x,y)]
+        # This line stacks the list of tuples into a NumPy array with shape (num_points, 3), where num_points is the total number of points in the drawing.
+        c_strokes = np.stack(in_strokes)
+        # replace stroke id with 1 for continue, 2 for new
+        c_strokes[:,2] = [1]+np.diff(c_strokes[:,2]).tolist()
+        c_strokes[:,2] += 1 # since 0 is no stroke
+
+        # pad the strokes with zeros
+        padded_stoke_data =  pad_sequences(c_strokes.swapaxes(0, 1), maxlen=96, padding='post').swapaxes(0, 1)
+
+        padded_stoke_data = padded_stoke_data.reshape(-1, 96, 3)
+
+        return padded_stoke_data 
+
+    async def drawingAI(self, websocket: WebSocket, data: str, user_id: int, room_id: str, msg_type: int, db:any):
+        # print(data)
+        mainStroke = []
+        strokeWrapper = []
+
+        strokeWrapper.append(data["strokeX"])
+        strokeWrapper.append(data["strokeY"])
+        strokeWrapper.append(data["strokeT"])
+
+        self.mainStroke.append(strokeWrapper)
+
+        # print("main Stroke: ", self.mainStroke)
+
+        finalStroke = [self.mainStroke]
+
+        simplified_drawings = []
+        for drawing in finalStroke:
+            simplified_drawing = self.normalize_resample_simplify(drawing)
+            simplified_drawings.append(simplified_drawing)
+
+        for index, raw_drawing in enumerate(finalStroke, 0):
+    
+            plt.figure(figsize=(6,3))
+            
+            for x,y,t in raw_drawing:
+                plt.subplot(1,2,1)
+                plt.plot(x, y, marker='.')
+                plt.axis('off')
+
+            plt.gca().invert_yaxis()
+            plt.axis('equal')
+
+            for x,y in simplified_drawings[index]:
+                plt.subplot(1,2,2)
+                plt.plot(x, y, marker='.')
+                plt.axis('off')
+
+            plt.gca().invert_yaxis()
+            plt.axis('equal')
+            plt.show()
+
+        print("simplified drawing: ", simplified_drawings)
+
+        paddedSimplifiedStroke = self.padStroke(stroke=simplified_drawings[0])
+        # laptop
+        # simplified_drawings = [[[10, 0, 1, 12, 44, 187, 203, 207, 203, 206, 203, 65, 43, 26, 2], [127, 224, 248, 245, 245, 255, 255, 251, 242, 200, 135, 125, 125, 130, 123]], [[33, 32, 103, 122, 138, 170, 179, 181, 186, 186, 154, 118, 112, 50, 39, 38], [164, 235, 238, 244, 255, 241, 240, 236, 208, 173, 162, 156, 152, 147, 148, 164]], [[47, 48], [169, 169]], [[91, 92], [170, 171]], [[113, 114], [180, 180]], [[143, 144], [182, 181]], [[151, 152], [181, 181]], [[154, 154], [200, 200]], [[147, 129], [201, 201]], [[115, 111], [201, 201]], [[95, 86], [197, 197]], [[58, 34], [201, 196]], [[28, 28], [195, 197]], [[38, 42], [208, 209]], [[76, 85], [217, 219]], [[92, 98], [219, 221]], [[120, 126], [225, 225]], [[136, 145], [225, 225]], [[147, 150], [224, 224]], [[203, 194, 190, 179, 38, 8, 10], [130, 21, 7, 1, 1, 8, 109]], [[25, 28, 32, 38], [109, 105, 51, 37]]]
+        for x,y in simplified_drawings[0]:
+            plt.subplot(1,2,2)
+            plt.plot(x, y, marker='.')
+            plt.axis('off')
+        plt.gca().invert_yaxis()
+        plt.axis('equal')
+        plt.show()
+
+        prediction = model.predict(paddedSimplifiedStroke)
+
+        # percentages = [round(val * 100, 2) for val in prediction[0]]
+        # print(percentages)
+        word_encoder = LabelEncoder()
+        word_encoder.fit(self.words)
+
+        top_3_pred = [word_encoder.classes_[np.argsort(-1*c_pred)[:3]] for c_pred in prediction]
+
+        print(top_3_pred[0])
+
+        top_3_idx = np.argsort(-1*prediction)[:3]
+        top_3_sum = np.sum(prediction[0][top_3_idx])
+        percentage = prediction[0][top_3_idx[0]]/top_3_sum
+        percentages = [round(val * 100, 2) for val in percentage]
+        print(percentages[:3])
+
+        # if first guess of te AI is not correct then store that in a variable(list) and for another guess is also the same then show another guess and continue so on.
+
+        msg_instance = Message(
+            msg_type = ChatMessageTypes.AI_GUESS.value,
+            data = top_3_pred[0][0]
+        )
+
+        await self.broadcast(
+            msg_instance.dict(exclude_none=True), room_id
+        )
+        
 
     # this function adds information of user's id and websocket in its equivalent "room_id" key. 
     async def add_info_to_room_connections_dict(self, websocket: WebSocket, user_id: int, room_id: str):
@@ -119,7 +309,7 @@ class WebSocketManager:
             time = datetime.utcnow()
         )
 
-        print(msg_instance)
+        # print(msg_instance)
 
         await self.broadcast(data=msg_instance.dict(exclude_none=True), room_id=room_id)
 
@@ -200,7 +390,7 @@ class WebSocketManager:
         # get all the "websocket" of a certain room "room_id"
         connections = [i["websocket"] for i in self.room_connections[room_id]]
 
-        print("connections: ", connections)
+        # print("connections: ", connections)
 
         for connection in connections:
             try:
@@ -235,6 +425,9 @@ class WebSocketManager:
             await self.broadcast(
                 msg_instance.dict(exclude_none=True), room_id
             )
+        elif msg_type == ChatMessageTypes.DRAWING_TO_AI.value:
+            # websocket: WebSocket, data: str, user_id: int, room_id: str, msg_type: int, db:any
+            await self.drawingAI(websocket=websocket, data=data, user_id=user_id, room_id=room_id, msg_type=msg_type, db=db)
 
         elif msg_type == ChatMessageTypes.SEND_DRAWING_TO_OTHER_USERS.value:
             msg_instance = Message(
@@ -248,14 +441,13 @@ class WebSocketManager:
             encoded_data = jsonable_encoder(msg_instance)
 
             for connection in connections:
-                print("websocket ", connection)
+                # print("websocket ", connection)
                 try:
                     await connection.send_json(encoded_data)
                 except Exception as e:
                     pass
 
         elif msg_type == ChatMessageTypes.ACTIVATE_CANVAS_OF_ALL.value:
-            print("nbhfdjkasdf ashdjkashd")
             msg_instance = Message(
                 msg_type = msg_type,
                 data = data
@@ -281,13 +473,18 @@ class WebSocketManager:
             encoded_data = jsonable_encoder(msg_instance)
 
             for connection in connections:
-                print("websocket ", connection)
+                # print("websocket ", connection)
                 try:
                     await connection.send_json(encoded_data)
                 except Exception as e:
                     pass
         
         elif msg_type == ChatMessageTypes.FINISH_DRAWING_TURN.value:
+            # remove all the elements from the list after some user turn has been finished.
+            print("Main stroke before: ", self.mainStroke)
+            self.mainStroke.clear()
+            print("Main stroke after: ", self.mainStroke)
+
             msg_instance = Message(
                 msg_type=msg_type,
                 data=data,
@@ -337,8 +534,6 @@ class WebSocketManager:
 
             encoded_data = jsonable_encoder(data)
             await websocket.send_json(encoded_data)
-
-
 
 
     async def disconnect(self, websocket: WebSocket, user_id: int, room_id: str, db: any):

@@ -10,7 +10,10 @@ const ChatMessageTypes = {
     START_DRAWING_MESSAGE: 6,
     ACTIVATE_CANVAS_OF_ALL: 7,
     CHECK_TURN: 8,
-    FINISH_DRAWING_TURN: 9
+    FINISH_DRAWING_TURN: 9,
+    SEND_DRAWING_TO_OTHER_USERS: 10,
+    DRAWING_TO_AI: 11,
+    AI_GUESS: 12
   };
 
 const useSocket = ({
@@ -52,7 +55,7 @@ const useSocket = ({
     if (ws.current != null) {
       ws.current.onmessage = (data) => {
         let ret = onMessage(data);
-        if (ret && (ret.msg_type === ChatMessageTypes.GUESS_MESSAGE || ret.msg_type === ChatMessageTypes.USER_JOINED || ret.msg_type === ChatMessageTypes.USER_LEFT)) {
+        if (ret && (ret.msg_type === ChatMessageTypes.GUESS_MESSAGE || ret.msg_type === ChatMessageTypes.AI_GUESS || ret.msg_type === ChatMessageTypes.USER_JOINED || ret.msg_type === ChatMessageTypes.USER_LEFT)) {
           setHistory([...history, ret]);
         } else if(ret && ret.msg_type == ChatMessageTypes.CANVAS_DRAWING) {
           // setdrawingHistory([...drawingHistory, ret])
