@@ -88,7 +88,8 @@ function OneDrawFinish() {
           
         </Grid>
       </Grid>
-      { turn.data.turn_user_id !== userId
+      {console.log("Turn: ", turn)}
+      { turn.data.turn_user_id !== userId || turn.data.turn_username === "AI"
         ? ( <CustomButton
         name="Start Again"
         addStyles={"waiting_start"}

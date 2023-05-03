@@ -317,17 +317,32 @@ class WebSocketManager:
         user_info = db.query(user.User).filter(user.User.id == user_id).first()
 
         players = room_info.first().players
-        players.append(user_info.username)
-
         score = room_info.first().score
-        score.append(0)
-
-        print(room_info.first().turn)
-
         turn = room_info.first().turn
 
-        if room_info.first().creator != user_info.username:
+        # check if "AI" exits in the players list, if no then add AI to the list.
+        if "AI" not in players:
+            players.append("AI")
+            score.append(0)
             turn.append(False)
+            players = players[1:]
+            score = score[1:]
+            room_info.update({"creator": room_info.first().creator, "players": players, "score": score, "turn": turn})
+            db.commit()
+
+        # get the index of the AI
+        aiIndex = players.index("AI")
+        # add the new item in front of the existing item
+        players.insert(aiIndex, user_info.username)
+        # players.append(user_info.username)
+
+        # score.append(0)
+        score.insert(aiIndex, 0)
+
+
+        if room_info.first().creator != user_info.username:
+            # turn.append(False)
+            turn.insert(aiIndex, False)
 
         if user_info.username not in room_info.first().players:
             room_info.update({"creator": room_info.first().creator, "players": players, "score": score, "turn": turn})
@@ -561,6 +576,18 @@ class WebSocketManager:
                     index = idx
                     turn[idx] = False
                     break
+
+            if index+2 >= len(turn):
+                print("sabai ko palo sakeyo")
+                # all the turn finished
+                msg_instance = Message(
+                    msg_type = 14,
+                    data = True
+                )
+
+                await self.broadcast(
+                    msg_instance.dict(exclude_none=True), room_id
+                )
                     
             if index+1 < len(turn):
                 index += 1

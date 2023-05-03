@@ -83,7 +83,7 @@ class CommandDefinition:
 
     def remake(self):
         self.cleandb()
-        # self.populate()
+        self.populate()
 
     def remakeall(self):
         from alembic import command
