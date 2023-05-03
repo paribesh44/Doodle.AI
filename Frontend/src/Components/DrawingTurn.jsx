@@ -72,7 +72,7 @@ function DrawingTurn() {
                             <CustomButton
                               name={val}
                               addStyles={"drawing_button"}
-                              onClicked={activateCanvas}
+                              onClicked={()=>activateCanvas(words[key])}
                             />
                           </Grid>
                         );
@@ -81,7 +81,7 @@ function DrawingTurn() {
                   </Grid>
                 ) : (
                   <Grid item className="is_drawing_item">
-                    {turn.data.username} is choosing word!
+                    {turn.data.turn_username} is choosing word!
                   </Grid>
                 )}
 
