@@ -6,33 +6,8 @@ import callAPI from "../utils/callAPI";
 import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 
 function MemberBar() {
-  // console.log("bdhjasbjdha", roomID)
-
-  // console.log("userSelfMessage ", userSelfMessage)
-
-  // const [members, setMembers] = useState(null);
-  // const [membersInfo, setMembersInfo] = useState(null);
-
-    // const message = async () => {
-    //   let response_obj = await callAPI({
-    //       endpoint: `/room/memberInfo/${roomID}`,
-    //   });
-
-    //   if (response_obj.data.msg == "success") {
-    //     setMembers(response_obj.data.room_info)
-    //     setMembersInfo(response_obj.data.users_info)
-    //     console.log(response_obj.data.room_info)
-    //     console.log(response_obj.data.users_info)
-    //   }
-    // };
-
-    // useEffect(() => {
-    //     message();
-    // }, []);
 
   const {userSelfMessage} = useContext(WebSocketContext);
-
-  // if (userSelfMessage.length != 0) {
 
   return (
     <Grid item className="memberbar_root">

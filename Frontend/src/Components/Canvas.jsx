@@ -136,9 +136,6 @@ function Canvas() {
 
   const finishDrawing = () => {
     // send drawing to AI
-    console.log("stroke x: ", strokeX)
-    console.log("stroke y: ", strokeY)
-    console.log("stroke t: ", strokeT)
     sendMessage({msg_type:11, data:{"strokeX":strokeX, "strokeY":strokeY, "strokeT":strokeT}, user_id:userId})
     // setStrokeXYT([])
     setStrokeX([])
@@ -159,7 +156,6 @@ function Canvas() {
         const date = new Date(nativeEvent.timeStamp)
         setStrokeT([...strokeT, date.getMilliseconds()]);
 
-        console.log(nativeEvent.timeStamp)
         sendMessage({msg_type:10, data:true});
         sendMessage({msg_type:4, data:{"offsetX":nativeEvent.offsetX, "offsetY":nativeEvent.offsetY}, user_id:userId})
 

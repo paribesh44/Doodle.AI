@@ -88,6 +88,9 @@ class ChatMessageTypes(enum.Enum):
     SEND_DRAWING_TO_OTHER_USERS: int = 10
     DRAWING_TO_AI: int = 11
     AI_GUESS: int = 12
+    CHOOSEN_WORD: int = 13
+    DRAWING_TURN_ALL_FINISH: int = 14
+    ONE_PERSON_DRAWING_TURN_FINISH: int = 15
     
 class Message(BaseModel):
     msg_type: int
@@ -407,6 +410,29 @@ class WebSocketManager:
             await self.broadcast(
                 msg_instance.dict(exclude_none=True), room_id
             )
+        
+        elif msg_type == ChatMessageTypes.CHOOSEN_WORD.value:
+            msg_instance = Message(
+                msg_type=msg_type,
+                data=data,
+                user=user_id,
+                username=user_info.username
+            )
+
+            await self.broadcast(
+                msg_instance.dict(exclude_none=True), room_id
+            )
+
+            # connections = [i["websocket"] for i in self.room_connections[room_id] if i != websocket]
+
+            # encoded_data = jsonable_encoder(msg_instance)
+
+            # for connection in connections:
+            #     # print("websocket ", connection)
+            #     try:
+            #         await connection.send_json(encoded_data)
+            #     except Exception as e:
+            #         pass
 
         elif msg_type == ChatMessageTypes.START_DRAWING_MESSAGE.value:
             print("yaha pugo ki xina ta")
@@ -471,8 +497,23 @@ class WebSocketManager:
                     await connection.send_json(encoded_data)
                 except Exception as e:
                     pass
+
+        elif msg_type == ChatMessageTypes.ONE_PERSON_DRAWING_TURN_FINISH.value:
+            msg_instance = Message(
+                msg_type=msg_type,
+                data=data,
+                user=user_id,
+                username=user_info.username
+            )
+
+            await self.broadcast(
+                msg_instance.dict(exclude_none=True), room_id
+            )
         
         elif msg_type == ChatMessageTypes.FINISH_DRAWING_TURN.value:
+            print("user_id: ", user_id)
+            print("Data: ", data)
+            print(data["last_turn_userId"])
             # remove all the elements from the list after some user turn has been finished.
             print("Main stroke before: ", self.mainStroke)
             self.mainStroke.clear()
@@ -489,44 +530,66 @@ class WebSocketManager:
             # frontend: {"last_turn_userId", "userId"}
 
             room_info = db.query(room.Room).filter(room.Room.room_id == room_id)
-            user_info = db.query(user.User).filter(user.User.id == data.last_turn_userId).first()
+            user_info = db.query(user.User).filter(user.User.id == data["last_turn_userId"]).first()
 
-            index = 54654
+            if user_info.id == user_id:
 
-            turn = room_info.first().turn
+                print(user_info.username)
 
-            player = room_info.first().players
+                index = 54654
 
-            for idx in range(len(turn)):
-                if turn[idx] == True and player[idx] == user_info.username:
-                    index = idx
-                    turn[idx] = False
-                    break
-            
-            if index+1 < len(turn):
-                index += 1
-                turn[index] = True
+                turn = room_info.first().turn
 
-            room_info.update({"turn": turn})
-            db.commit()
+                player = room_info.first().players
+
+                
+                for idx in range(len(turn)):
+                    if turn[idx] == True and player[idx] == user_info.username:
+                        index = idx
+                        turn[idx] = False
+                        break
+                        
+                if index+1 < len(turn):
+                    index += 1
+                    turn[index] = True
+                else:
+                    print("sabai ko palo sakeyo")
+                    # all the turn finished
+                    msg_instance = Message(
+                        msg_type = 14,
+                        data = True
+                    )
+
+                    await self.broadcast(
+                        msg_instance.dict(exclude_none=True), room_id
+                    )
+
+                room_info.update({"turn": turn})
+                db.commit()
 
 
-            turn = room_info.first().turn
+                turn = room_info.first().turn
 
-            user_turn = db.query(user.User).filter(user.User.username==player[index]).first()
+                user_turn = db.query(user.User).filter(user.User.username==player[index]).first()
 
-            print("turn update")
-            print(user_turn.id)
-            print(index)
-            print(turn[index])
-            print(player[index])
+                print("turn update")
+                print(user_turn.id)
+                print(index)
+                print(turn[index])
+                print(player[index])
 
+                turn_dict_dict = {"turn_user_id": user_turn.id, "turn": turn[index], "turn_username": player[index]}
+                data={"msg_type":8, "data":turn_dict_dict, "user_id": user_id, "username": user_info.username}
 
-            turn_dict_dict = {"turn_user_id": user_turn.id, "turn": turn[index], "turn_username": player[index]}
-            data={"msg_type":8, "data":turn_dict_dict, "user_id": user_id, "username": user_info.username}
+                msg_instance = Message(
+                    msg_type = 8,
+                    data = turn_dict_dict,
+                    user_id = user_id
+                )
 
-            encoded_data = jsonable_encoder(data)
-            await websocket.send_json(encoded_data)
+                await self.broadcast(
+                    msg_instance.dict(exclude_none=True), room_id
+                )
 
 
     async def disconnect(self, websocket: WebSocket, user_id: int, room_id: str, db: any):

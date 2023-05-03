@@ -29,7 +29,16 @@ function App() {
     test,
     setTest,
     turn,
-    setTurn
+    setTurn,
+    choosenWord,
+    drawingAllFinish,
+    setDrawingAllFinish,
+    turnFinished,
+    onePersonDrawingTurnFinish,
+    setOnePersonDrawingTurnFinish,
+    startAgain,
+    timesUp,
+    setTimesUp
   ] = useGame();
 
   const websocket_context_value = useMemo(
@@ -56,7 +65,16 @@ function App() {
       test,
       setTest,
       turn,
-      setTurn
+      setTurn,
+      choosenWord,
+      drawingAllFinish,
+      setDrawingAllFinish,
+      turnFinished,
+      onePersonDrawingTurnFinish,
+      setOnePersonDrawingTurnFinish,
+      startAgain,
+      timesUp,
+      setTimesUp
     }),
     [
       sendMessage,
@@ -81,7 +99,16 @@ function App() {
       test,
       setTest,
       turn,
-      setTurn
+      setTurn,
+      choosenWord,
+      drawingAllFinish,
+      setDrawingAllFinish,
+      turnFinished,
+      onePersonDrawingTurnFinish,
+      setOnePersonDrawingTurnFinish,
+      startAgain,
+      timesUp,
+      setTimesUp
     ]
   );
 

@@ -13,7 +13,10 @@ const ChatMessageTypes = {
     FINISH_DRAWING_TURN: 9,
     SEND_DRAWING_TO_OTHER_USERS: 10,
     DRAWING_TO_AI: 11,
-    AI_GUESS: 12
+    AI_GUESS: 12,
+    CHOOSEN_WORD: 13,
+    DRAWING_TURN_ALL_FINISH: 14,
+    ONE_PERSON_DRAWING_TURN_FINISH: 15
   };
 
 const useGame = () => {
@@ -27,10 +30,14 @@ const useGame = () => {
     const [test, setTest] = useState(false);
     const [turn, setTurn] = useState(null);
     const [hostDrawing, setHostDrawing] = useState(false);
+    const [choosenWord, setChoosenWord] = useState(null);
+    const [drawingAllFinish, setDrawingAllFinish] = useState(false);
+    const [onePersonDrawingTurnFinish, setOnePersonDrawingTurnFinish] = useState(false);
+    const [timesUp, setTimesUp] = useState(false);
 
   const onMessage = (e) => {
       const data = JSON.parse(e.data);
-      console.log("Data ", data)
+      // console.log("Data ", data)
 
       if (data.msg_type == ChatMessageTypes.GUESS_MESSAGE || data.msg_type == ChatMessageTypes.USER_JOINED || data.msg_type == ChatMessageTypes.USER_LEFT) {
         // setMessages([...messages, data]);
@@ -48,10 +55,25 @@ const useGame = () => {
       } else if(data.msg_type == ChatMessageTypes.CHECK_TURN) {
         setTurn(data);
       } else if (data.msg_type == ChatMessageTypes.SEND_DRAWING_TO_OTHER_USERS) {
-        console.log("Data data k aayo ta", data.data)
         setHostDrawing(data.data)
       } else if (data.msg_type == ChatMessageTypes.AI_GUESS) {
         return data
+      } else if(data.msg_type == ChatMessageTypes.CHOOSEN_WORD) {
+        console.log("choosen word: ", data)
+        if (data.data == "yes") {
+          setChoosenWord(null);
+        } else {
+          setChoosenWord(data);
+        }
+      } else if(data.msg_type == ChatMessageTypes.DRAWING_TURN_ALL_FINISH) {
+        console.log("sabai finish vayeko ho ta")
+        setDrawingAllFinish(true);
+      } else if(data.msg_type == ChatMessageTypes.ONE_PERSON_DRAWING_TURN_FINISH) {
+        if(data.data == "finish") {
+          setOnePersonDrawingTurnFinish(true);
+        } else if(data.data == "not-finish") {
+          setOnePersonDrawingTurnFinish(false);
+        }
       }
     };
 
@@ -81,10 +103,27 @@ const useGame = () => {
     setStart(true)
   }
 
-  async function activateCanvas() {
-    console.log("yaha pugo ra")
+  async function activateCanvas(val) {
+    websocket.send(JSON.stringify({msg_type: 13, data:{"word":val, "length":val.length}}))
     websocket.send(JSON.stringify({msg_type: 7, data:true}))
     setOpenCanvas(true)
+  }
+
+  async function turnFinished() {
+    console.log("what is going on!!")
+    websocket.send(JSON.stringify({msg_type: 9, data:{"last_turn_userId":turn.data.turn_user_id, "userId":userId}}))
+    websocket.send(JSON.stringify({msg_type: 15, data:"finish"}))
+    // setOnePersonDrawingTurnFinish(true)
+    setStart(false)
+    setOpenCanvas(false)
+    // setChoosenWord(null)
+  }
+
+  async function startAgain() {
+    console.log("start again")
+    websocket.send(JSON.stringify({msg_type: 15, data:"not-finish"}))
+    websocket.send(JSON.stringify({msg_type: 13, data:"yes"}))
+    setTimesUp(false)
   }
 
   return [
@@ -110,7 +149,16 @@ const useGame = () => {
     test,
     setTest,
     turn,
-    setTurn
+    setTurn,
+    choosenWord,
+    drawingAllFinish,
+    setDrawingAllFinish,
+    turnFinished,
+    onePersonDrawingTurnFinish,
+    setOnePersonDrawingTurnFinish,
+    startAgain,
+    timesUp,
+    setTimesUp
   ];
 };
 export default useGame;

@@ -13,7 +13,9 @@ const ChatMessageTypes = {
     FINISH_DRAWING_TURN: 9,
     SEND_DRAWING_TO_OTHER_USERS: 10,
     DRAWING_TO_AI: 11,
-    AI_GUESS: 12
+    AI_GUESS: 12,
+    CHOOSEN_WORD: 13,
+    DRAWING_TURN_ALL_FINISH: 14
   };
 
 const useSocket = ({

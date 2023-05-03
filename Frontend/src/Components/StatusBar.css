@@ -16,3 +16,9 @@
     /* outline: 1px solid red; */
     padding-left: 3px;
 }
+
+.topic {
+    /* word-wrap: break-word; */
+    font-size: 0.5px;
+    color: rgb(203, 201, 201);
+}
