@@ -16,7 +16,8 @@ const ChatMessageTypes = {
     AI_GUESS: 12,
     CHOOSEN_WORD: 13,
     DRAWING_TURN_ALL_FINISH: 14,
-    ONE_PERSON_DRAWING_TURN_FINISH: 15
+    ONE_PERSON_DRAWING_TURN_FINISH: 15,
+    TIMER_RESET: 16
   };
 
 const useGame = () => {
@@ -34,6 +35,8 @@ const useGame = () => {
     const [drawingAllFinish, setDrawingAllFinish] = useState(false);
     const [onePersonDrawingTurnFinish, setOnePersonDrawingTurnFinish] = useState(false);
     const [timesUp, setTimesUp] = useState(false);
+    let [timerClock, setTimerClock] = useState(5);
+    const [guessCorrect, setGuessCorrect] = useState(false);
 
   const onMessage = (e) => {
       const data = JSON.parse(e.data);
@@ -74,6 +77,11 @@ const useGame = () => {
         } else if(data.data == "not-finish") {
           setOnePersonDrawingTurnFinish(false);
         }
+      } else if (data.msg_type == ChatMessageTypes.TIMER_RESET) {
+        if (data.data == "reset") {
+          setTimerClock(5)
+          setTimesUp(false)
+        }
       }
     };
 
@@ -111,19 +119,24 @@ const useGame = () => {
 
   async function turnFinished() {
     console.log("what is going on!!")
-    websocket.send(JSON.stringify({msg_type: 9, data:{"last_turn_userId":turn.data.turn_user_id, "userId":userId}}))
     websocket.send(JSON.stringify({msg_type: 15, data:"finish"}))
     // setOnePersonDrawingTurnFinish(true)
     setStart(false)
     setOpenCanvas(false)
+    // setTimesUp(false)
     // setChoosenWord(null)
   }
 
   async function startAgain() {
     console.log("start again")
     websocket.send(JSON.stringify({msg_type: 15, data:"not-finish"}))
+    websocket.send(JSON.stringify({msg_type: 9, data:{"last_turn_userId":turn.data.turn_user_id, "userId":userId}}))
+    // setOnePersonDrawingTurnFinish(false)
     websocket.send(JSON.stringify({msg_type: 13, data:"yes"}))
-    setTimesUp(false)
+    websocket.send(JSON.stringify({msg_type:16, data:"reset"}))
+    setGuessCorrect(false)
+    // setTimerClock(5)
+    // setTimesUp(false)
   }
 
   return [
@@ -158,7 +171,11 @@ const useGame = () => {
     setOnePersonDrawingTurnFinish,
     startAgain,
     timesUp,
-    setTimesUp
+    setTimesUp,
+    timerClock,
+    setTimerClock,
+    guessCorrect,
+    setGuessCorrect
   ];
 };
 export default useGame;

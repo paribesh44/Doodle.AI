@@ -255,6 +255,8 @@ def giveWord():
          "church", "computer", "crown", "cruise ship", "dolphin", "drums", "envelope", "fire hydrant", "fireplace", "firetruck", "fish", "flashlight",
          "guitar", "hot air balloon", "leaf", "octopus", "sea turtle", "windmill"]
     
+    words = ["sun", "laptop", "apple", "flower", "cell phone", "fish"]
+    
     # randomly select 3 words
     random_words = random.sample(words, 3)
 

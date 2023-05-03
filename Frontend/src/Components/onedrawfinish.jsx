@@ -88,11 +88,22 @@ function OneDrawFinish() {
           
         </Grid>
       </Grid>
-      <CustomButton
+      { turn.data.turn_user_id !== userId
+        ? ( <CustomButton
         name="Start Again"
         addStyles={"waiting_start"}
         onClicked={startAgain}
-      />
+      /> )
+      : (
+        <CustomButton
+          name="Start Again"
+          addStyles={"waiting_start_dont_join"}
+        />
+      )
+      }
+
+      {}
+      
     </Grid>
     
   );

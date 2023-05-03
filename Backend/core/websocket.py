@@ -91,6 +91,7 @@ class ChatMessageTypes(enum.Enum):
     CHOOSEN_WORD: int = 13
     DRAWING_TURN_ALL_FINISH: int = 14
     ONE_PERSON_DRAWING_TURN_FINISH: int = 15
+    TIMER_RESET: int = 16
     
 class Message(BaseModel):
     msg_type: int
@@ -216,26 +217,26 @@ class WebSocketManager:
             simplified_drawing = self.normalize_resample_simplify(drawing)
             simplified_drawings.append(simplified_drawing)
 
-        for index, raw_drawing in enumerate(finalStroke, 0):
+        # for index, raw_drawing in enumerate(finalStroke, 0):
     
-            plt.figure(figsize=(6,3))
+        #     plt.figure(figsize=(6,3))
             
-            for x,y,t in raw_drawing:
-                plt.subplot(1,2,1)
-                plt.plot(x, y, marker='.')
-                plt.axis('off')
+        #     for x,y,t in raw_drawing:
+        #         plt.subplot(1,2,1)
+        #         plt.plot(x, y, marker='.')
+        #         plt.axis('off')
 
-            plt.gca().invert_yaxis()
-            plt.axis('equal')
+        #     plt.gca().invert_yaxis()
+        #     plt.axis('equal')
 
-            for x,y in simplified_drawings[index]:
-                plt.subplot(1,2,2)
-                plt.plot(x, y, marker='.')
-                plt.axis('off')
+        #     for x,y in simplified_drawings[index]:
+        #         plt.subplot(1,2,2)
+        #         plt.plot(x, y, marker='.')
+        #         plt.axis('off')
 
-            plt.gca().invert_yaxis()
-            plt.axis('equal')
-            plt.show()
+        #     plt.gca().invert_yaxis()
+        #     plt.axis('equal')
+        #     plt.show()
 
         print("simplified drawing: ", simplified_drawings)
 
@@ -509,6 +510,18 @@ class WebSocketManager:
             await self.broadcast(
                 msg_instance.dict(exclude_none=True), room_id
             )
+
+        elif msg_type == ChatMessageTypes.TIMER_RESET.value:
+            msg_instance = Message(
+                msg_type=msg_type,
+                data=data,
+                user=user_id,
+                username=user_info.username
+            )
+
+            await self.broadcast(
+                msg_instance.dict(exclude_none=True), room_id
+            )
         
         elif msg_type == ChatMessageTypes.FINISH_DRAWING_TURN.value:
             print("user_id: ", user_id)
@@ -532,64 +545,64 @@ class WebSocketManager:
             room_info = db.query(room.Room).filter(room.Room.room_id == room_id)
             user_info = db.query(user.User).filter(user.User.id == data["last_turn_userId"]).first()
 
-            if user_info.id == user_id:
+            # if user_info.id == user_id:
 
-                print(user_info.username)
+            print(user_info.username)
 
-                index = 54654
+            index = 54654
 
-                turn = room_info.first().turn
+            turn = room_info.first().turn
 
-                player = room_info.first().players
+            player = room_info.first().players
 
-                
-                for idx in range(len(turn)):
-                    if turn[idx] == True and player[idx] == user_info.username:
-                        index = idx
-                        turn[idx] = False
-                        break
-                        
-                if index+1 < len(turn):
-                    index += 1
-                    turn[index] = True
-                else:
-                    print("sabai ko palo sakeyo")
-                    # all the turn finished
-                    msg_instance = Message(
-                        msg_type = 14,
-                        data = True
-                    )
-
-                    await self.broadcast(
-                        msg_instance.dict(exclude_none=True), room_id
-                    )
-
-                room_info.update({"turn": turn})
-                db.commit()
-
-
-                turn = room_info.first().turn
-
-                user_turn = db.query(user.User).filter(user.User.username==player[index]).first()
-
-                print("turn update")
-                print(user_turn.id)
-                print(index)
-                print(turn[index])
-                print(player[index])
-
-                turn_dict_dict = {"turn_user_id": user_turn.id, "turn": turn[index], "turn_username": player[index]}
-                data={"msg_type":8, "data":turn_dict_dict, "user_id": user_id, "username": user_info.username}
-
+            
+            for idx in range(len(turn)):
+                if turn[idx] == True and player[idx] == user_info.username:
+                    index = idx
+                    turn[idx] = False
+                    break
+                    
+            if index+1 < len(turn):
+                index += 1
+                turn[index] = True
+            else:
+                print("sabai ko palo sakeyo")
+                # all the turn finished
                 msg_instance = Message(
-                    msg_type = 8,
-                    data = turn_dict_dict,
-                    user_id = user_id
+                    msg_type = 14,
+                    data = True
                 )
 
                 await self.broadcast(
                     msg_instance.dict(exclude_none=True), room_id
                 )
+
+            room_info.update({"turn": turn})
+            db.commit()
+
+
+            turn = room_info.first().turn
+
+            user_turn = db.query(user.User).filter(user.User.username==player[index]).first()
+
+            print("turn update")
+            print(user_turn.id)
+            print(index)
+            print(turn[index])
+            print(player[index])
+
+            turn_dict_dict = {"turn_user_id": user_turn.id, "turn": turn[index], "turn_username": player[index]}
+            data={"msg_type":8, "data":turn_dict_dict, "user_id": user_id, "username": user_info.username}
+
+            msg_instance = Message(
+                msg_type = 8,
+                data = turn_dict_dict,
+                user_id = user_id
+            )
+
+            await self.broadcast(
+                msg_instance.dict(exclude_none=True), room_id
+            )
 
 
     async def disconnect(self, websocket: WebSocket, user_id: int, room_id: str, db: any):
@@ -598,7 +611,6 @@ class WebSocketManager:
             #  and self.room_connections[room_id][i]["websocket"] == websocket
             if self.room_connections[room_id][i]["user_id"] == user_id:
                 print(f"User #{user_id} has been disconnected from {room_id}")
-                del self.room_connections[room_id][i]
                 del self.room_connections[room_id][i]
                 break
         if self.room_connections[room_id] == []:

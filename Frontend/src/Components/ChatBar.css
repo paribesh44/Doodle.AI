@@ -53,7 +53,7 @@
  .my_eachmsg{
     background: #142336;
     margin-bottom: 6px !important;
-    padding: 0.2em;
+    padding: 0.4em;
     margin-right: 4px !IMPORTANT;
     border-radius: 5px;
     color: white;
@@ -64,6 +64,21 @@
     word-wrap: break-word;
     font-size: 0.9em;
     /* opacity: 50%; */    
+ }
+
+ .guessCorrect {
+    width: 20em;
+    background: #c9ffb7;
+    margin-bottom: 6px !important;
+    margin-top: 0.4em !important;
+    padding: 0.4em;
+    margin-right: 4px !IMPORTANT;
+    border-radius: 3px;
+    /* color: #5db33e; */
+    color: rgb(15, 217, 15);
+    word-wrap: break-word;
+    font-size: 0.9em;
+     /* opacity: 50%; */
  }
 
 .each_message{
@@ -132,5 +147,41 @@
     /* background-color: red;     */
 }
 .thesubbmit {
+    outline: none;
+    cursor: pointer !important;
+    height: 2.2em;
+    width: 15em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6em 0.5em;
+    text-decoration: none;
+    margin-bottom: 0.4em;
+    font-size: 1.1em;
+    border-radius: 5px;
+    box-shadow: 6px 6px 16px -3px rgba(35, 56, 83, 0.7);
+    -webkit-box-shadow: 6px 6px 16px -3px rgba(35, 56, 83, 0.7);
+    -moz-box-shadow: 6px 6px 16px -3px rgba(35, 56, 83, 0.7);
+    background-color: #7bd77e;
+}
+.thesubbmit:hover{
+    background-color: #6fd173;
+}
+
+.disablethesubbmit {
+    outline: none;
+    height: 2.2em;
+    width: 15em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6em 0.5em;
+    text-decoration: none;
+    margin-bottom: 0.4em;
+    font-size: 1.1em;
+    border-radius: 5px;
+    box-shadow: 6px 6px 16px -3px rgba(35, 56, 83, 0.7);
+    -webkit-box-shadow: 6px 6px 16px -3px rgba(35, 56, 83, 0.7);
+    -moz-box-shadow: 6px 6px 16px -3px rgba(35, 56, 83, 0.7);
     background-color: #7bd77e;
 }

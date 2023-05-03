@@ -13,6 +13,7 @@ import useSocket from "../utils/useSocket";
 import CustomButton from "../Components/CustomButton";
 import DrawingTurn from "../Components/DrawingTurn";
 import OneDrawFinish from "../Components/oneDrawFinish";
+import ResultBox from "../Components/ResultBox";
 import "../Components/WaitDraw.css";
 import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 import "./DrawFinish.css";
@@ -22,7 +23,7 @@ function Joining() {
   // const [turn, setTurn] = useState("");
   const params = useParams();
 
-  const { start, startFun, setRoomId, choosenWord, userId, turn, setTurn, onePersonDrawingTurnFinish } =
+  const { start, startFun, setRoomId, choosenWord, userId, turn, setTurn, drawingAllFinish, onePersonDrawingTurnFinish } =
     useContext(WebSocketContext);
 
   useEffect(() => {
@@ -71,8 +72,9 @@ function Joining() {
               <></>
             ) : (
               <Grid>
-                {console.log("one person ", onePersonDrawingTurnFinish)}
-                {onePersonDrawingTurnFinish 
+                {drawingAllFinish
+                ? <ResultBox />
+                : onePersonDrawingTurnFinish 
                 ? (<OneDrawFinish/>)
                  : start ? (
                   <DrawingTurn />

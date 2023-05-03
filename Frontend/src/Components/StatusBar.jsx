@@ -5,9 +5,9 @@ import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 
 function StatusBar() {
 
-  const { timesUp, setTimesUp, openCanvas, choosenWord, userId, turn, userSelfMessage, onePersonDrawingTurnFinish, turnFinished} = useContext(WebSocketContext);
+  const { timerClock, setTimerClock, timesUp, setTimesUp, drawingAllFinish, openCanvas, choosenWord, userId, turn, userSelfMessage, onePersonDrawingTurnFinish, turnFinished} = useContext(WebSocketContext);
 
-  let [timerClock, setTimerClock] = useState(5);
+  // let [timerClock, setTimerClock] = useState(5);
   
   const underscores = [];
 
@@ -19,29 +19,32 @@ function StatusBar() {
 
   useEffect(() => {
     const timer = setInterval(function () {
+      // console.log("TimerClock: ", timerClock)
+      // console.log("TimesUp: ", timesUp)
+    
     if (timerClock <= 0) {
       setTimerClock(0);
       setTimesUp(true);
     } else {
-      if(openCanvas!=false) {
+      if(choosenWord!=null) {
         setTimerClock(timerClock - 1);
       }
     }
   }, 1000);
 
-  // if(openCanvas!=false) {
+  if(choosenWord!=null) {
     if(timesUp) {
       console.log("times ups vao ta")
       turnFinished()
     }
-  // }
+  }
     
   return () => {
       // this runs as the clean up function for the useEffect
       clearInterval(timer);
     };
 
-  }, [openCanvas, timerClock, timesUp ])
+  }, [choosenWord, timerClock, timesUp ])
 
   // if (timesUp) {
   //   function timeUP() {
@@ -73,27 +76,31 @@ function StatusBar() {
 
       <Grid item className="status_message">
         <Grid container alignItems={"center"} justifyContent="center">
-          {onePersonDrawingTurnFinish
-          ? <Grid item>Turn Finished</Grid>
-          : choosenWord == null
-          ? <Grid item>Waiting</Grid>
-          : turn.data.turn_user_id == userId && turn.data.turn == true 
-            ? <Grid>
-              <Grid>DRAW THIS</Grid>
-              <Grid>{choosenWord.data.word}</Grid>
-            </Grid>
-            :<Grid item>
-              <Grid>GUESS THIS</Grid>
-              <p>{underscores}&nbsp;<sup>{choosenWord.data.length}</sup></p>
-            </Grid>}
-          
+          {drawingAllFinish
+          ? <Grid item>Game Finished</Grid>
+          :onePersonDrawingTurnFinish
+            ? <Grid item>Turn Finished</Grid>
+            : choosenWord == null
+            ? <Grid item>Waiting</Grid>
+            : turn.data.turn_user_id == userId && turn.data.turn == true 
+              ? <Grid>
+                <Grid>DRAW THIS</Grid>
+                <Grid>{choosenWord.data.word}</Grid>
+              </Grid>
+              :<Grid item>
+                <Grid>GUESS THIS</Grid>
+                <p>{underscores}&nbsp;<sup>{choosenWord.data.length}</sup></p>
+              </Grid>}
         </Grid>
       </Grid>
       <Grid item>
+      {/* {console.log(timesUp)}
+      {console.log(timerClock)} */}
       {timesUp ? (
           "O"
         ) : (
           <Grid item className="app_desc">
+            {/* {console.log("aa nai pugea jasto xa")} */}
             {timerClock}
           </Grid>
         )}

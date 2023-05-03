@@ -90,21 +90,8 @@ function Canvas() {
   }, [contextRef]);
 
   useEffect(() => {
-    if (turn.data.turn_user_id !== userId && turn.data.turn !== true) {
+    if (turn.data.turn_user_id !== userId) {
       if(hostDrawing === "True") {
-        // drawingHistory.map((e) => {
-        //   const canvas = canvasRef.current;
-        //   contextRef.current = canvas.getContext("2d");
-        //   contextRef.current.lineWidth = pensize;
-        //   contextRef.current.lineCap = "round";
-        //   contextRef.current.strokeStyle = pencolor;
-
-        //   contextRef.current.lineTo(e.data.offsetX, e.data.offsetY);
-        //   contextRef.current.stroke();
-        //   contextRef.current.beginPath();
-        //   contextRef.current.moveTo(e.data.offsetX, e.data.offsetY);
-        // })
-
         if (drawingHistory != null) {
           const canvas = canvasRef.current;
           contextRef.current = canvas.getContext("2d");
@@ -123,7 +110,7 @@ function Canvas() {
       }
     }
     
-  }, [drawingHistory, hostDrawing])
+  }, [drawingHistory, hostDrawing, isDrawing])
 
   const startDrawing = ({ nativeEvent }) => {
     // const { offsetX, offsetY } = nativeEvent;

@@ -38,7 +38,11 @@ function App() {
     setOnePersonDrawingTurnFinish,
     startAgain,
     timesUp,
-    setTimesUp
+    setTimesUp,
+    timerClock,
+    setTimerClock,
+    guessCorrect,
+    setGuessCorrect
   ] = useGame();
 
   const websocket_context_value = useMemo(
@@ -74,7 +78,11 @@ function App() {
       setOnePersonDrawingTurnFinish,
       startAgain,
       timesUp,
-      setTimesUp
+      setTimesUp,
+      timerClock,
+      setTimerClock,
+      guessCorrect,
+      setGuessCorrect
     }),
     [
       sendMessage,
@@ -108,7 +116,11 @@ function App() {
       setOnePersonDrawingTurnFinish,
       startAgain,
       timesUp,
-      setTimesUp
+      setTimesUp,
+      timerClock,
+      setTimerClock,
+      guessCorrect,
+      setGuessCorrect
     ]
   );
 
