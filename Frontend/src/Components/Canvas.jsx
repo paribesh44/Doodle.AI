@@ -116,7 +116,7 @@ function Canvas() {
     // const { offsetX, offsetY } = nativeEvent;
     // contextRef.current.beginPath();
     // contextRef.current.moveTo(offsetX, offsetY);
-    console.log(nativeEvent);
+    // console.log(nativeEvent);
     setisDrawing(true);
     draw(nativeEvent);
   };

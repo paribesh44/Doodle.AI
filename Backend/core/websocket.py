@@ -104,6 +104,9 @@ class Message(BaseModel):
 class WebSocketManager:
     def __init__(self):
         self.room_connections: Dict = {}
+        self.choosenGuessWord = ""
+        self.AIChoosenWord = ""
+        self.AIGuessedWords = []
         # NOTE NOTE NOTE NOTE once the drawing turn is finished we need to re-initilize this array to [].
         self.mainStroke = []
         self.words_test = ["sun", "laptop", "axe", "bridge", "arm", "sock"]
@@ -262,15 +265,38 @@ class WebSocketManager:
         print(percentages[:3])
 
         # if first guess of te AI is not correct then store that in a variable(list) and for another guess is also the same then show another guess and continue so on.
+        AIword = top_3_pred[0][0]
 
-        msg_instance = Message(
-            msg_type = ChatMessageTypes.AI_GUESS.value,
-            data = top_3_pred[0][0]
-        )
+        if top_3_pred[0][0] in self.AIGuessedWords:
+            AIword = top_3_pred[0][1]
+            if AIword in self.AIGuessedWords:
+                AIword = top_3_pred[0][2]
+                if AIword in self.AIGuessedWords:
+                    AIword = top_3_pred[0][0]
+                else:
+                    self.AIGuessedWords.append(top_3_pred[0][2])
+            else:
+                self.AIGuessedWords.append(top_3_pred[0][1])
+        else:
+            self.AIGuessedWords.append(top_3_pred[0][0])
 
-        await self.broadcast(
-            msg_instance.dict(exclude_none=True), room_id
-        )
+        # print(AIword)
+        
+        if self.choosenGuessWord != self.AIChoosenWord:
+            msg_instance = Message(
+                msg_type = ChatMessageTypes.AI_GUESS.value,
+                data = AIword
+            )
+
+            await self.broadcast(
+                msg_instance.dict(exclude_none=True), room_id
+            )
+
+        if self.choosenGuessWord != self.AIChoosenWord:
+            self.AIChoosenWord = AIword
+
+        # print("AI guesses: ", self.AIGuessedWords)
+        # print("AI chhoosen word: ", self.AIChoosenWord)
         
 
     # this function adds information of user's id and websocket in its equivalent "room_id" key. 
@@ -428,6 +454,10 @@ class WebSocketManager:
             )
         
         elif msg_type == ChatMessageTypes.CHOOSEN_WORD.value:
+
+            if data != "yes":
+                self.choosenGuessWord = data["word"]
+
             msg_instance = Message(
                 msg_type=msg_type,
                 data=data,
@@ -545,6 +575,9 @@ class WebSocketManager:
             # remove all the elements from the list after some user turn has been finished.
             print("Main stroke before: ", self.mainStroke)
             self.mainStroke.clear()
+            self.choosenGuessWord = ""
+            self.AIChoosenWord = ""
+            self.AIGuessedWords = []
             print("Main stroke after: ", self.mainStroke)
 
             msg_instance = Message(
@@ -591,7 +624,10 @@ class WebSocketManager:
                     
             if index+1 < len(turn):
                 index += 1
-                turn[index] = True
+                if player[index] != "AI":
+                    turn[index] = True
+                else:
+                    turn[index] = False
             else:
                 print("sabai ko palo sakeyo")
                 # all the turn finished

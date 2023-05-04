@@ -12,7 +12,7 @@ import callAPI from "../utils/callAPI";
 import useSocket from "../utils/useSocket";
 import CustomButton from "../Components/CustomButton";
 import DrawingTurn from "../Components/DrawingTurn";
-import OneDrawFinish from "../Components/oneDrawFinish";
+import OneDrawFinish from "../Components/onedrawfinish";
 import ResultBox from "../Components/ResultBox";
 import "../Components/WaitDraw.css";
 import { WebSocketContext } from "../utils/contexts/WebSocketContext";
