@@ -17,7 +17,8 @@ const ChatMessageTypes = {
     CHOOSEN_WORD: 13,
     DRAWING_TURN_ALL_FINISH: 14,
     ONE_PERSON_DRAWING_TURN_FINISH: 15,
-    TIMER_RESET: 16
+    TIMER_RESET: 16,
+    USER_CORRECTLY_GUESS_WORD_GIVE_SCORE: 17
   };
 
 const useGame = () => {
@@ -35,7 +36,7 @@ const useGame = () => {
     const [drawingAllFinish, setDrawingAllFinish] = useState(false);
     const [onePersonDrawingTurnFinish, setOnePersonDrawingTurnFinish] = useState(false);
     const [timesUp, setTimesUp] = useState(false);
-    let [timerClock, setTimerClock] = useState(5);
+    let [timerClock, setTimerClock] = useState(30);
     const [guessCorrect, setGuessCorrect] = useState(false);
 
   const onMessage = (e) => {
@@ -79,7 +80,7 @@ const useGame = () => {
         }
       } else if (data.msg_type == ChatMessageTypes.TIMER_RESET) {
         if (data.data == "reset") {
-          setTimerClock(5)
+          setTimerClock(30)
           setTimesUp(false)
         }
       }
@@ -139,6 +140,12 @@ const useGame = () => {
     // setTimesUp(false)
   }
 
+  async function giveUserScoreFun() {
+    console.log("score de la")
+    console.log(userSelfMessage.data.players.length)
+    websocket.send(JSON.stringify({msg_type:17, data:{"userId": userId, "time": timerClock, "noPlayers": userSelfMessage.data.players.length}}))
+  }
+
   return [
     sendMessage,
     startFun,
@@ -175,7 +182,8 @@ const useGame = () => {
     timerClock,
     setTimerClock,
     guessCorrect,
-    setGuessCorrect
+    setGuessCorrect,
+    giveUserScoreFun
   ];
 };
 export default useGame;

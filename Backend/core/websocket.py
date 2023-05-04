@@ -92,6 +92,7 @@ class ChatMessageTypes(enum.Enum):
     DRAWING_TURN_ALL_FINISH: int = 14
     ONE_PERSON_DRAWING_TURN_FINISH: int = 15
     TIMER_RESET: int = 16
+    USER_CORRECTLY_GUESS_WORD_GIVE_SCORE: int = 17
     
 class Message(BaseModel):
     msg_type: int
@@ -107,6 +108,8 @@ class WebSocketManager:
         self.choosenGuessWord = ""
         self.AIChoosenWord = ""
         self.AIGuessedWords = []
+        self.wordCorrectlyGuessedPlayers = []
+        self.totalNoPlayers = 0
         # NOTE NOTE NOTE NOTE once the drawing turn is finished we need to re-initilize this array to [].
         self.mainStroke = []
         self.words_test = ["sun", "laptop", "axe", "bridge", "arm", "sock"]
@@ -200,6 +203,57 @@ class WebSocketManager:
 
         return padded_stoke_data 
 
+    async def giveScore(self, room_id: str, user_id: int,  data_userId: int, time: int, noPlayers: int, db: any):
+        room_info = db.query(room.Room).filter(room.Room.room_id == room_id)
+        user_info = db.query(user.User).filter(user.User.id == data_userId).first()
+
+        print(user_info.username)
+
+        if user_info.username not in self.wordCorrectlyGuessedPlayers:
+            self.wordCorrectlyGuessedPlayers.append(user_info.username)
+        
+        print("wordCorrectlyGuessedPlayers: ", self.wordCorrectlyGuessedPlayers)
+
+        # find the index of the player when they predicted the image.
+        whenDidUserPredictedWord = self.wordCorrectlyGuessedPlayers.index(user_info.username)
+
+        # finding score based on position of user correctly predicted word and time(how late). Total score: 300
+        total_no_of_players = noPlayers
+        
+        total_marks = 100
+        total_time = 30
+
+        players = room_info.first().players
+        scores = room_info.first().score
+
+        score = (total_marks - (whenDidUserPredictedWord/total_no_of_players) * total_marks) + (total_marks - ((total_time-time)/total_time) * total_marks)
+
+        # find the index of that player in room's players list and update the corresponding score index with the score scored.
+        playerIndex = players.index(user_info.username)
+
+        # update the corresponding score
+        scores[playerIndex] = round(score)
+
+        # update in database
+        room_info.update({"score": scores})
+        db.commit()
+
+        # boardcast to show new score
+        users_info = db.query(user.User).filter(or_(
+            *[user.User.username == player for player in room_info.first().players]
+        )).all()
+    
+        avatars = [] 
+        for i in range(len(users_info)):
+            avatars.append(users_info[i].avatar)
+            
+        avatars = avatars[1:] + [avatars[0]]
+
+        room_info_dict = room_info.first().__dict__
+        room_info_dict["avatars"] = avatars
+
+        await self.broadcast(data={"msg_type":5, "data":room_info_dict, "user_id": user_id, "username": user_info.username}, room_id=room_id)
+
     async def drawingAI(self, websocket: WebSocket, data: str, user_id: int, room_id: str, msg_type: int, db:any):
         # print(data)
         mainStroke = []
@@ -281,6 +335,7 @@ class WebSocketManager:
             self.AIGuessedWords.append(top_3_pred[0][0])
 
         # print(AIword)
+
         
         if self.choosenGuessWord != self.AIChoosenWord:
             msg_instance = Message(
@@ -291,6 +346,10 @@ class WebSocketManager:
             await self.broadcast(
                 msg_instance.dict(exclude_none=True), room_id
             )
+        # if AI predicts the word correctly then store that info to "self.wordCorrectlyGuessedPlayers"
+        else:
+            user_info = db.query(user.User).filter(user.User.username == "AI").first()
+            await self.giveScore(room_id=room_id, user_id=user_info.id, data_userId=user_info.id, time=18, noPlayers=self.totalNoPlayers+1, db=db)
 
         if self.choosenGuessWord != self.AIChoosenWord:
             self.AIChoosenWord = AIword
@@ -315,6 +374,8 @@ class WebSocketManager:
 
     async def connect(self, websocket: WebSocket, user_id: int, room_id: str, db: any):
         await websocket.accept()
+
+        self.totalNoPlayers += 1
 
         # store room_id, user_id and websocket in dictionary
         await self.add_info_to_room_connections_dict(websocket, user_id, room_id)
@@ -381,6 +442,8 @@ class WebSocketManager:
         avatars = [] 
         for i in range(len(users_info)):
             avatars.append(users_info[i].avatar)
+
+        avatars = avatars[1:] + [avatars[0]]
 
         room_info_dict = room_info.first().__dict__
         room_info_dict["avatars"] = avatars
@@ -568,6 +631,12 @@ class WebSocketManager:
                 msg_instance.dict(exclude_none=True), room_id
             )
         
+        elif msg_type == ChatMessageTypes.USER_CORRECTLY_GUESS_WORD_GIVE_SCORE.value:
+            print("give score: ", data)
+            
+            await self.giveScore(room_id=room_id, user_id=user_id, data_userId=data["userId"], time=data["time"], noPlayers=data["noPlayers"], db=db)
+
+        
         elif msg_type == ChatMessageTypes.FINISH_DRAWING_TURN.value:
             print("user_id: ", user_id)
             print("Data: ", data)
@@ -578,6 +647,7 @@ class WebSocketManager:
             self.choosenGuessWord = ""
             self.AIChoosenWord = ""
             self.AIGuessedWords = []
+            self.wordCorrectlyGuessedPlayers = []
             print("Main stroke after: ", self.mainStroke)
 
             msg_instance = Message(

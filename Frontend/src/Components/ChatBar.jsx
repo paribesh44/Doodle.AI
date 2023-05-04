@@ -8,7 +8,7 @@ import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 function ChatBar() {
   const [guess, setGuess] = useState("");
 
-  const { history, drawingAllFinish, sendMessage, userId, choosenWord, guessCorrect, setGuessCorrect, onePersonDrawingTurnFinish } = useContext(WebSocketContext);
+  const { giveUserScoreFun, history, drawingAllFinish, sendMessage, userId, choosenWord, guessCorrect, setGuessCorrect, onePersonDrawingTurnFinish } = useContext(WebSocketContext);
 
   async function submit(e) {
     e.preventDefault();
@@ -18,6 +18,8 @@ function ChatBar() {
       setGuess("");
       if (choosenWord.data.word === guess) {
         setGuessCorrect(true)
+        // this function doesnot work for AI
+        giveUserScoreFun()
       }
     }
   }
