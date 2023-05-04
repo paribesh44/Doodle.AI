@@ -42,7 +42,8 @@ function App() {
     timerClock,
     setTimerClock,
     guessCorrect,
-    setGuessCorrect
+    setGuessCorrect,
+    giveUserScoreFun
   ] = useGame();
 
   const websocket_context_value = useMemo(
@@ -82,7 +83,8 @@ function App() {
       timerClock,
       setTimerClock,
       guessCorrect,
-      setGuessCorrect
+      setGuessCorrect,
+      giveUserScoreFun
     }),
     [
       sendMessage,
@@ -120,7 +122,8 @@ function App() {
       timerClock,
       setTimerClock,
       guessCorrect,
-      setGuessCorrect
+      setGuessCorrect,
+      giveUserScoreFun
     ]
   );
 

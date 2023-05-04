@@ -245,17 +245,15 @@ def checkAllUserTurnFinished(room_id:str, db:Session=Depends(database.get_db)):
 
 @router.get("/game/give_words")
 def giveWord():
-    words = ["sun", "laptop", "ladder", "eyeglasses", "grapes", "book", "dumbbell", "wristwatch", "wheel", "shovel", "bread", "table", "tennis racquet",
+    words = ["sun", "laptop", "ladder", "eyeglasses", "grapes", "book", "dumbbell", "wristwatch", "shovel", "bread", "table", "tennis racquet",
          "cloud", "chair", "headphones", "eye", "airplane", "snake", "lollipop", "pants", "mushroom", "star", "sword", "clock", "hot dog",
          "stop sign", "mountain", "apple", "bed", "broom", "flower", "spider", "cell phone", "car", "camera", "tree", "moon", "radio", "hat", "pizza",
          "axe", "door", "tent", "umbrella", "line", "cup", "triangle", "basketball", "banana", "calculator", "television", "toothbrush", "pillow",
          "scissors", "t-shirt", "tooth", "alarm clock", "paper clip", "spoon", "microphone", "candle", "pencil", "frying pan", "screwdriver", "helmet",
          "bridge", "light bulb", "ceiling fan", "key", "donut", "bird", "circle", "beard", "butterfly", "cat", "sock", "ice cream", "moustache",
          "suitcase", "hammer", "rainbow", "cookie", "lightning", "bicycle", "ant", "arm", "bee", "birthday cake", "bowtie", "bucket", "cactus",
-         "church", "computer", "crown", "cruise ship", "dolphin", "drums", "envelope", "fire hydrant", "fireplace", "firetruck", "fish", "flashlight",
-         "guitar", "hot air balloon", "leaf", "octopus", "sea turtle", "windmill"]
-    
-    words = ["sun", "laptop", "apple", "flower", "cell phone", "fish"]
+         "church", "crown", "cruise ship", "dolphin", "drums", "envelope", "fire hydrant", "fireplace", "firetruck", "fish", "flashlight",
+         "guitar", "leaf", "octopus", "sea turtle", "windmill"]
     
     # randomly select 3 words
     random_words = random.sample(words, 3)

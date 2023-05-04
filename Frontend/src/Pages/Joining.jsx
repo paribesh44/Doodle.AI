@@ -12,12 +12,13 @@ import callAPI from "../utils/callAPI";
 import useSocket from "../utils/useSocket";
 import CustomButton from "../Components/CustomButton";
 import DrawingTurn from "../Components/DrawingTurn";
-import OneDrawFinish from "../Components/oneDrawFinish";
+import OneDrawFinish from "../Components/onedrawfinish";
 import ResultBox from "../Components/ResultBox";
 import "../Components/WaitDraw.css";
 import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 import "./DrawFinish.css";
 import { IoTimerOutline } from "react-icons/io5";
+import { Audio } from  'react-loader-spinner'
 
 function Joining() {
   // const [turn, setTurn] = useState("");
@@ -69,7 +70,16 @@ function Joining() {
               <MemberBar />
             </Grid>
             {turn == null ? (
-              <></>
+              // <></>
+              <Audio
+                  height = "80"
+                  width = "80"
+                  radius = "9"
+                  color = 'green'
+                  ariaLabel = 'three-dots-loading'     
+                  wrapperStyle
+                  wrapperClass
+                />
             ) : (
               <Grid>
                 {drawingAllFinish
