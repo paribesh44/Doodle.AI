@@ -18,7 +18,8 @@ const ChatMessageTypes = {
     DRAWING_TURN_ALL_FINISH: 14,
     ONE_PERSON_DRAWING_TURN_FINISH: 15,
     TIMER_RESET: 16,
-    USER_CORRECTLY_GUESS_WORD_GIVE_SCORE: 17
+    USER_CORRECTLY_GUESS_WORD_GIVE_SCORE: 17,
+    STROKE_FINISH: 18
   };
 
 const useGame = () => {
@@ -38,6 +39,7 @@ const useGame = () => {
     const [timesUp, setTimesUp] = useState(false);
     let [timerClock, setTimerClock] = useState(30);
     const [guessCorrect, setGuessCorrect] = useState(false);
+    const [strokeFinished, setStrokeFinished] = useState(false);
 
   const onMessage = (e) => {
       const data = JSON.parse(e.data);
@@ -82,6 +84,13 @@ const useGame = () => {
         if (data.data == "reset") {
           setTimerClock(30)
           setTimesUp(false)
+        }
+      } else if (data.msg_type == ChatMessageTypes.STROKE_FINISH) {
+        
+        if (data.data == "yes") {
+          setStrokeFinished(true)
+        } else if (data.data == "no") {
+          setStrokeFinished(false)
         }
       }
     };
@@ -146,6 +155,11 @@ const useGame = () => {
     websocket.send(JSON.stringify({msg_type:17, data:{"userId": userId, "time": timerClock, "noPlayers": userSelfMessage.data.players.length}}))
   }
 
+  function oneStrokeFinished(data) {
+    console.log(data)
+    websocket.send(JSON.stringify({msg_type: 18, data:data}))
+  }
+
   return [
     sendMessage,
     startFun,
@@ -183,7 +197,10 @@ const useGame = () => {
     setTimerClock,
     guessCorrect,
     setGuessCorrect,
-    giveUserScoreFun
+    giveUserScoreFun,
+    strokeFinished,
+    setStrokeFinished,
+    oneStrokeFinished
   ];
 };
 export default useGame;

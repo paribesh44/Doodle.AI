@@ -53,72 +53,75 @@ function Joining() {
         direction={"column"}
         className="joining_main"
       >
-        <Grid item className="inside_name">
-          <img height={50} src={require("../assets/logo.png")} />
-        </Grid>
-        <Grid item className="joining_statusbar">
-          <StatusBar/>
-        </Grid>
-        <Grid item className="main_area">
-          <Grid
-            container
-            direction="row"
-            // justifyContent="center"
-            // alignItems="center"
-          >
-            <Grid item>
-              <MemberBar />
-            </Grid>
-            {turn == null ? (
-              // <></>
-              <Audio
-                  height = "80"
-                  width = "80"
-                  radius = "9"
-                  color = 'green'
-                  ariaLabel = 'three-dots-loading'     
-                  wrapperStyle
-                  wrapperClass
-                />
-            ) : (
-              <Grid>
-                {drawingAllFinish
-                ? <ResultBox />
-                : onePersonDrawingTurnFinish 
-                ? (<OneDrawFinish/>)
-                 : start ? (
-                  <DrawingTurn />
-                ) : (
-                  <Grid item className="kheni_draw">
-                    <Grid item className="waitdraw_root">
-                      <Grid container direction="column">
-                        <Grid item className="waiting_draw"></Grid>
-                        <Grid item className="waiting_start">
-                          {turn.data.turn_user_id == userId &&
-                          turn.data.turn == true ? (
-                            <CustomButton
-                              name="Start"
-                              addStyles={"waiting_start"}
-                              onClicked={startFun}
-                            />
-                          ) : (
-                            <CustomButton
-                              name="Start"
-                              addStyles={"waiting_start_dont_join"}
-                            />
-                          )}
+        {turn == null 
+        ? (
+          // <></>
+          <Audio
+              height = "80"
+              width = "80"
+              radius = "9"
+              color = 'green'
+              ariaLabel = 'three-dots-loading'     
+              wrapperStyle
+              wrapperClass
+            />)
+        :( 
+        <Grid>
+          <Grid item className="inside_name">
+            <img height={50} src={require("../assets/logo.png")} />
+          </Grid>
+          <Grid item className="joining_statusbar">
+            <StatusBar/>
+          </Grid>
+          <Grid item className="main_area">
+            <Grid
+              container
+              direction="row"
+              // justifyContent="center"
+              // alignItems="center"
+            >
+              <Grid item>
+                <MemberBar />
+              </Grid>
+                <Grid>
+                  {drawingAllFinish
+                  ? <ResultBox />
+                  : onePersonDrawingTurnFinish 
+                  ? (<OneDrawFinish/>)
+                  : start ? (
+                    <DrawingTurn />
+                  ) : (
+                    <Grid item className="kheni_draw">
+                      <Grid item className="waitdraw_root">
+                        <Grid container direction="column">
+                          <Grid item className="waiting_draw"></Grid>
+                          <Grid item className="waiting_start">
+                            {turn.data.turn_user_id == userId &&
+                            turn.data.turn == true ? (
+                              <CustomButton
+                                name="Start"
+                                addStyles={"waiting_start"}
+                                onClicked={startFun}
+                              />
+                            ) : (
+                              <CustomButton
+                                name="Start"
+                                addStyles={"waiting_start_dont_join"}
+                              />
+                            )}
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                )}
+                  )}
+                </Grid>
+              <Grid item>
+                <ChatBar />
               </Grid>
-            )}
-            <Grid item>
-              <ChatBar />
             </Grid>
           </Grid>
         </Grid>
+        )}
       </Grid>
     </Grid>
   );
