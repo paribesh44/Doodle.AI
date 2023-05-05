@@ -72,7 +72,7 @@ function Canvas() {
   const [strokeY, setStrokeY] = useState([]);
   const [strokeT, setStrokeT] = useState([]);
 
-  const {sendMessage, userId, drawingHistory,setdrawingHistory, turn, hostDrawing} = useContext(WebSocketContext);
+  const {strokeFinished, oneStrokeFinished, sendMessage, userId, drawingHistory,setdrawingHistory, turn, hostDrawing} = useContext(WebSocketContext);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -99,10 +99,18 @@ function Canvas() {
           contextRef.current.lineCap = "round";
           contextRef.current.strokeStyle = pencolor;
 
-          contextRef.current.lineTo(drawingHistory.data.offsetX, drawingHistory.data.offsetY);
-          contextRef.current.stroke();
-          contextRef.current.beginPath();
-          contextRef.current.moveTo(drawingHistory.data.offsetX, drawingHistory.data.offsetY);
+          if (strokeFinished) {
+            contextRef.current.lineTo(drawingHistory.data.offsetX, drawingHistory.data.offsetY);
+            contextRef.current.stroke();
+            contextRef.current.beginPath();
+            // contextRef.current.moveTo(drawingHistory.data.offsetX, drawingHistory.data.offsetY);
+          } else {
+            contextRef.current.lineTo(drawingHistory.data.offsetX, drawingHistory.data.offsetY);
+            // contextRef.current.stroke();
+            // contextRef.current.beginPath();
+            contextRef.current.moveTo(drawingHistory.data.offsetX, drawingHistory.data.offsetY);
+        
+          }
         }
       } else if (hostDrawing === "False") {
         setdrawingHistory(null)
@@ -110,7 +118,7 @@ function Canvas() {
       }
     }
     
-  }, [drawingHistory, hostDrawing, isDrawing])
+  }, [drawingHistory,strokeFinished, hostDrawing, isDrawing])
 
   const startDrawing = ({ nativeEvent }) => {
     // const { offsetX, offsetY } = nativeEvent;
@@ -119,11 +127,14 @@ function Canvas() {
     // console.log(nativeEvent);
     setisDrawing(true);
     draw(nativeEvent);
+    console.log("start fuctio ai kam gareko xaia ki k")
+    oneStrokeFinished("no")
   };
 
   const finishDrawing = () => {
     // send drawing to AI
     sendMessage({msg_type:11, data:{"strokeX":strokeX, "strokeY":strokeY, "strokeT":strokeT}, user_id:userId})
+    oneStrokeFinished("yes")
     // setStrokeXYT([])
     setStrokeX([])
     setStrokeY([])

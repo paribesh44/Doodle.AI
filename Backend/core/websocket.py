@@ -93,6 +93,7 @@ class ChatMessageTypes(enum.Enum):
     ONE_PERSON_DRAWING_TURN_FINISH: int = 15
     TIMER_RESET: int = 16
     USER_CORRECTLY_GUESS_WORD_GIVE_SCORE: int = 17
+    STROKE_FINISH: int = 18
     
 class Message(BaseModel):
     msg_type: int
@@ -515,6 +516,31 @@ class WebSocketManager:
             await self.broadcast(
                 msg_instance.dict(exclude_none=True), room_id
             )
+
+        if msg_type == ChatMessageTypes.STROKE_FINISH.value:
+            print(data)
+            msg_instance = Message(
+                msg_type=msg_type,
+                data=data,
+                user=user_id,
+                username=user_info.username,
+                time = datetime.utcnow()
+            )
+
+            await self.broadcast(
+                msg_instance.dict(exclude_none=True), room_id
+            )
+            # get all the "websocket" of a room "room_id" expect the own's websocket
+            # connections = [i["websocket"] for i in self.room_connections[room_id] if i != websocket]
+
+            # encoded_data = jsonable_encoder(msg_instance)
+
+            # for connection in connections:
+            #     # print("websocket ", connection)
+            #     try:
+            #         await connection.send_json(encoded_data)
+            #     except Exception as e:
+            #         pass
         
         elif msg_type == ChatMessageTypes.CHOOSEN_WORD.value:
 
@@ -587,6 +613,7 @@ class WebSocketManager:
         
         # if the msg_type is canvas_drawing then send the data to everyone expect the own.
         elif msg_type == ChatMessageTypes.CANVAS_DRAWING.value:
+            print(data)
             msg_instance = Message(
                 msg_type=msg_type,
                 data=data,
