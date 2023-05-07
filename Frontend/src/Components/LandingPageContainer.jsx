@@ -12,6 +12,7 @@ import sound from "./../assets/sounds/change_sound.mp3";
 import start_sound from "./../assets/sounds/game-start.mp3";
 
 function LandingPageContainer() {
+  const [joinroombool, setjoinroombool] = useState(true);
   const [username, setusername] = useState("");
   const [avatarimg, setavatarimg] = useState(1);
   const [joinRoom, setJoinRoom] = useState(false);
@@ -118,6 +119,7 @@ function LandingPageContainer() {
   }
 
   async function joinRoomFun() {
+    setjoinroombool(false);
     if (username != "") {
       let userDataForm = new FormData();
       userDataForm.append("username", username);
@@ -202,18 +204,19 @@ function LandingPageContainer() {
           onClicked={createRoom}
         />
       </Grid>
-      <Grid item>
-        <CustomButton
-          addStyles="joinroombtn"
-          name="Join a Room"
-          onClicked={joinRoomFun}
-        />
-      </Grid>
+      {joinroombool ? (
+        <Grid item>
+          <CustomButton
+            addStyles="joinroombtn"
+            name="Join a Room"
+            onClicked={joinRoomFun}
+          />
+        </Grid>
+      ) : null}
 
       {joinRoom ? (
         <Grid container direction="row">
-          {" "}
-          <Grid item>
+          <Grid item className="enter_code">
             <form>
               <input
                 className="input_field2"
@@ -225,9 +228,11 @@ function LandingPageContainer() {
             </form>
           </Grid>
           <Grid item>
-            <CustomButton addStyles={"entercodecss"} onClick={onJoinRoom}>
-              Join
-            </CustomButton>
+            <CustomButton
+              addStyles={"entercodecss"}
+              onClick={onJoinRoom}
+              name="Join"
+            ></CustomButton>
           </Grid>
         </Grid>
       ) : null}
