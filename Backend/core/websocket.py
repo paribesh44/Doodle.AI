@@ -94,6 +94,10 @@ class ChatMessageTypes(enum.Enum):
     TIMER_RESET: int = 16
     USER_CORRECTLY_GUESS_WORD_GIVE_SCORE: int = 17
     STROKE_FINISH: int = 18
+    CLEAR_ALL_BACKEND_VARIABLES: int = 19
+    ALL_USER_GUESSED_DRAWIG_BEFORE_TIMEUPS: int = 20
+    DISABLE_TIME_AFTER_ALL_USER_PREDICT_BEFORE_TIME: int = 21
+    RESTART_GAME: int = 22
     
 class Message(BaseModel):
     msg_type: int
@@ -111,6 +115,7 @@ class WebSocketManager:
         self.AIGuessedWords = []
         self.wordCorrectlyGuessedPlayers = []
         self.totalNoPlayers = 0
+        self.disableGiveScoreFun = False
         # NOTE NOTE NOTE NOTE once the drawing turn is finished we need to re-initilize this array to [].
         self.mainStroke = []
         self.words_test = ["sun", "laptop", "axe", "bridge", "arm", "sock"]
@@ -167,8 +172,8 @@ class WebSocketManager:
 
         # drop any drawings that are linear along one axis
         arange = np.array(amax) - np.array(amin)
-        if np.min(arange) == 0:
-            raise ValueError('bad range of values')
+        # if np.min(arange) == 0:
+        #     raise ValueError('bad range of values')
 
         arange = np.max(arange)
         output = []
@@ -233,7 +238,7 @@ class WebSocketManager:
         playerIndex = players.index(user_info.username)
 
         # update the corresponding score
-        scores[playerIndex] = round(score)
+        scores[playerIndex] += round(score)
 
         # update in database
         room_info.update({"score": scores})
@@ -256,22 +261,26 @@ class WebSocketManager:
         await self.broadcast(data={"msg_type":5, "data":room_info_dict, "user_id": user_id, "username": user_info.username}, room_id=room_id)
 
     async def drawingAI(self, websocket: WebSocket, data: str, user_id: int, room_id: str, msg_type: int, db:any):
-        # print(data)
         mainStroke = []
         strokeWrapper = []
 
-        strokeWrapper.append(data["strokeX"])
-        strokeWrapper.append(data["strokeY"])
-        strokeWrapper.append(data["strokeT"])
+        if (len(data["strokeX"]) != 0):
+            strokeWrapper.append(data["strokeX"])
+            strokeWrapper.append(data["strokeY"])
+            strokeWrapper.append(data["strokeT"])
+        else:
+            return
 
         self.mainStroke.append(strokeWrapper)
 
         # print("main Stroke: ", self.mainStroke)
 
         finalStroke = [self.mainStroke]
+        print("finalStroke: ", finalStroke)
 
         simplified_drawings = []
         for drawing in finalStroke:
+            print("for loop")
             simplified_drawing = self.normalize_resample_simplify(drawing)
             simplified_drawings.append(simplified_drawing)
 
@@ -319,6 +328,8 @@ class WebSocketManager:
         percentages = [round(val * 100, 2) for val in percentage]
         print(percentages[:3])
 
+        # disable calling "give_score" function once it has been called.
+
         # if first guess of te AI is not correct then store that in a variable(list) and for another guess is also the same then show another guess and continue so on.
         AIword = top_3_pred[0][0]
 
@@ -335,10 +346,14 @@ class WebSocketManager:
         else:
             self.AIGuessedWords.append(top_3_pred[0][0])
 
-        # print(AIword)
+        print("Ai word: ",AIword)
+
+        
 
         
         if self.choosenGuessWord != self.AIChoosenWord:
+            print("is not true")
+            print("aaaa: ", AIword)
             msg_instance = Message(
                 msg_type = ChatMessageTypes.AI_GUESS.value,
                 data = AIword
@@ -349,11 +364,30 @@ class WebSocketManager:
             )
         # if AI predicts the word correctly then store that info to "self.wordCorrectlyGuessedPlayers"
         else:
-            user_info = db.query(user.User).filter(user.User.username == "AI").first()
-            await self.giveScore(room_id=room_id, user_id=user_info.id, data_userId=user_info.id, time=18, noPlayers=self.totalNoPlayers+1, db=db)
+            print("yaha pugo ta")
+            if self.disableGiveScoreFun == False:
+                print("give score function calling.")
+                user_info = db.query(user.User).filter(user.User.username == "AI").first()
+                await self.giveScore(room_id=room_id, user_id=user_info.id, data_userId=user_info.id, time=18, noPlayers=self.totalNoPlayers+1, db=db)
+                
+                if len(self.wordCorrectlyGuessedPlayers) == self.totalNoPlayers:
+                    msg_instance = Message(
+                        msg_type=21,
+                        data=True,
+                        user=user_id,
+                        username=user_info.username,
+                        time = datetime.utcnow()
+                    )
+
+                    await self.broadcast(
+                        msg_instance.dict(exclude_none=True), room_id
+                    )
 
         if self.choosenGuessWord != self.AIChoosenWord:
+            print("ye is not true")
             self.AIChoosenWord = AIword
+        else:
+            self.disableGiveScoreFun = True
 
         # print("AI guesses: ", self.AIGuessedWords)
         # print("AI chhoosen word: ", self.AIChoosenWord)
@@ -517,8 +551,7 @@ class WebSocketManager:
                 msg_instance.dict(exclude_none=True), room_id
             )
 
-        if msg_type == ChatMessageTypes.STROKE_FINISH.value:
-            print(data)
+        elif msg_type == ChatMessageTypes.STROKE_FINISH.value:
             msg_instance = Message(
                 msg_type=msg_type,
                 data=data,
@@ -542,6 +575,85 @@ class WebSocketManager:
             #     except Exception as e:
             #         pass
         
+        elif msg_type == ChatMessageTypes.ALL_USER_GUESSED_DRAWIG_BEFORE_TIMEUPS.value:
+
+            if len(self.wordCorrectlyGuessedPlayers) == data-1:
+                msg_instance = Message(
+                    msg_type=21,
+                    data=True,
+                    user=user_id,
+                    username=user_info.username,
+                    time = datetime.utcnow()
+                )
+
+                await self.broadcast(
+                    msg_instance.dict(exclude_none=True), room_id
+                )
+        
+        elif msg_type == ChatMessageTypes.RESTART_GAME.value:
+            room_info = db.query(room.Room).filter(room.Room.room_id == room_id)
+
+            # make first element of the turn list True and other element False
+            turn = room_info.first().turn
+            turn = [True] + [False] * (len(turn) - 1)
+
+            # make all element of the score list 0.
+            score = room_info.first().score
+            score = [0] * (len(score))
+
+            room_info.update({"score": score, "turn": turn})
+            db.commit()
+
+            turn = room_info.first().turn
+
+            players = room_info.first().players
+
+            print("User turn: ", players[0])
+            print("turn: ", turn)
+
+            user_turn = db.query(user.User).filter(user.User.username==players[0]).first()
+
+            turn_dict_dict = {"turn_user_id": user_turn.id, "turn": turn[0], "turn_username": players[0]}
+            data={"msg_type":8, "data":turn_dict_dict, "user_id": user_id, "username": user_info.username}
+
+            # Turn data
+            msg_instance = Message(
+                msg_type = 8,
+                data = turn_dict_dict,
+                user_id = user_id
+            )
+
+            await self.broadcast(
+                msg_instance.dict(exclude_none=True), room_id
+            )
+
+            # Remove "ResultBox" and go back to home page.
+            msg_instance = Message(
+                msg_type = 14,
+                data = "restart"
+            )
+
+            await self.broadcast(
+                msg_instance.dict(exclude_none=True), room_id
+            )
+
+            # Member Bar
+            users_info = db.query(user.User).filter(or_(
+                    *[user.User.username == player for player in room_info.first().players]
+                )).all()
+            
+            avatars = [] 
+            for i in range(len(users_info)):
+                avatars.append(users_info[i].avatar)
+
+            avatars = avatars[1:] + [avatars[0]]
+
+            room_info_dict = room_info.first().__dict__
+            room_info_dict["avatars"] = avatars
+
+            await self.broadcast(data={"msg_type":5, "data":room_info_dict, "user_id": user_id, "username": user_info.username}, room_id=room_id)
+
+        
         elif msg_type == ChatMessageTypes.CHOOSEN_WORD.value:
 
             if data != "yes":
@@ -557,17 +669,14 @@ class WebSocketManager:
             await self.broadcast(
                 msg_instance.dict(exclude_none=True), room_id
             )
-
-            # connections = [i["websocket"] for i in self.room_connections[room_id] if i != websocket]
-
-            # encoded_data = jsonable_encoder(msg_instance)
-
-            # for connection in connections:
-            #     # print("websocket ", connection)
-            #     try:
-            #         await connection.send_json(encoded_data)
-            #     except Exception as e:
-            #         pass
+        elif msg_type == ChatMessageTypes.CLEAR_ALL_BACKEND_VARIABLES.value:
+            self.choosenGuessWord = ""
+            self.AIChoosenWord = ""
+            self.AIGuessedWords = []
+            self.wordCorrectlyGuessedPlayers = []
+            self.totalNoPlayers = 0
+            self.mainStroke = []
+            self.disableGiveScoreFun = False
 
         elif msg_type == ChatMessageTypes.START_DRAWING_MESSAGE.value:
             print("yaha pugo ki xina ta")
@@ -613,7 +722,6 @@ class WebSocketManager:
         
         # if the msg_type is canvas_drawing then send the data to everyone expect the own.
         elif msg_type == ChatMessageTypes.CANVAS_DRAWING.value:
-            print(data)
             msg_instance = Message(
                 msg_type=msg_type,
                 data=data,
@@ -675,6 +783,7 @@ class WebSocketManager:
             self.AIChoosenWord = ""
             self.AIGuessedWords = []
             self.wordCorrectlyGuessedPlayers = []
+            self.disableGiveScoreFun = False
             print("Main stroke after: ", self.mainStroke)
 
             msg_instance = Message(

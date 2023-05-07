@@ -84,9 +84,10 @@ function Joining() {
                 <MemberBar />
               </Grid>
                 <Grid>
+                  {/* {console.log("onePersonDrawingTurnFinish: ", onePersonDrawingTurnFinish)} */}
                   {drawingAllFinish
                   ? <ResultBox />
-                  : onePersonDrawingTurnFinish 
+                  : onePersonDrawingTurnFinish
                   ? (<OneDrawFinish/>)
                   : start ? (
                     <DrawingTurn />

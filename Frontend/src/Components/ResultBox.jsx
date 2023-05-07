@@ -9,7 +9,7 @@ import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 
 function ResultBox() {
 
-  const { userId, turn, drawingAllFinish, userSelfMessage } =
+  const { userId, turn, drawingAllFinish, userSelfMessage, allTurnFinished } =
     useContext(WebSocketContext);
 
   return (
@@ -53,7 +53,10 @@ function ResultBox() {
               })}
             </Grid>
           </Grid>
-          <CustomButton name="Game Restart" addStyles={"waiting_start"} />
+          <CustomButton 
+          name="Game Restart" 
+          addStyles={"waiting_start"} 
+          onClicked={allTurnFinished}/>
         </Grid>
           
       </Grid>
