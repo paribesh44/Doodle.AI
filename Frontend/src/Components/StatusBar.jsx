@@ -94,15 +94,17 @@ function StatusBar() {
         </Grid>
       </Grid>
       <Grid item>
-      {console.log(timesUp)}
-      {console.log(timerClock)}
+      {/* {console.log(timesUp)}
+      {console.log(timerClock)} */}
       {timesUp ? (
           "O"
         ) : (
           <Grid item className="app_desc">
-            {console.log("aa nai pugea jasto xa")}
-            {timerClock}
-            sambu
+            {/* {console.log("aa nai pugea jasto xa")}
+            {console.log(timerClock)} */}
+            <h4 style={{
+              position:"absolute"
+            }}> <p style={{display:"none"}}>h</p>{timerClock} </h4>
           </Grid>
         )}
       </Grid>

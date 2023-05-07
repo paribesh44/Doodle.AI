@@ -46,7 +46,8 @@ function App() {
     giveUserScoreFun,
     strokeFinished,
     setStrokeFinished,
-    oneStrokeFinished
+    oneStrokeFinished,
+    allTurnFinished
   ] = useGame();
 
   const websocket_context_value = useMemo(
@@ -90,7 +91,8 @@ function App() {
       giveUserScoreFun,
       strokeFinished,
       setStrokeFinished,
-      oneStrokeFinished
+      oneStrokeFinished,
+      allTurnFinished
     }),
     [
       sendMessage,
@@ -132,7 +134,8 @@ function App() {
       giveUserScoreFun,
       strokeFinished,
       setStrokeFinished,
-      oneStrokeFinished
+      oneStrokeFinished,
+      allTurnFinished
     ]
   );
 

@@ -98,6 +98,7 @@ function Canvas() {
           contextRef.current.lineWidth = pensize;
           contextRef.current.lineCap = "round";
           contextRef.current.strokeStyle = pencolor;
+          console.log(drawingHistory)
 
           if (strokeFinished) {
             contextRef.current.lineTo(drawingHistory.data.offsetX, drawingHistory.data.offsetY);
@@ -106,8 +107,8 @@ function Canvas() {
             // contextRef.current.moveTo(drawingHistory.data.offsetX, drawingHistory.data.offsetY);
           } else {
             contextRef.current.lineTo(drawingHistory.data.offsetX, drawingHistory.data.offsetY);
-            // contextRef.current.stroke();
-            // contextRef.current.beginPath();
+            contextRef.current.stroke();
+            contextRef.current.beginPath();
             contextRef.current.moveTo(drawingHistory.data.offsetX, drawingHistory.data.offsetY);
         
           }
@@ -127,7 +128,6 @@ function Canvas() {
     // console.log(nativeEvent);
     setisDrawing(true);
     draw(nativeEvent);
-    console.log("start fuctio ai kam gareko xaia ki k")
     oneStrokeFinished("no")
   };
 

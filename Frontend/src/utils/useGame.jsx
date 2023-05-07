@@ -19,7 +19,11 @@ const ChatMessageTypes = {
     ONE_PERSON_DRAWING_TURN_FINISH: 15,
     TIMER_RESET: 16,
     USER_CORRECTLY_GUESS_WORD_GIVE_SCORE: 17,
-    STROKE_FINISH: 18
+    STROKE_FINISH: 18,
+    CLEAR_ALL_BACKEND_VARIABLES: 19,
+    ALL_USER_GUESSED_DRAWIG_BEFORE_TIMEUPS: 20,
+    DISABLE_TIME_AFTER_ALL_USER_PREDICT_BEFORE_TIME: 21,
+    RESTART_GAME: 22
   };
 
 const useGame = () => {
@@ -67,13 +71,19 @@ const useGame = () => {
       } else if(data.msg_type == ChatMessageTypes.CHOOSEN_WORD) {
         console.log("choosen word: ", data)
         if (data.data == "yes") {
+          console.log("what is up brother")
           setChoosenWord(null);
+          // websocket.send(JSON.stringify({msg_type:19, data:true}))
         } else {
           setChoosenWord(data);
         }
       } else if(data.msg_type == ChatMessageTypes.DRAWING_TURN_ALL_FINISH) {
         console.log("sabai finish vayeko ho ta")
-        setDrawingAllFinish(true);
+        if (data.data == "restart") {
+          setDrawingAllFinish(false);
+        } else {
+          setDrawingAllFinish(true);
+        }
       } else if(data.msg_type == ChatMessageTypes.ONE_PERSON_DRAWING_TURN_FINISH) {
         if(data.data == "finish") {
           setOnePersonDrawingTurnFinish(true);
@@ -92,6 +102,10 @@ const useGame = () => {
         } else if (data.data == "no") {
           setStrokeFinished(false)
         }
+      } else if (data.msg_type == ChatMessageTypes.DISABLE_TIME_AFTER_ALL_USER_PREDICT_BEFORE_TIME) {
+        console.log("whatis Up")
+        setTimerClock(0)
+        setTimesUp(true)
       }
     };
 
@@ -153,11 +167,18 @@ const useGame = () => {
     console.log("score de la")
     console.log(userSelfMessage.data.players.length)
     websocket.send(JSON.stringify({msg_type:17, data:{"userId": userId, "time": timerClock, "noPlayers": userSelfMessage.data.players.length}}))
+    websocket.send(JSON.stringify({msg_type:20, data:userSelfMessage.data.players.length}))
   }
 
   function oneStrokeFinished(data) {
-    console.log(data)
     websocket.send(JSON.stringify({msg_type: 18, data:data}))
+  }
+
+  function allTurnFinished() {
+    websocket.send(JSON.stringify({msg_type: 22, data:true}))
+    websocket.send(JSON.stringify({msg_type: 15, data:"not-finish"}))
+    websocket.send(JSON.stringify({msg_type: 13, data:"yes"}))
+    websocket.send(JSON.stringify({msg_type:16, data:"reset"}))
   }
 
   return [
@@ -200,7 +221,8 @@ const useGame = () => {
     giveUserScoreFun,
     strokeFinished,
     setStrokeFinished,
-    oneStrokeFinished
+    oneStrokeFinished,
+    allTurnFinished
   ];
 };
 export default useGame;
