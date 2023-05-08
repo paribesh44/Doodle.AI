@@ -26,9 +26,10 @@
 }
 
 .check{
-    height: 100%; 
+    height: 500px; 
     width: 100%;
-    /* outline:1px solid black; */
+    padding-top: 8px;
+    /* outline:1px solid lime; */
     overflow-y: scroll;
 }
 ::-webkit-scrollbar {
@@ -37,12 +38,12 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #233853;
 }
 
   /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #233853;
+    background: #f1f1f1;
 }
   
 /* Handle on hover */
@@ -102,6 +103,8 @@
     bottom: 0;
     position: absolute;  
     width: 100%; 
+    /* outline: 1px solid lime; */
+    /* background-color: #142336; */
 }
 
 .chat_box{
@@ -112,6 +115,9 @@
     border: 1px solid white;
     font-size: 0.9em;
     padding: 0.5em 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .chat_box:focus{
