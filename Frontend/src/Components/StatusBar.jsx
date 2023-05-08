@@ -2,8 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import "./StatusBar.css";
 import { WebSocketContext } from "../utils/contexts/WebSocketContext";
+import { TfiAlarmClock } from "react-icons/tfi";
+import sound from "./../assets/sounds/10sec.mp3";
 
 function StatusBar() {
+  const [tensec, settensec] = useState(false);
   const {
     timerClock,
     setTimerClock,
@@ -19,7 +22,23 @@ function StatusBar() {
     turnFinished,
   } = useContext(WebSocketContext);
 
+  // if (timerClock <= 28) {
+  //   settensec(true);
+  // }
+
+  // if (tensec) {
+  //   new Audio(sound).play();
+  // }
   // let [timerClock, setTimerClock] = useState(5);
+
+  // const customIcon = (props) => {
+  //   return (
+  //     <div>
+  //       <CiTimer />
+  //       <div>props.value</div>
+  //     </div>
+  //   );
+  // };
 
   const underscores = [];
 
@@ -112,10 +131,20 @@ function StatusBar() {
 
         <Grid item>
           {timesUp ? (
-            "TIme's Up"
+            <Grid item className="app_desct">
+              Time's Up
+            </Grid>
           ) : (
             <Grid item className="app_desct">
-              {timerClock}
+              <Grid container direction="row" alignItems={"center"}>
+                <Grid item>
+                  {" "}
+                  <TfiAlarmClock size={30} />
+                </Grid>
+                <Grid item className="insideclock">
+                  {timerClock}
+                </Grid>
+              </Grid>
             </Grid>
           )}
         </Grid>

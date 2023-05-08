@@ -18,14 +18,24 @@ import "../Components/WaitDraw.css";
 import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 import "./DrawFinish.css";
 import { IoTimerOutline } from "react-icons/io5";
-import { Audio } from  'react-loader-spinner'
+import { Audio } from "react-loader-spinner";
 
 function Joining() {
   // const [turn, setTurn] = useState("");
+  const [copied, setcopied] = useState(false);
   const params = useParams();
 
-  const { start, startFun, setRoomId, choosenWord, userId, turn, setTurn, drawingAllFinish, onePersonDrawingTurnFinish } =
-    useContext(WebSocketContext);
+  const {
+    start,
+    startFun,
+    setRoomId,
+    choosenWord,
+    userId,
+    turn,
+    setTurn,
+    drawingAllFinish,
+    onePersonDrawingTurnFinish,
+  } = useContext(WebSocketContext);
 
   useEffect(() => {
     setRoomId(params.roomID);
@@ -53,49 +63,83 @@ function Joining() {
         direction={"column"}
         className="joining_main"
       >
-        {turn == null 
-        ? (
+        {turn == null ? (
           // <></>
           <Audio
-              height = "80"
-              width = "80"
-              radius = "9"
-              color = 'green'
-              ariaLabel = 'three-dots-loading'     
-              wrapperStyle
-              wrapperClass
-            />)
-        :( 
-        <Grid>
-          <Grid item className="inside_name">
-            <img height={50} src={require("../assets/logo.png")} />
-          </Grid>
-          <Grid item className="joining_statusbar">
-            <StatusBar/>
-          </Grid>
-          <Grid item className="main_area">
-            <Grid
-              container
-              direction="row"
-              // justifyContent="center"
-              // alignItems="center"
-            >
-              <Grid item>
-                <MemberBar />
-              </Grid>
+            height="80"
+            width="80"
+            radius="9"
+            color="green"
+            ariaLabel="three-dots-loading"
+            wrapperStyle
+            wrapperClass
+          />
+        ) : (
+          <Grid>
+            <Grid item className="inside_name">
+              <img height={50} src={require("../assets/logo.png")} />
+            </Grid>
+            <Grid item className="joining_statusbar">
+              <StatusBar />
+            </Grid>
+            <Grid item className="main_area">
+              <Grid
+                container
+                direction="row"
+                // justifyContent="center"
+                // alignItems="center"
+              >
+                <Grid item>
+                  <MemberBar />
+                </Grid>
                 <Grid>
                   {/* {console.log("onePersonDrawingTurnFinish: ", onePersonDrawingTurnFinish)} */}
-                  {drawingAllFinish
-                  ? <ResultBox />
-                  : onePersonDrawingTurnFinish
-                  ? (<OneDrawFinish/>)
-                  : start ? (
+                  {drawingAllFinish ? (
+                    <ResultBox />
+                  ) : onePersonDrawingTurnFinish ? (
+                    <OneDrawFinish />
+                  ) : start ? (
                     <DrawingTurn />
                   ) : (
                     <Grid item className="kheni_draw">
                       <Grid item className="waitdraw_root">
                         <Grid container direction="column">
-                          <Grid item className="waiting_draw"></Grid>
+                          <Grid item className="waiting_draw">
+                            {turn.data.turn_user_id == userId &&
+                            turn.data.turn == true ? (
+                              <Grid
+                                container
+                                justifyContent={"center"}
+                                alignItems={"center"}
+                                className="roomcodecont"
+                                direction="column"
+                              >
+                                <Grid item className="roomcodeinvite">
+                                  Invite your Friends !
+                                </Grid>
+                                <Grid item className="codedesc">
+                                  The room code of this game is:
+                                </Grid>
+                                <Grid item>
+                                  <CustomButton
+                                    name={params.roomID}
+                                    addStyles="copytoclip"
+                                    onClick={() => {
+                                      navigator.clipboard.writeText(
+                                        params.roomID
+                                      );
+                                      setcopied(true);
+                                    }}
+                                  />
+                                </Grid>
+                                <Grid item className="copiedalert">
+                                  {copied ? "Room Code copied !" : null}
+                                </Grid>
+                              </Grid>
+                            ) : (
+                              <Grid item> </Grid>
+                            )}
+                          </Grid>
                           <Grid item className="waiting_start">
                             {turn.data.turn_user_id == userId &&
                             turn.data.turn == true ? (
@@ -116,12 +160,12 @@ function Joining() {
                     </Grid>
                   )}
                 </Grid>
-              <Grid item>
-                <ChatBar />
+                <Grid item>
+                  <ChatBar />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
         )}
       </Grid>
     </Grid>

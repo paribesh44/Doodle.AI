@@ -120,6 +120,15 @@ border: 1px solid #233853;
     -moz-box-shadow: 8px 9px 16px -3px rgba(35,56,83,0.59);
     
 }
+.input_field2:hover{
+    /* min-width: 435px;
+    min-height: 21px; */
+    transform: scale(1.05); 
+       box-shadow: 8px 9px 16px -3px rgba(35,56,83,0.59);
+    -webkit-box-shadow: 8px 9px 16px -3px rgba(35,56,83,0.59);
+    -moz-box-shadow: 8px 9px 16px -3px rgba(35,56,83,0.59);
+    
+}
 
 .image_shape{
     width: 150px;
@@ -181,4 +190,16 @@ border: 1px solid #233853;
     height: 50px;
     border-radius: 7px;
     /* padding-left: 10px; */
+    border: none;
+    transition: transform linear 100ms;
+
+}
+
+.entercodecss:hover{
+    transform: scale(1.1); 
+    border: 1px solid #233853;
+    background-color:#58718f;
+    font: #233853;
+
+
 }

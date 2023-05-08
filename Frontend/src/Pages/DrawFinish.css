@@ -8,6 +8,7 @@
 .drawfinish_color {
     width: 930px;
     background: #7a8694;
+    /* opacity: 50%; */
     height: clamp(100px, 590px, 600px);
     /* color: black; */
     /* outline: 1px solid red; */

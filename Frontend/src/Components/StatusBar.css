@@ -29,10 +29,19 @@
 
 .app_desct{
     padding-right: 1em;
+    /* outline: 1px solid lime;  */
+
 }
 
 .topic {
     /* word-wrap: break-word; */
     font-size: 0.5px;
     color: rgb(203, 201, 201);
+}
+
+.insideclock{
+     /* position: absolute;
+    top: 150px; */
+    padding-left: 5px;
+    font-size: 1.3em;
 }

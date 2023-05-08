@@ -35,3 +35,43 @@
 .image_border{
     outline: 1px solid lime;
 }
+
+.roomcodeinvite{
+    font-size: 1.3em;
+    padding-bottom: 1em;
+    font-weight: 500;
+}
+.roomcodecont{
+    /* outline: 1px solid lime; */
+    height: 100%;
+
+    color: #031428;
+}
+
+.codedesc{
+    padding-bottom: 1.3em;
+    font-size: 1.1em;
+
+
+}
+
+.copytoclip{
+    background-color: #233853;
+    color: aliceblue;
+    outline: none;
+    border: none;
+    transition: transform linear 100ms;
+    border-radius: 7px;
+    padding: 0.8em;
+
+}
+
+.copytoclip:hover{
+    transform: scale(1.1);
+
+}
+
+.copiedalert{
+    padding-top: 1em;
+    /* background-color: aliceblue; */
+}
