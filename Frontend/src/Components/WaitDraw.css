@@ -16,8 +16,11 @@
    }
 
 .waiting_start_dont_join{
-    background: #f4d195;
+    background: #A9823D;
+    opacity: 80%;
     box-shadow: none;
     pointer-events: none;
 }
+
+
 

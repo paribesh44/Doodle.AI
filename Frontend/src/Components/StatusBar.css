@@ -1,20 +1,34 @@
 .status_bar_main{
     background:#233853;
-    padding: 0.8em;
     border-radius: 5px;
-    margin-top: 25px;
+    /* margin-top: 25px; */
     width: 100%;
-    height:clamp(60px, 25px, 20px);
+    height:60px ;
+    /* outline: 1px solid lime; */
+}
+
+.status_container{
+    /* outline: 1px solid red; */
+    height: 100%;
+    width: 100%;
+    /* height:60px ; */
+    /* padding-left: 0.8em ; */
 }
 
 .number_members{
-    position: absolute;
+    /* position: absolute; */
+    padding-left: 1em;
+    /* outline: 1px solid lime; */
 }
 
 .status_message{
-    width: 100%;
+    /* width: 100%; */
     /* outline: 1px solid red; */
-    padding-left: 3px;
+    /* padding-left: 3px; */
+}
+
+.app_desct{
+    padding-right: 1em;
 }
 
 .topic {

@@ -152,7 +152,9 @@ border: 1px solid #233853;
 }
 
 .input_field2{
-    min-width: 330px;
+    min-width: 300px;
+    margin-right: 18px;
+    margin-left: 6px;
     padding: 0.8em;
     border-radius: 5px;
     background: #233853;
@@ -167,7 +169,16 @@ border: 1px solid #233853;
     transition: transform linear 100ms;
 }
 
+.input_field2:focus{
+    outline: none;
+}
+
 .entercodecss{
     min-width: 100px;
-    color: red;
+    color: aliceblue;
+    background-color: #a9823d;
+    /* outline: 1px solid red; */
+    height: 50px;
+    border-radius: 7px;
+    /* padding-left: 10px; */
 }

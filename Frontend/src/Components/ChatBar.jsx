@@ -8,7 +8,17 @@ import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 function ChatBar() {
   const [guess, setGuess] = useState("");
 
-  const { giveUserScoreFun, history, drawingAllFinish, sendMessage, userId, choosenWord, guessCorrect, setGuessCorrect, onePersonDrawingTurnFinish } = useContext(WebSocketContext);
+  const {
+    giveUserScoreFun,
+    history,
+    drawingAllFinish,
+    sendMessage,
+    userId,
+    choosenWord,
+    guessCorrect,
+    setGuessCorrect,
+    onePersonDrawingTurnFinish,
+  } = useContext(WebSocketContext);
 
   async function submit(e) {
     e.preventDefault();
@@ -17,9 +27,9 @@ function ChatBar() {
       sendMessage({ msg_type: 3, data: guess, user_id: userId });
       setGuess("");
       if (choosenWord.data.word === guess) {
-        setGuessCorrect(true)
+        setGuessCorrect(true);
         // this function doesnot work for AI
-        giveUserScoreFun()
+        giveUserScoreFun();
       }
     }
   }
@@ -29,7 +39,7 @@ function ChatBar() {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       submit(event);
     }
   };
@@ -43,75 +53,109 @@ function ChatBar() {
           <Grid
             container
             direction="column"
-            alignItems="start"
-            justifyContent="space-evenly"
+            // alignItems="start"
+            // justifyContent="space-evenly"
           >
+            {/* <Grid item></Grid> */}
             {/* {console.log("Mesages ", history)} */}
-            <Grid item xs={11} className="check">
+            <Grid item xs={10} className="check">
               {history.map((val, key) => {
                 return (
                   <Grid
                     item
                     key={key}
-                    className={ choosenWord === null 
-                      ? val.user == userId ? "my_eachmsg" : "each_message"
-                      :choosenWord.data.word === val.data 
-                        ? <></>
-                        : val.user == userId ? "my_eachmsg" : "each_message"
+                    className={
+                      choosenWord === null ? (
+                        val.user == userId ? (
+                          "my_eachmsg"
+                        ) : (
+                          "each_message"
+                        )
+                      ) : choosenWord.data.word === val.data ? (
+                        <></>
+                      ) : val.user == userId ? (
+                        "my_eachmsg"
+                      ) : (
+                        "each_message"
+                      )
                     }
                   >
                     <Grid container direction="row">
                       <Grid item className="sender_name">
-                        { choosenWord === null
-                        ? (val.msg_type===12 
-                          ? <Grid item className="ai_message">AI:</Grid>
-                          : val.data === "connected" || val.data === "disconnected" 
-                            ? null
-                            : val.user === userId 
-                              ? `You: ` 
-                              : `${val.username}: `)
-                        : (choosenWord.data.word === val.data 
-                        ?<></>
-                        :val.msg_type===12 
-                          ? <Grid item className="ai_message">AI:</Grid>
-                          : val.data === "connected" || val.data === "disconnected" 
-                            ? null
-                            : val.user === userId 
-                              ? `You: ` 
-                              : `${val.username}: `)}
+                        {choosenWord === null ? (
+                          val.msg_type === 12 ? (
+                            <Grid item className="ai_message">
+                              AI:
+                            </Grid>
+                          ) : val.data === "connected" ||
+                            val.data === "disconnected" ? null : val.user ===
+                            userId ? (
+                            `You: `
+                          ) : (
+                            `${val.username}: `
+                          )
+                        ) : choosenWord.data.word === val.data ? (
+                          <></>
+                        ) : val.msg_type === 12 ? (
+                          <Grid item className="ai_message">
+                            AI:
+                          </Grid>
+                        ) : val.data === "connected" ||
+                          val.data === "disconnected" ? null : val.user ===
+                          userId ? (
+                          `You: `
+                        ) : (
+                          `${val.username}: `
+                        )}
                       </Grid>
-                      {val.msg_type===12 
-                        ? <Grid item className="ai_message">&nbsp;{val.data}</Grid>
-                        : val.data == "connected" 
-                          ? <Grid item className="joined_message">{val.user == userId ? "You" : val.username} joined the room!</Grid>
-                          : val.data == "disconnected" 
-                            ? <Grid item className="left_message">{val.user == userId ? "You" : val.username} left the room!</Grid>
-                            : choosenWord === null
-                            ? <Grid item>&nbsp;{val.data}</Grid>
-                            : choosenWord.data.word === val.data
-                              ?(<Grid item className="guessCorrect">
-                                {val.user === userId ? "You guessed the word!" : `${val.username} guessed the word!`}
-                                </Grid>)
-                              :<Grid item>&nbsp;{val.data}</Grid>
-                      }
+                      {val.msg_type === 12 ? (
+                        <Grid item className="ai_message">
+                          &nbsp;{val.data}
+                        </Grid>
+                      ) : val.data == "connected" ? (
+                        <Grid item className="joined_message">
+                          {val.user == userId ? "You" : val.username} joined the
+                          room!
+                        </Grid>
+                      ) : val.data == "disconnected" ? (
+                        <Grid item className="left_message">
+                          {val.user == userId ? "You" : val.username} left the
+                          room!
+                        </Grid>
+                      ) : choosenWord === null ? (
+                        <Grid item>&nbsp;{val.data}</Grid>
+                      ) : choosenWord.data.word === val.data ? (
+                        <Grid item className="guessCorrect">
+                          {val.user === userId
+                            ? "You guessed the word!"
+                            : `${val.username} guessed the word!`}
+                        </Grid>
+                      ) : (
+                        <Grid item>&nbsp;{val.data}</Grid>
+                      )}
                     </Grid>
                   </Grid>
                 );
               })}
-              <Grid item className="bottom_chat" xs={1}>
-                { guessCorrect || drawingAllFinish || onePersonDrawingTurnFinish
-                ?<form>
+            </Grid>
+            <Grid item className="bottom_chat" xs={1}>
+              {guessCorrect ||
+              drawingAllFinish ||
+              onePersonDrawingTurnFinish ? (
+                <form>
                   <input
                     disabled
                     className="chat_box"
                     type="text"
                     placeholder="   Enter your Guess Here   "
-                    value = "   Enter your Guess Here   "
+                    value="   Enter your Guess Here   "
                   ></input>
-                  <button disabled className="disablethesubbmit">Submit</button>
+                  <button disabled className="disablethesubbmit">
+                    Submit
+                  </button>
                 </form>
-
-                :<form onSubmit={submit}>
+              ) : (
+                <form onSubmit={submit}>
                   <input
                     className="chat_box"
                     type="text"
@@ -120,10 +164,11 @@ function ChatBar() {
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
                   ></input>
-                  <button type="submit" className="thesubbmit">Submit</button>
+                  <button type="submit" className="thesubbmit">
+                    Submit
+                  </button>
                 </form>
-                }
-              </Grid>
+              )}
             </Grid>
           </Grid>
         </Grid>

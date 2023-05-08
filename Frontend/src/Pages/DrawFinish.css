@@ -1,12 +1,13 @@
 .draw_finishmain{
     width: 100%;
     padding: 1.5em 2em 0em 1.5em  ;
+    color: white;
 }
 
 
 .drawfinish_color {
     width: 930px;
-    background: #35394a;
+    background: #7a8694;
     height: clamp(100px, 590px, 600px);
     /* color: black; */
     /* outline: 1px solid red; */
@@ -15,18 +16,18 @@
 
 .timesup{
     /* outline: 1px solid red; */
-    font-size: 1em;
+    font-size: 1.2em;
 
 }
 .wordwas_cont{
     padding-top: 1.5em;
 }
 .wordwas{
-    font-size: 1.2em;
+    font-size: 1.4em;
 }
 
 .actual_word{
-    font-size: 1.3em;
+    font-size: 1.5em;
     padding-left: 1em;
     color: #f4d195;
 }
@@ -35,7 +36,8 @@
     /* outline: 1px solid lime; */
 
     padding-top: 2em;
-    font-size: 1.1em;
+    font-size: 1.2em;
+    padding-bottom: 1em;
 
 }
 .name_ptscont{
@@ -45,6 +47,6 @@
 }
 
 .pts_score{
-    color: green;
+    color: #7bd77e;
     /* padding-left: 1em; */
 }
