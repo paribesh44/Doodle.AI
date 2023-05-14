@@ -63,12 +63,10 @@
     transition: transform linear 100ms;
     border-radius: 7px;
     padding: 0.8em;
-
 }
 
 .copytoclip:hover{
     transform: scale(1.1);
-
 }
 
 .copiedalert{
