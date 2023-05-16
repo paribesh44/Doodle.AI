@@ -8,6 +8,18 @@ import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 function MemberBar() {
 
   const {userSelfMessage, turn, userId} = useContext(WebSocketContext);
+  const [userName, setUserName] = useState([]);
+
+  const message = async () => {
+    let response_obj = await callAPI({
+      endpoint: `/room/getUsername/${userId}`,
+    });
+    setUserName(response_obj.data);
+  };
+
+  useEffect(() => {
+    message();
+  }, []);
 
   return (
     <Grid item className="memberbar_root">
@@ -17,14 +29,17 @@ function MemberBar() {
 
           return (
             <Grid
+            // turn.data.turn_username
               item
-              className={ turn===null ? "my_info"
-                : turn.data.turn_username == val ? "my_info" : "member_info"}
+              className={ turn===null || userName===null ? "my_info"
+                : userName == val 
+                 ? "my_info" 
+                 : turn.data.turn_username === val ? "turn_info" : "member_info"}
               key={key}
             >
               <Grid container direction="row" justifyContent="center">
                   <Grid item className="rank_number">
-                    #1
+                    #{userSelfMessage.data.rank[key]}
                   </Grid>
                   <Grid item>
                     <Avatar
