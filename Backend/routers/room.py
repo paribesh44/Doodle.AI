@@ -12,6 +12,12 @@ router = APIRouter(
     prefix="/room"
 )
 
+@router.get("/getUsername/{userId}")
+def getUsername(userId: int, db: Session = Depends(database.get_db)):
+    user_info = db.query(user.User).filter(user.User.id == userId).first()
+
+    return user_info.username
+
 @router.post("/create", status_code=status.HTTP_201_CREATED)
 def createRoom(form: roomForm.RoomForm = Depends(), db: Session = Depends(database.get_db)):
     players = []

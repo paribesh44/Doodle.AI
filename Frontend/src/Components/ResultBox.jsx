@@ -39,7 +39,7 @@ function ResultBox() {
                       </Grid>
 
                       <Grid item className="ranking">
-                        #1
+                        #{userSelfMessage.data.rank[key]}
                       </Grid>
                       <Grid item className="ranked_name">
                         {val}

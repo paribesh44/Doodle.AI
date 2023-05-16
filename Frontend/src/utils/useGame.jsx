@@ -93,6 +93,8 @@ const useGame = () => {
       data.msg_type == ChatMessageTypes.ONE_PERSON_DRAWING_TURN_FINISH
     ) {
       if (data.data == "finish") {
+        setTimerClock(0);
+        setTimesUp(true);
         setOnePersonDrawingTurnFinish(true);
       } else if (data.data == "not-finish") {
         setOnePersonDrawingTurnFinish(false);

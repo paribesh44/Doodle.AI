@@ -258,6 +258,11 @@ class WebSocketManager:
         room_info_dict = room_info.first().__dict__
         room_info_dict["avatars"] = avatars
 
+        # rank
+        sorted_scores = sorted(room_info.first().score, reverse=True)
+        ranks = [sorted_scores.index(score) + 1 for score in room_info.first().score]
+        room_info_dict["rank"] = ranks
+
         await self.broadcast(data={"msg_type":5, "data":room_info_dict, "user_id": user_id, "username": user_info.username}, room_id=room_id)
 
     async def drawingAI(self, websocket: WebSocket, data: str, user_id: int, room_id: str, msg_type: int, db:any):
@@ -483,6 +488,11 @@ class WebSocketManager:
         room_info_dict = room_info.first().__dict__
         room_info_dict["avatars"] = avatars
 
+        # rank
+        sorted_scores = sorted(room_info.first().score, reverse=True)
+        ranks = [sorted_scores.index(score) + 1 for score in room_info.first().score]
+        room_info_dict["rank"] = ranks
+
         await self.broadcast(data={"msg_type":5, "data":room_info_dict, "user_id": user_id, "username": user_info.username}, room_id=room_id)
     
 
@@ -650,6 +660,11 @@ class WebSocketManager:
 
             room_info_dict = room_info.first().__dict__
             room_info_dict["avatars"] = avatars
+
+            # rank
+            sorted_scores = sorted(room_info.first().score, reverse=True)
+            ranks = [sorted_scores.index(score) + 1 for score in room_info.first().score]
+            room_info_dict["rank"] = ranks
 
             await self.broadcast(data={"msg_type":5, "data":room_info_dict, "user_id": user_id, "username": user_info.username}, room_id=room_id)
 
@@ -934,6 +949,11 @@ class WebSocketManager:
 
         room_info_dict = room_info.first().__dict__
         room_info_dict["avatars"] = avatars
+
+        # rank
+        sorted_scores = sorted(room_info.first().score, reverse=True)
+        ranks = [sorted_scores.index(score) + 1 for score in room_info.first().score]
+        room_info_dict["rank"] = ranks
 
         print(self.room_connections)
 
