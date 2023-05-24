@@ -1,14 +1,17 @@
 .resultbox_root{
-    width: 100%;
-    padding: 1.5em 2em 0em 1.5em  ;
+    padding: 1.5em 2em 0em 1.5em;
+    height: 599px;
+    /* outline: 1px solid lime; */
     
 }
 
 .resultbox_main{
-    width: 100%;
-    background: #AEB2B6;
-    height: clamp(100px, 550px, 600px);
-    padding-top: 5em;
+    height: 591px;
+    width: 930px;
+    background-color: #AEB2B6;
+    color: black;
+    /* border: 1px solid red; */
+    display: flex;
 }
 
 
@@ -20,8 +23,23 @@
     position: relative;
 }
 
+.ranking_first{
+    padding-top: 5px;
+    font-size: 1.3em;
+    font-weight: 500;
+    padding-bottom: 10px;
+}
+
+.ranking_second{
+    padding-top: 5px;
+    font-size: 1.1em;
+    font-weight: 500;
+    padding-bottom: 10px;
+}
+
 .ranking{
     padding-top: 5px;
+    font: 1.5em;
 }
 
 .ranked_name{
@@ -35,7 +53,9 @@
 }
 
 .each_bottom{
-    padding: 0em 1.3em ;
+    padding-left: 20px;
+    padding-right: 20px;
+    /* outline: 1px solid lime; */
 }
 .bottom_rankers{
     padding-top: 1em;
@@ -52,4 +72,19 @@
 .ranked_namebottom{
     font-size: 1em;
     font-weight: 500;
+}
+
+.first_skip{
+    width: 0px;
+}
+
+.mathi{
+    /* outline: 5px solid lime; */
+    height: 92.2%;
+    padding-top: 70px;
+
+}
+
+.not_first_row{
+    padding-top: 20px;
 }
