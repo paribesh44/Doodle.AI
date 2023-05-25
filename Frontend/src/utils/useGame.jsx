@@ -78,7 +78,6 @@ const useGame = () => {
       if (data.data == "yes") {
         console.log("what is up brother");
         setChoosenWord(null);
-        // websocket.send(JSON.stringify({msg_type:19, data:true}))
       } else {
         setChoosenWord(data);
       }
@@ -103,6 +102,9 @@ const useGame = () => {
       if (data.data == "reset") {
         setTimerClock(30);
         setTimesUp(false);
+
+        // extra
+        setGuessCorrect(false)
       }
     } else if (data.msg_type == ChatMessageTypes.STROKE_FINISH) {
       if (data.data == "yes") {
@@ -117,6 +119,9 @@ const useGame = () => {
       console.log("whatis Up");
       setTimerClock(0);
       setTimesUp(true);
+    } else if (data.msg_type==ChatMessageTypes.RESTART_GAME) {
+      console.log("restart game")
+      restartGameFun()
     }
   };
 
@@ -146,6 +151,11 @@ const useGame = () => {
   const sendMessage = (data) => {
     websocket.send(JSON.stringify(data));
   };
+
+  function restartGameFun() {
+    console.log("function call vayo ta")
+    websocket.send(JSON.stringify({msg_type:19, data:true}))
+  }
 
   async function startFun() {
     websocket.send(JSON.stringify({ msg_type: 6, data: true }));
