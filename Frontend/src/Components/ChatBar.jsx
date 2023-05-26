@@ -18,6 +18,7 @@ function ChatBar() {
     guessCorrect,
     setGuessCorrect,
     onePersonDrawingTurnFinish,
+    turn
   } = useContext(WebSocketContext);
 
   async function submit(e) {
@@ -98,7 +99,7 @@ function ChatBar() {
                           <></>
                         ) : val.msg_type === 12 ? (
                           <Grid item className="ai_message">
-                            AI:
+                            AI:&nbsp;
                           </Grid>
                         ) : val.data === "connected" ||
                           val.data === "disconnected" ? null : val.user ===
@@ -112,6 +113,23 @@ function ChatBar() {
                         <Grid item className="ai_message">
                           &nbsp;{val.data}
                         </Grid>
+                        // <Grid item>
+                        //   {console.log("val.data: ", val.data)}
+                        // {turn.data.turn_user_id === userId 
+                        //    ? (<Grid item className="ai_message">
+                        //       {val.data}
+                        //     </Grid>) 
+                        //    : (choosenWord.data.word !== val.data
+                        //      ? (<Grid item className="ai_message">
+                        //         {val.data}
+                        //       </Grid>) 
+                        //      : (
+                        //       <Grid item className="guessCorrect">
+                        //         AI guessed the word!
+                        //       </Grid>
+                        //      ))}
+                        // </Grid>
+
                       ) : val.data == "connected" ? (
                         <Grid item className="joined_message">
                           {val.user == userId ? "You" : val.username} joined the

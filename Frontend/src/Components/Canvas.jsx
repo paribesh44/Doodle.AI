@@ -72,7 +72,7 @@ function Canvas() {
   const [strokeY, setStrokeY] = useState([]);
   const [strokeT, setStrokeT] = useState([]);
 
-  const {strokeFinished, oneStrokeFinished, sendMessage, userId, drawingHistory,setdrawingHistory, turn, hostDrawing} = useContext(WebSocketContext);
+  const {strokeFinished, restartCanvasAfterClearing, clearDrawingCanvas, clearCanvas, oneStrokeFinished, sendMessage, userId, drawingHistory,setdrawingHistory, turn, hostDrawing} = useContext(WebSocketContext);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -91,13 +91,19 @@ function Canvas() {
 
   useEffect(() => {
     if (turn.data.turn_user_id !== userId) {
+      if (clearDrawingCanvas) {
+        const canvas = canvasRef.current;
+        const context = canvas.getContext("2d");
+        context.fillStyle = "aliceblue";
+        context.fillRect(0, 0, canvas.width * 0.98, canvas.height);
+      }
       if(hostDrawing === "True") {
         if (drawingHistory != null) {
           const canvas = canvasRef.current;
           contextRef.current = canvas.getContext("2d");
-          contextRef.current.lineWidth = pensize;
+          contextRef.current.lineWidth = drawingHistory.data.pensize;
           contextRef.current.lineCap = "round";
-          contextRef.current.strokeStyle = pencolor;
+          contextRef.current.strokeStyle = drawingHistory.data.pencolor;
           console.log(drawingHistory)
 
           if (strokeFinished) {
@@ -119,7 +125,7 @@ function Canvas() {
       }
     }
     
-  }, [drawingHistory,strokeFinished, hostDrawing, isDrawing])
+  }, [drawingHistory,strokeFinished, hostDrawing, isDrawing, clearDrawingCanvas])
 
   const startDrawing = ({ nativeEvent }) => {
     // const { offsetX, offsetY } = nativeEvent;
@@ -127,6 +133,7 @@ function Canvas() {
     // contextRef.current.moveTo(offsetX, offsetY);
     // console.log(nativeEvent);
     setisDrawing(true);
+    restartCanvasAfterClearing()
     draw(nativeEvent);
     oneStrokeFinished("no")
   };
@@ -155,7 +162,7 @@ function Canvas() {
         setStrokeT([...strokeT, date.getMilliseconds()]);
 
         sendMessage({msg_type:10, data:true});
-        sendMessage({msg_type:4, data:{"offsetX":nativeEvent.offsetX, "offsetY":nativeEvent.offsetY}, user_id:userId})
+        sendMessage({msg_type:4, data:{"offsetX":nativeEvent.offsetX, "offsetY":nativeEvent.offsetY, "pencolor": pencolor, "pensize": pensize}, user_id:userId})
 
         const canvas = canvasRef.current;
         contextRef.current = canvas.getContext("2d");
@@ -185,6 +192,7 @@ function Canvas() {
   };
 
   const settoClear = () => {
+    clearCanvas()
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.fillStyle = "aliceblue";
