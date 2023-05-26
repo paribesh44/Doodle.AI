@@ -24,6 +24,7 @@ const ChatMessageTypes = {
   ALL_USER_GUESSED_DRAWIG_BEFORE_TIMEUPS: 20,
   DISABLE_TIME_AFTER_ALL_USER_PREDICT_BEFORE_TIME: 21,
   RESTART_GAME: 22,
+  CLEAR_CANVAS: 23
 };
 
 const useGame = () => {
@@ -42,9 +43,10 @@ const useGame = () => {
   const [onePersonDrawingTurnFinish, setOnePersonDrawingTurnFinish] =
     useState(false);
   const [timesUp, setTimesUp] = useState(false);
-  let [timerClock, setTimerClock] = useState(30);
+  let [timerClock, setTimerClock] = useState(60);
   const [guessCorrect, setGuessCorrect] = useState(false);
   const [strokeFinished, setStrokeFinished] = useState(false);
+  const [clearDrawingCanvas, setClearDrawingCanvas] = useState(false);
 
   const onMessage = (e) => {
     const data = JSON.parse(e.data);
@@ -91,16 +93,16 @@ const useGame = () => {
     } else if (
       data.msg_type == ChatMessageTypes.ONE_PERSON_DRAWING_TURN_FINISH
     ) {
-      if (data.data == "finish") {
+      if (data.data.msg == "finish") {
         setTimerClock(0);
         setTimesUp(true);
         setOnePersonDrawingTurnFinish(true);
-      } else if (data.data == "not-finish") {
+      } else if (data.data.msg == "not-finish") {
         setOnePersonDrawingTurnFinish(false);
       }
     } else if (data.msg_type == ChatMessageTypes.TIMER_RESET) {
       if (data.data == "reset") {
-        setTimerClock(30);
+        setTimerClock(60);
         setTimesUp(false);
 
         // extra
@@ -122,6 +124,12 @@ const useGame = () => {
     } else if (data.msg_type==ChatMessageTypes.RESTART_GAME) {
       console.log("restart game")
       restartGameFun()
+    } else if (data.msg_type==ChatMessageTypes.CLEAR_CANVAS) {
+      if (data.data == "yes") {
+        setClearDrawingCanvas(true)
+      } else if (data.data == "no") {
+        setClearDrawingCanvas(false)
+      }
     }
   };
 
@@ -170,9 +178,17 @@ const useGame = () => {
     setOpenCanvas(true);
   }
 
+  function clearCanvas() {
+    websocket.send(JSON.stringify({msg_type: 23, data: "yes"}))
+  }
+
+  function restartCanvasAfterClearing() {
+    websocket.send(JSON.stringify({msg_type: 23, data: "no"}))
+  }
+
   async function turnFinished() {
     console.log("what is going on!!");
-    websocket.send(JSON.stringify({ msg_type: 15, data: "finish" }));
+    websocket.send(JSON.stringify({ msg_type: 15, data: {msg: "finish", turn_id: turn.data.turn_user_id}}));
     // setOnePersonDrawingTurnFinish(true)
     setStart(false);
     setOpenCanvas(false);
@@ -182,7 +198,7 @@ const useGame = () => {
 
   async function startAgain() {
     console.log("start again");
-    websocket.send(JSON.stringify({ msg_type: 15, data: "not-finish" }));
+    websocket.send(JSON.stringify({ msg_type: 15, data: {msg:"not-finish"} }));
     websocket.send(
       JSON.stringify({
         msg_type: 9,
@@ -271,6 +287,10 @@ const useGame = () => {
     setStrokeFinished,
     oneStrokeFinished,
     allTurnFinished,
+    clearCanvas,
+    setClearDrawingCanvas,
+    clearDrawingCanvas,
+    restartCanvasAfterClearing
   ];
 };
 export default useGame;

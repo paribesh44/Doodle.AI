@@ -47,7 +47,11 @@ function App() {
     strokeFinished,
     setStrokeFinished,
     oneStrokeFinished,
-    allTurnFinished
+    allTurnFinished,
+    clearCanvas,
+    setClearDrawingCanvas,
+    clearDrawingCanvas,
+    restartCanvasAfterClearing
   ] = useGame();
 
   const websocket_context_value = useMemo(
@@ -92,7 +96,11 @@ function App() {
       strokeFinished,
       setStrokeFinished,
       oneStrokeFinished,
-      allTurnFinished
+      allTurnFinished,
+      clearCanvas,
+      setClearDrawingCanvas,
+      clearDrawingCanvas,
+      restartCanvasAfterClearing
     }),
     [
       sendMessage,
@@ -135,7 +143,11 @@ function App() {
       strokeFinished,
       setStrokeFinished,
       oneStrokeFinished,
-      allTurnFinished
+      allTurnFinished,
+      clearCanvas,
+      setClearDrawingCanvas,
+      clearDrawingCanvas,
+      restartCanvasAfterClearing
     ]
   );
 
