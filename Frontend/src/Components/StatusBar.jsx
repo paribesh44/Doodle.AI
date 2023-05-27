@@ -49,6 +49,9 @@ function StatusBar() {
   }
 
   useEffect(() => {
+    console.log("choosenWord: ", choosenWord)
+    console.log("timerclock: ", timerClock)
+    console.log("timesUp: ", timesUp)
     const timer = setInterval(function () {
       // console.log("TimerClock: ", timerClock)
       // console.log("TimesUp: ", timesUp)
