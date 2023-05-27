@@ -251,13 +251,19 @@ def giveWord():
          "stop sign", "mountain", "apple", "bed", "broom", "flower", "spider", "cell phone", "car", "camera", "tree", "moon", "radio", "hat", "pizza",
          "axe", "door", "tent", "umbrella", "line", "cup", "triangle", "basketball", "banana", "calculator", "television", "toothbrush", "pillow",
          "scissors", "t-shirt", "tooth", "alarm clock", "paper clip", "spoon", "microphone", "candle", "pencil", "frying pan", "screwdriver", "helmet",
-         "bridge", "light bulb", "ceiling fan", "key", "donut", "bird", "circle", "beard", "butterfly", "cat", "sock", "ice cream", "moustache",
-         "suitcase", "hammer", "rainbow", "cookie", "lightning", "bicycle", "ant", "arm", "bee", "birthday cake", "bowtie", "bucket", "cactus",
+         "bridge", "light bulb", "ceiling fan", "key", "donut", "bird", "butterfly", "cat", "sock", "ice cream",
+         "suitcase", "hammer", "rainbow", "cookie", "lightning", "bicycle", "ant", "arm", "bee", "birthday cake", "bucket", "cactus",
          "church", "crown", "cruise ship", "dolphin", "drums", "envelope", "fire hydrant", "fireplace", "firetruck", "fish", "flashlight",
          "guitar", "leaf", "octopus", "sea turtle", "windmill"]
     
-    # randomly select 3 words
-    random_words = random.sample(words, 3)
+    # randomly select 3 words 
+    # random.sample(words, 3)
+    random_words = []
+    for i in range(3):
+        random_number = random.randint(0, len(words))
+        if words[random_number] in random_words:
+            random_number = random.randint(0, len(words))
+        random_words.append(words[random_number])
 
     return random_words
     
