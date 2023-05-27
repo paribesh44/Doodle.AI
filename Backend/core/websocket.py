@@ -116,7 +116,6 @@ class WebSocketManager:
         self.AIGuessedWords = []
         self.wordCorrectlyGuessedPlayers = []
         self.totalNoPlayers = 0
-        print("re-initilize vayo jasto xa")
         self.disableGiveScoreFun = False
         self.mainStroke = []
         self.words_test = ["sun", "laptop", "axe", "bridge", "arm", "sock"]
@@ -350,18 +349,21 @@ class WebSocketManager:
         # if first guess of te AI is not correct then store that in a variable(list) and for another guess is also the same then show another guess and continue so on.
         AIword = top_3_pred[0][0]
 
-        if top_3_pred[0][0] in self.AIGuessedWords:
-            AIword = top_3_pred[0][1]
-            if AIword in self.AIGuessedWords:
-                AIword = top_3_pred[0][2]
-                if AIword in self.AIGuessedWords:
-                    AIword = top_3_pred[0][0]
-                else:
-                    self.AIGuessedWords.append(top_3_pred[0][2])
-            else:
-                self.AIGuessedWords.append(top_3_pred[0][1])
-        else:
-            self.AIGuessedWords.append(top_3_pred[0][0])
+        # if top_3_pred[0][0] in self.AIGuessedWords:
+        #     AIword = top_3_pred[0][1]
+        #     if AIword in self.AIGuessedWords:
+        #         AIword = top_3_pred[0][2]
+        #         if AIword in self.AIGuessedWords:
+        #             AIword = top_3_pred[0][0]
+        #         else:
+        #             self.AIGuessedWords.append(top_3_pred[0][2])
+        #     else:
+        #         self.AIGuessedWords.append(top_3_pred[0][1])
+        # else:
+        #     self.AIGuessedWords.append(top_3_pred[0][0])
+        
+        # if AIword not in self.AIGuessedWords:
+        #     self.AIGuessedWords.append(AIword)
 
         # print("Ai word: ",AIword)
 
@@ -369,16 +371,18 @@ class WebSocketManager:
         if self.choosenGuessWord != self.AIChoosenWord:
             # print("is not true")
             # print("aaaa: ", AIword)
-            msg_instance = Message(
-                # msg_type = ChatMessageTypes.AI_GUESS.value,
-                msg_type=3,
-                data = AIword,
-                username = "AI"
-            )
+            if AIword not in self.AIGuessedWords:
+                msg_instance = Message(
+                    # msg_type = ChatMessageTypes.AI_GUESS.value,
+                    msg_type=3,
+                    data = AIword,
+                    username = "AI"
+                )
 
-            await self.broadcast(
-                msg_instance.dict(exclude_none=True), room_id
-            )
+                await self.broadcast(
+                    msg_instance.dict(exclude_none=True), room_id
+                )
+                self.AIGuessedWords.append(AIword)
         # if AI predicts the word correctly then store that info to "self.wordCorrectlyGuessedPlayers"
         else:
             # print("yaha pugo ta")
