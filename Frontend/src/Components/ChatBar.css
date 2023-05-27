@@ -69,16 +69,16 @@
 
  .guessCorrect {
     width: 20em;
-    background: #c9ffb7;
+    background: #c9f4ba;
     margin-bottom: 6px !important;
     margin-top: 0.4em !important;
     padding: 0.4em;
     margin-right: 4px !IMPORTANT;
     border-radius: 3px;
     /* color: #5db33e; */
-    color: rgb(15, 217, 15);
+    color: rgb(4, 149, 4);
     word-wrap: break-word;
-    font-size: 0.9em;
+    font-size: 1.0em;
      /* opacity: 50%; */
  }
 

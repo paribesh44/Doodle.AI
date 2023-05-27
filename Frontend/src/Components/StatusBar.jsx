@@ -82,6 +82,19 @@ function StatusBar() {
   //   }
   // }
 
+  var spaceLength = 0;
+
+  const renderString = () => {
+    return Array.from(choosenWord.data.word).map((char, index) => {
+      if (char === ' ') {
+        spaceLength += 1;
+        return <span key={index}>&nbsp;&nbsp;</span>; // Render a space
+      } else {
+        return <span key={index}>_&nbsp;</span>; // Render an underscore
+      }
+    });
+  }
+
   return (
     <Grid item className="status_bar_main">
       <Grid
@@ -122,7 +135,9 @@ function StatusBar() {
             <Grid item>
               <Grid>GUESS THIS</Grid>
               <Grid>
-                {underscores}&nbsp;<sup>{choosenWord.data.length}</sup>
+                {renderString()}
+                {/* {underscores}&nbsp;<sup>{choosenWord.data.length}</sup> */}
+                <sup>{choosenWord.data.length-spaceLength}</sup>
               </Grid>
             </Grid>
           )}

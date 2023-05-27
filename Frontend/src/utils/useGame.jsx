@@ -53,81 +53,81 @@ const useGame = () => {
     // console.log("Data ", data)
 
     if (
-      data.msg_type == ChatMessageTypes.GUESS_MESSAGE ||
-      data.msg_type == ChatMessageTypes.USER_JOINED ||
-      data.msg_type == ChatMessageTypes.USER_LEFT
+      data.msg_type === ChatMessageTypes.GUESS_MESSAGE ||
+      data.msg_type === ChatMessageTypes.USER_JOINED ||
+      data.msg_type === ChatMessageTypes.USER_LEFT
     ) {
       // setMessages([...messages, data]);
       return data;
-    } else if (data.msg_type == ChatMessageTypes.CANVAS_DRAWING) {
+    } else if (data.msg_type === ChatMessageTypes.CANVAS_DRAWING) {
       // console.log("Canvas drawing: ", data)
       // setDrawing([...drawing, data]);
       return data;
-    } else if (data.msg_type == ChatMessageTypes.USER_SELF_MESSAGE) {
+    } else if (data.msg_type === ChatMessageTypes.USER_SELF_MESSAGE) {
       setUserSelfMessage(data);
-    } else if (data.msg_type == ChatMessageTypes.START_DRAWING_MESSAGE) {
+    } else if (data.msg_type === ChatMessageTypes.START_DRAWING_MESSAGE) {
       setStart(true);
-    } else if (data.msg_type == ChatMessageTypes.ACTIVATE_CANVAS_OF_ALL) {
+    } else if (data.msg_type === ChatMessageTypes.ACTIVATE_CANVAS_OF_ALL) {
       setOpenCanvas(true);
-    } else if (data.msg_type == ChatMessageTypes.CHECK_TURN) {
+    } else if (data.msg_type === ChatMessageTypes.CHECK_TURN) {
       setTurn(data);
-    } else if (data.msg_type == ChatMessageTypes.SEND_DRAWING_TO_OTHER_USERS) {
+    } else if (data.msg_type === ChatMessageTypes.SEND_DRAWING_TO_OTHER_USERS) {
       setHostDrawing(data.data);
-    } else if (data.msg_type == ChatMessageTypes.AI_GUESS) {
+    } else if (data.msg_type === ChatMessageTypes.AI_GUESS) {
       return data;
-    } else if (data.msg_type == ChatMessageTypes.CHOOSEN_WORD) {
+    } else if (data.msg_type === ChatMessageTypes.CHOOSEN_WORD) {
       console.log("choosen word: ", data);
-      if (data.data == "yes") {
+      if (data.data === "yes") {
         console.log("what is up brother");
         setChoosenWord(null);
       } else {
         setChoosenWord(data);
       }
-    } else if (data.msg_type == ChatMessageTypes.DRAWING_TURN_ALL_FINISH) {
+    } else if (data.msg_type === ChatMessageTypes.DRAWING_TURN_ALL_FINISH) {
       console.log("sabai finish vayeko ho ta");
-      if (data.data == "restart") {
+      if (data.data === "restart") {
         setDrawingAllFinish(false);
       } else {
         setDrawingAllFinish(true);
       }
     } else if (
-      data.msg_type == ChatMessageTypes.ONE_PERSON_DRAWING_TURN_FINISH
+      data.msg_type === ChatMessageTypes.ONE_PERSON_DRAWING_TURN_FINISH
     ) {
-      if (data.data.msg == "finish") {
+      if (data.data.msg === "finish") {
         setTimerClock(0);
         setTimesUp(true);
         setOnePersonDrawingTurnFinish(true);
-      } else if (data.data.msg == "not-finish") {
+      } else if (data.data.msg === "not-finish") {
         setOnePersonDrawingTurnFinish(false);
       }
-    } else if (data.msg_type == ChatMessageTypes.TIMER_RESET) {
-      if (data.data == "reset") {
+    } else if (data.msg_type === ChatMessageTypes.TIMER_RESET) {
+      if (data.data === "reset") {
         setTimerClock(60);
         setTimesUp(false);
 
         // extra
         setGuessCorrect(false)
       }
-    } else if (data.msg_type == ChatMessageTypes.STROKE_FINISH) {
-      if (data.data == "yes") {
+    } else if (data.msg_type === ChatMessageTypes.STROKE_FINISH) {
+      if (data.data === "yes") {
         setStrokeFinished(true);
-      } else if (data.data == "no") {
+      } else if (data.data === "no") {
         setStrokeFinished(false);
       }
     } else if (
-      data.msg_type ==
+      data.msg_type ===
       ChatMessageTypes.DISABLE_TIME_AFTER_ALL_USER_PREDICT_BEFORE_TIME
     ) {
       console.log("whatis Up");
       setTimerClock(0);
       setTimesUp(true);
-    } else if (data.msg_type==ChatMessageTypes.RESTART_GAME) {
+    } else if (data.msg_type===ChatMessageTypes.RESTART_GAME) {
       console.log("restart game")
       restartGameFun()
-    } else if (data.msg_type==ChatMessageTypes.CLEAR_CANVAS) {
-      if (data.data == "yes") {
+    } else if (data.msg_type===ChatMessageTypes.CLEAR_CANVAS) {
+      if (data.data === "yes") {
         setClearDrawingCanvas(true)
-      } else if (data.data == "no") {
+      } else if (data.data === "no") {
         setClearDrawingCanvas(false)
       }
     }
@@ -240,7 +240,7 @@ const useGame = () => {
 
   function allTurnFinished() {
     websocket.send(JSON.stringify({ msg_type: 22, data: true }));
-    websocket.send(JSON.stringify({ msg_type: 15, data: "not-finish" }));
+    websocket.send(JSON.stringify({ msg_type: 15, data: {msg:"not-finish"} }));
     websocket.send(JSON.stringify({ msg_type: 13, data: "yes" }));
     websocket.send(JSON.stringify({ msg_type: 16, data: "reset" }));
   }

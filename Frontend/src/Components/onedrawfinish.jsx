@@ -97,7 +97,10 @@ function OneDrawFinish() {
                         {val}
                       </Grid>
                       <Grid item className="pts_score">
-                        + {userSelfMessage.data.score[key]}
+                        {userSelfMessage.data.score[key] >= 0 
+                         ? "+" + userSelfMessage.data.score[key]
+                         : userSelfMessage.data.score[key]}
+                        {/* + {userSelfMessage.data.score[key]} */}
                       </Grid>
                     </Grid>
                   );
