@@ -129,6 +129,9 @@ class WebSocketManager:
          "church", "crown", "cruise ship", "dolphin", "drums", "envelope", "fire hydrant", "fireplace", "firetruck", "fish", "flashlight",
          "guitar", "leaf", "octopus", "sea turtle", "windmill"]
 
+    # The 'resample' function essentially takes a stroke represented by its x and y coordinates and resamples it to obtain a new set of 
+    # coordinates with a specified spacing. The resampling process ensures that the resampled stroke follows the shape of the original 
+    # stroke while adjusting the density of points along the stroke.
     def resample(self, x, y, spacing=1.0):
         output = []
         n = len(x)
@@ -296,7 +299,6 @@ class WebSocketManager:
 
         simplified_drawings = []
         for drawing in finalStroke:
-            print("for loop")
             simplified_drawing = self.normalize_resample_simplify(drawing)
             simplified_drawings.append(simplified_drawing)
 
@@ -389,7 +391,7 @@ class WebSocketManager:
             if self.disableGiveScoreFun == False:
                 # print("give score function calling.")
                 user_info = db.query(user.User).filter(user.User.username == "AI").first()
-                await self.giveScore(room_id=room_id, user_id=user_info.id, data_userId=user_info.id, time=45, noPlayers=self.totalNoPlayers+1, typess=False, db=db)
+                await self.giveScore(room_id=room_id, user_id=user_info.id, data_userId=user_info.id, time=38.5, noPlayers=self.totalNoPlayers+1, typess=False, db=db)
                 
                 if len(self.wordCorrectlyGuessedPlayers) == self.totalNoPlayers:
                     msg_instance = Message(

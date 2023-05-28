@@ -249,10 +249,10 @@ def giveWord():
     words = ["sun", "laptop", "ladder", "eyeglasses", "grapes", "book", "dumbbell", "wristwatch", "shovel", "bread", "table", "tennis racquet",
          "cloud", "chair", "headphones", "eye", "airplane", "snake", "lollipop", "pants", "mushroom", "star", "sword", "clock", "hot dog",
          "stop sign", "mountain", "apple", "bed", "broom", "flower", "spider", "cell phone", "car", "camera", "tree", "moon", "radio", "hat", "pizza",
-         "axe", "door", "tent", "umbrella", "line", "cup", "triangle", "basketball", "banana", "calculator", "television", "toothbrush", "pillow",
-         "scissors", "t-shirt", "tooth", "alarm clock", "paper clip", "spoon", "microphone", "candle", "pencil", "frying pan", "screwdriver", "helmet",
+         "axe", "umbrella", "cup", "basketball", "banana", "calculator", "television", "toothbrush", "pillow",
+         "scissors", "t-shirt", "alarm clock", "paper clip", "spoon", "microphone", "candle", "pencil", "frying pan", "screwdriver", "helmet",
          "bridge", "light bulb", "ceiling fan", "key", "donut", "bird", "butterfly", "cat", "sock", "ice cream",
-         "suitcase", "hammer", "rainbow", "cookie", "lightning", "bicycle", "ant", "arm", "bee", "birthday cake", "bucket", "cactus",
+         "suitcase", "hammer", "rainbow", "cookie", "bicycle", "ant", "arm", "bee", "birthday cake", "bucket", "cactus",
          "church", "crown", "cruise ship", "dolphin", "drums", "envelope", "fire hydrant", "fireplace", "firetruck", "fish", "flashlight",
          "guitar", "leaf", "octopus", "sea turtle", "windmill"]
     
