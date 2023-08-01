@@ -72,7 +72,7 @@ from sklearn.preprocessing import LabelEncoder
 
 # print(room_connections)
 
-model = tf.keras.models.load_model("model/lstm_90_acc.h5", compile=False)
+model = tf.keras.models.load_model("model/lrcn_90_acc.h5", compile=False)
 model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['categorical_accuracy', top_3_accuracy])
 
 class ChatMessageTypes(enum.Enum):
@@ -913,8 +913,10 @@ class WebSocketManager:
                     index = idx
                     turn[idx] = False
                     break
-
+            
+            # when AI turn is included then "index+1 >= len(turn)"
             if index+2 >= len(turn):
+                print("hello")
                 print("sabai ko palo sakeyo")
                 # all the turn finished
                 msg_instance = Message(
@@ -925,14 +927,17 @@ class WebSocketManager:
                 await self.broadcast(
                     msg_instance.dict(exclude_none=True), room_id
                 )
-                    
+            
+            # when AI turn is included then "index < len(turn)"
             if index+1 < len(turn):
                 index += 1
-                if player[index] != "AI":
-                    turn[index] = True
-                else:
-                    turn[index] = False
+                turn[index] = True
+                # if player[index] != "AI":
+                #     turn[index] = True
+                # else:
+                #     turn[index] = False
             else:
+                print("yaha pugeko ho ta")
                 print("sabai ko palo sakeyo")
                 # all the turn finished
                 msg_instance = Message(
@@ -959,6 +964,7 @@ class WebSocketManager:
             print(player[index])
 
             turn_dict_dict = {"turn_user_id": user_turn.id, "turn": turn[index], "turn_username": player[index]}
+            print(turn_dict_dict)
             data={"msg_type":8, "data":turn_dict_dict, "user_id": user_id, "username": user_info.username}
 
             msg_instance = Message(

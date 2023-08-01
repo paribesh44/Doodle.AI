@@ -75,7 +75,7 @@ function Joining() {
             wrapperClass
           />
         ) : (
-          <Grid>
+          <Grid  container justifyContent="center" alignItems="center">
             <Grid item className="inside_name">
               <img height={50} src={require("../assets/logo.png")} />
             </Grid>
