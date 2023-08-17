@@ -43,7 +43,7 @@ const useGame = () => {
   const [onePersonDrawingTurnFinish, setOnePersonDrawingTurnFinish] =
     useState(false);
   const [timesUp, setTimesUp] = useState(false);
-  let [timerClock, setTimerClock] = useState(60);
+  let [timerClock, setTimerClock] = useState(5);
   const [guessCorrect, setGuessCorrect] = useState(false);
   const [strokeFinished, setStrokeFinished] = useState(false);
   const [clearDrawingCanvas, setClearDrawingCanvas] = useState(false);
@@ -102,7 +102,7 @@ const useGame = () => {
       }
     } else if (data.msg_type === ChatMessageTypes.TIMER_RESET) {
       if (data.data === "reset") {
-        setTimerClock(60);
+        setTimerClock(5);
         setTimesUp(false);
 
         // extra
