@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import { Grid } from "@mui/material";
 import "./ChatBar.css";
 import { dummymessages } from "./dummymessages.jsx";
@@ -8,6 +8,11 @@ import { WebSocketContext } from "../utils/contexts/WebSocketContext";
 function ChatBar() {
   const [guess, setGuess] = useState("");
 
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
   const {
     giveUserScoreFun,
     history,
@@ -18,8 +23,20 @@ function ChatBar() {
     guessCorrect,
     setGuessCorrect,
     onePersonDrawingTurnFinish,
-    turn
+    turn,
   } = useContext(WebSocketContext);
+
+  useEffect(() => {
+    scrollToBottom();
+    // if (messagesEndRef && messagesEndRef.current) {
+    //   const element = messagesEndRef.current;
+    //   element.scroll({
+    //     top: element.scrollHeight,
+    //     left: 0,
+    //     behavior: "smooth",
+    //   });
+    // }
+  }, [guess, history]);
 
   async function submit(e) {
     e.preventDefault();
@@ -92,13 +109,12 @@ function ChatBar() {
                             val.data === "disconnected" ? null : val.user ===
                             userId ? (
                             `You: `
-                          ) : (val.username==="AI"
-                              ? (
-                                <Grid item className="ai_message">
-                                  AI:&nbsp;
-                                </Grid>
-                              )
-                            : `${val.username}: `
+                          ) : val.username === "AI" ? (
+                            <Grid item className="ai_message">
+                              AI:&nbsp;
+                            </Grid>
+                          ) : (
+                            `${val.username}: `
                           )
                         ) : choosenWord.data.word === val.data ? (
                           <></>
@@ -110,53 +126,52 @@ function ChatBar() {
                           val.data === "disconnected" ? null : val.user ===
                           userId ? (
                           `You: `
-                        ) : (val.username==="AI"
-                              ? (
-                                <Grid item className="ai_message">
-                                  AI:&nbsp;
-                                </Grid>
-                              )
-                            : `${val.username}: `
-                          )}
+                        ) : val.username === "AI" ? (
+                          <Grid item className="ai_message">
+                            AI:&nbsp;
+                          </Grid>
+                        ) : (
+                          `${val.username}: `
+                        )}
                       </Grid>
                       {val.msg_type === 12 ? (
                         <Grid item className="ai_message">
-                            &nbsp;{val.data}
-                          </Grid>
-                        // turn.data.turn_user_id  === userId 
-                        // ? (
-                        //   <Grid item className="ai_message">
-                        //     &nbsp;{val.data}
-                        //   </Grid>
-                        // )
-                        // : 
-                        // choosenWord.data.word !== val.data
-                        //  ? (<Grid item className="ai_message">
-                        //       &nbsp;{val.data}
-                        //     </Grid>
-                        //     )
-                        //   : (<Grid item className="guessCorrect">
-                        //       AI guessed the word!
-                        //      </Grid>)
-                        
-                        // <Grid item>
-                        //   {console.log("val.data: ", val.data)}
-                        // {turn.data.turn_user_id === userId 
-                        //    ? (<Grid item className="ai_message">
-                        //       {val.data}
-                        //     </Grid>) 
-                        //    : (choosenWord.data.word !== val.data
-                        //      ? (<Grid item className="ai_message">
-                        //         {val.data}
-                        //       </Grid>) 
-                        //      : (
-                        //       <Grid item className="guessCorrect">
-                        //         AI guessed the word!
-                        //       </Grid>
-                        //      ))}
-                        // </Grid>
+                          &nbsp;{val.data}
+                        </Grid>
+                      ) : // turn.data.turn_user_id  === userId
+                      // ? (
+                      //   <Grid item className="ai_message">
+                      //     &nbsp;{val.data}
+                      //   </Grid>
+                      // )
+                      // :
+                      // choosenWord.data.word !== val.data
+                      //  ? (<Grid item className="ai_message">
+                      //       &nbsp;{val.data}
+                      //     </Grid>
+                      //     )
+                      //   : (<Grid item className="guessCorrect">
+                      //       AI guessed the word!
+                      //      </Grid>)
 
-                      ) : val.data == "connected" ? (
+                      // <Grid item>
+                      //   {console.log("val.data: ", val.data)}
+                      // {turn.data.turn_user_id === userId
+                      //    ? (<Grid item className="ai_message">
+                      //       {val.data}
+                      //     </Grid>)
+                      //    : (choosenWord.data.word !== val.data
+                      //      ? (<Grid item className="ai_message">
+                      //         {val.data}
+                      //       </Grid>)
+                      //      : (
+                      //       <Grid item className="guessCorrect">
+                      //         AI guessed the word!
+                      //       </Grid>
+                      //      ))}
+                      // </Grid>
+
+                      val.data == "connected" ? (
                         <Grid item className="joined_message">
                           {val.user == userId ? "You" : val.username} joined the
                           room!
@@ -168,29 +183,38 @@ function ChatBar() {
                         </Grid>
                       ) : choosenWord === null ? (
                         // <Grid item>&nbsp;{val.data}</Grid>
-                        val.username==="AI"
-                        ? <Grid item className="ai_message">&nbsp;{val.data}</Grid>
-                        :<Grid item>&nbsp;{val.data}</Grid>
+                        val.username === "AI" ? (
+                          <Grid item className="ai_message">
+                            &nbsp;{val.data}
+                          </Grid>
+                        ) : (
+                          <Grid item>&nbsp;{val.data}</Grid>
+                        )
                       ) : choosenWord.data.word === val.data ? (
                         <Grid item className="guessCorrect">
                           {val.user === userId
                             ? "You guessed the word!"
-                            : val.username!=="AI"
-                              ? `${val.username} guessed the word!`
-                              : (turn.data.turn_user_id !== userId
-                                ? "AI guessed the word!"
-                                : val.data)}
+                            : val.username !== "AI"
+                            ? `${val.username} guessed the word!`
+                            : turn.data.turn_user_id !== userId
+                            ? "AI guessed the word!"
+                            : val.data}
+                        </Grid>
+                      ) : val.username === "AI" ? (
+                        <Grid item className="ai_message">
+                          &nbsp;{val.data}
                         </Grid>
                       ) : (
-                        val.username==="AI"
-                        ? <Grid item className="ai_message">&nbsp;{val.data}</Grid>
-                        :<Grid item>&nbsp;{val.data}</Grid>
+                        <Grid item>&nbsp;{val.data}</Grid>
                       )}
                     </Grid>
+                    <div ref={messagesEndRef}></div>
                   </Grid>
                 );
               })}
+              {/* <div ref={messagesEndRef}></div> */}
             </Grid>
+
             <Grid item className="bottom_chat" xs={1}>
               {guessCorrect ||
               drawingAllFinish ||

@@ -49,9 +49,9 @@ function StatusBar() {
   }
 
   useEffect(() => {
-    console.log("choosenWord: ", choosenWord)
-    console.log("timerclock: ", timerClock)
-    console.log("timesUp: ", timesUp)
+    console.log("choosenWord: ", choosenWord);
+    console.log("timerclock: ", timerClock);
+    console.log("timesUp: ", timesUp);
     const timer = setInterval(function () {
       // console.log("TimerClock: ", timerClock)
       // console.log("TimesUp: ", timesUp)
@@ -89,14 +89,14 @@ function StatusBar() {
 
   const renderString = () => {
     return Array.from(choosenWord.data.word).map((char, index) => {
-      if (char === ' ') {
+      if (char === " ") {
         spaceLength += 1;
         return <span key={index}>&nbsp;&nbsp;</span>; // Render a space
       } else {
         return <span key={index}>_&nbsp;</span>; // Render an underscore
       }
     });
-  }
+  };
 
   return (
     <Grid item className="status_bar_main">
@@ -140,7 +140,7 @@ function StatusBar() {
               <Grid>
                 {renderString()}
                 {/* {underscores}&nbsp;<sup>{choosenWord.data.length}</sup> */}
-                <sup>{choosenWord.data.length-spaceLength}</sup>
+                <sup>{choosenWord.data.length - spaceLength}</sup>
               </Grid>
             </Grid>
           )}
@@ -157,7 +157,7 @@ function StatusBar() {
               <Grid container direction="row" alignItems={"center"}>
                 <Grid item>
                   {" "}
-                  <TfiAlarmClock size={30} />
+                  <TfiAlarmClock size={25} />
                 </Grid>
                 <Grid item className="insideclock">
                   {timerClock}

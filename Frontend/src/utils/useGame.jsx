@@ -24,7 +24,7 @@ const ChatMessageTypes = {
   ALL_USER_GUESSED_DRAWIG_BEFORE_TIMEUPS: 20,
   DISABLE_TIME_AFTER_ALL_USER_PREDICT_BEFORE_TIME: 21,
   RESTART_GAME: 22,
-  CLEAR_CANVAS: 23
+  CLEAR_CANVAS: 23,
 };
 
 const useGame = () => {
@@ -43,7 +43,7 @@ const useGame = () => {
   const [onePersonDrawingTurnFinish, setOnePersonDrawingTurnFinish] =
     useState(false);
   const [timesUp, setTimesUp] = useState(false);
-  let [timerClock, setTimerClock] = useState(5);
+  let [timerClock, setTimerClock] = useState(60);
   const [guessCorrect, setGuessCorrect] = useState(false);
   const [strokeFinished, setStrokeFinished] = useState(false);
   const [clearDrawingCanvas, setClearDrawingCanvas] = useState(false);
@@ -102,11 +102,11 @@ const useGame = () => {
       }
     } else if (data.msg_type === ChatMessageTypes.TIMER_RESET) {
       if (data.data === "reset") {
-        setTimerClock(5);
+        setTimerClock(60);
         setTimesUp(false);
 
         // extra
-        setGuessCorrect(false)
+        setGuessCorrect(false);
       }
     } else if (data.msg_type === ChatMessageTypes.STROKE_FINISH) {
       if (data.data === "yes") {
@@ -121,14 +121,14 @@ const useGame = () => {
       console.log("whatis Up");
       setTimerClock(0);
       setTimesUp(true);
-    } else if (data.msg_type===ChatMessageTypes.RESTART_GAME) {
-      console.log("restart game")
-      restartGameFun()
-    } else if (data.msg_type===ChatMessageTypes.CLEAR_CANVAS) {
+    } else if (data.msg_type === ChatMessageTypes.RESTART_GAME) {
+      console.log("restart game");
+      restartGameFun();
+    } else if (data.msg_type === ChatMessageTypes.CLEAR_CANVAS) {
       if (data.data === "yes") {
-        setClearDrawingCanvas(true)
+        setClearDrawingCanvas(true);
       } else if (data.data === "no") {
-        setClearDrawingCanvas(false)
+        setClearDrawingCanvas(false);
       }
     }
   };
@@ -161,8 +161,8 @@ const useGame = () => {
   };
 
   function restartGameFun() {
-    console.log("function call vayo ta")
-    websocket.send(JSON.stringify({msg_type:19, data:true}))
+    console.log("function call vayo ta");
+    websocket.send(JSON.stringify({ msg_type: 19, data: true }));
   }
 
   async function startFun() {
@@ -179,16 +179,21 @@ const useGame = () => {
   }
 
   function clearCanvas() {
-    websocket.send(JSON.stringify({msg_type: 23, data: "yes"}))
+    websocket.send(JSON.stringify({ msg_type: 23, data: "yes" }));
   }
 
   function restartCanvasAfterClearing() {
-    websocket.send(JSON.stringify({msg_type: 23, data: "no"}))
+    websocket.send(JSON.stringify({ msg_type: 23, data: "no" }));
   }
 
   async function turnFinished() {
     console.log("what is going on!!");
-    websocket.send(JSON.stringify({ msg_type: 15, data: {msg: "finish", turn_id: turn.data.turn_user_id}}));
+    websocket.send(
+      JSON.stringify({
+        msg_type: 15,
+        data: { msg: "finish", turn_id: turn.data.turn_user_id },
+      })
+    );
     // setOnePersonDrawingTurnFinish(true)
     setStart(false);
     setOpenCanvas(false);
@@ -198,7 +203,9 @@ const useGame = () => {
 
   async function startAgain() {
     console.log("start again");
-    websocket.send(JSON.stringify({ msg_type: 15, data: {msg:"not-finish"} }));
+    websocket.send(
+      JSON.stringify({ msg_type: 15, data: { msg: "not-finish" } })
+    );
     websocket.send(
       JSON.stringify({
         msg_type: 9,
@@ -240,7 +247,9 @@ const useGame = () => {
 
   function allTurnFinished() {
     websocket.send(JSON.stringify({ msg_type: 22, data: true }));
-    websocket.send(JSON.stringify({ msg_type: 15, data: {msg:"not-finish"} }));
+    websocket.send(
+      JSON.stringify({ msg_type: 15, data: { msg: "not-finish" } })
+    );
     websocket.send(JSON.stringify({ msg_type: 13, data: "yes" }));
     websocket.send(JSON.stringify({ msg_type: 16, data: "reset" }));
   }
@@ -290,7 +299,7 @@ const useGame = () => {
     clearCanvas,
     setClearDrawingCanvas,
     clearDrawingCanvas,
-    restartCanvasAfterClearing
+    restartCanvasAfterClearing,
   ];
 };
 export default useGame;

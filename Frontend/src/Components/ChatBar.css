@@ -20,7 +20,6 @@
     border-radius: 5px;
     padding-left: 0.5em;
     padding-right: 0.1em;
-    padding-bottom: 0.8em;
     /* outline: 1px solid red; */
     /* gap: 50px; */
 }
@@ -30,7 +29,9 @@
     width: 100%;
     padding-top: 8px;
     /* outline:1px solid lime; */
-    overflow-y: scroll;
+    overflow-y: auto;
+    /* flex-direction: column-reverse; */
+
 }
 ::-webkit-scrollbar {
     width: 5px;
