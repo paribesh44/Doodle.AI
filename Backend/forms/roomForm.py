@@ -9,7 +9,7 @@ class RoomForm:
         players: Optional[List[str]] = Form(None),
         score: Optional[List[int]] = Form(None),
         state: str = Form(...)
-    ):
+
         self.room_id = room_id
         self.creator = creator
         self.players = players
